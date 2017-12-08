@@ -1,0 +1,1 @@
+"use strict";var js=function(e){return"http://hello.com:8686//views/17zuoye/livevideo/"+e+".html"};

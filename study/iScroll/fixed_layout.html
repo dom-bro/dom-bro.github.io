@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"><title>mobile fixed layout</title><link rel="stylesheet" href="/dist/study/iScroll/css/fixed_layout.css"></head><body class=""><div id="index">
+    <header ontouchmove="event.preventDefault()" onclick="alert(1)">fixed header</header>
+    <!--<header>fixed header</header>-->
+
+    <main id="wrapper">
+        <div class="content">
+            <!--<div class="arc-text">领取奖品1件</div>-->
+            <!--<div class="arc-text" style="transform: rotate(30deg) translate(60px, 60px)">领取奖品1件</div>-->
+            <!--<div class="arc-text">领取奖品1件</div>-->
+            <!--<div class="arc-text">领取奖品1件</div>-->
+            <div v-for="i in 30">{{i}}<input><span class="status"></span></div>
+        </div>
+    </main>
+
+    <footer ontouchmove="event.preventDefault()">
+    <!--<footer>-->
+        <input class="foot-input" type="text" placeholder="Footer..."/>
+        <button class="submit">提交</button>
+    </footer>
+</div>
+<script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/src/study/iScroll/js/jquery.arctext.js"></script><script src="/dist/study/iScroll/js/fixed_layout.js"></script></body></html>

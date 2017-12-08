@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"><title>楼层定位效果</title><link rel="stylesheet" href="/lib/swiper/css/swiper.css"><link rel="stylesheet" href="/dist/效果/effect_00_class/css/index.css"></head><body class=""><div id="index" style="display: none" v-show="server.success">
+    <div class="nav fixed-header">
+        <div id="status"></div>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <a class="item swiper-slide unit"
+                   href="javascript:;"
+                   v-for="(item,index) in server.head"
+                   :data-href="'#floor_0'+index"
+                   :item-id="item.id%20"
+                >{{item.name}}</a>
+            </div>
+        </div>
+    </div>
+    <div style="position: fixed;top:20%;line-height: 10;background: red;color:#fff;">
+        <div v-for="i in 10" style="display: inline">test</div>
+    </div>
+
+    <div class="floor unit"
+         v-for="(item,index) in server.head"
+         :id="'floor_0'+index">
+        <h3>{{item.name}}</h3>
+        <a href="javascript:;"
+           @click="openSecondWebView('/views/demo/demo')"
+           style="color: blue"
+        >打开一个新的 webview</a>
+        <div>{{item.description}}</div>
+        <div class="status"></div>
+    </div>
+</div><script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/swiper/js/swiper.js"></script><script src="/dist/效果/effect_00_class/js/index.js"></script></body></html>

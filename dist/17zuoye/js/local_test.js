@@ -1,0 +1,1 @@
+"use strict";!function(){window.navigator.userAgent.toLowerCase();require(["jquery"],function(e){console.log(e),document.write(navigator.userAgent)})}();

@@ -1,0 +1,1 @@
+"use strict";require(["jquery","init_mock"],function(i,e){});

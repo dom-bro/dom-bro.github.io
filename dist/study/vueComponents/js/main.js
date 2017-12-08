@@ -1,0 +1,1 @@
+"use strict";new Vue({el:"#index",components:{helloTest:{render:function(){var e=this.$createElement;return(this._self._c||e)("h1",[this._v("hello")])},staticRenderFns:[]}}});

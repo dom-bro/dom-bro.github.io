@@ -1,0 +1,1 @@
+"use strict";!function(){var e=void 0;e=new IScroll("#wrapper",{mouseWheel:!0,infiniteElements:"#scroller .row",dataset:function(t,n){$.get("/?start="+ +t+"&count="+ +n,{callback:function(n){n=JSON.parse(n),e.updateCache(t,n)}})},dataFiller:function(e,t){e.innerHTML=t},cacheSize:1e3})}();

@@ -1,0 +1,113 @@
+<!doctype html><html><head><meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"><title>抽奖转盘</title><link rel="stylesheet" href="/dist/17zuoye/activity/抽奖转盘/css/index.css"><script>
+        window.env = 'development';
+    </script></head><body class=""><div id="index">
+    <div class="header">
+        <div style="position: relative;overflow: hidden;display: none" v-show="giftList.success">
+            <div class="con">
+                <div class="prize-container">
+                    <div class="prize-item" v-for="item in giftList.creditMarketGiftInfoList">
+                        <div class="item-inner">
+                            <div class="item-content">
+                                <p class="arc-text">{{item.giftName + item.giftNum + item.unit}}</p>
+                                <img class="img" :src="item.imgUrl">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prize-bg" style="pointer-events: none"></div>
+            </div>
+            <!--抽奖按钮-->
+            <div class="lottery-btn drawLotteryBtn" style="cursor: pointer">抽奖</div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="tips">
+            <div class="tipsTxt">
+                <p>温馨提示：每次抽奖消耗 <span class="txtYellow">10自学积分</span></p>
+                <p><span style="visibility: hidden">此处仅占位</span>奖品每周自动更新</p>
+            </div>
+        </div>
+        <h2 class="titleTag">我的奖品</h2>
+        <div class="myReward" style="display: none" v-show="myGifts.success">
+            <template v-if="myGifts.success">
+                <ul v-if="myGifts.studentLotteryInfoList.length">
+                    <li class="rewardList" v-for="item in myGifts.studentLotteryInfoList">
+                        <div class="time">{{formatDate(item.createTime)}}</div>
+                        <div class="info">
+                            <div class="rewardShow"><img :src="item.extInfo.imgUrl"></div>
+                            <div class="rewardDes">{{item.lottery + item.num + item.extInfo.unit}}</div>
+                        </div>
+                    </li>
+                </ul>
+                <ul v-else>
+                    <li class="rewardList" style="text-align: center;height: 4rem;line-height: 4rem">暂无抽奖动态</li>
+                </ul>
+            </template>
+        </div>
+        <h2 class="titleTag">班级动态</h2>
+        <div class="myReward" style="display: none" v-show="classGifts.success">
+            <template v-if="classGifts.success">
+                <ul v-if="classGifts.classmateLotteryInfoList.length">
+                    <li class="dynamicList" v-for="item in classGifts.classmateLotteryInfoList">
+                        <div class="time">{{formatDate(item.createTime)}}</div>
+                        <div class="avatar"><img :src="'<$ cdn.avatar('/') $>' + item.img"></div>
+                        <div class="name">{{item.name}}</div>
+                        <div class="rewardDes">{{item.lottery + item.num + item.extInfo.unit}}</div>
+                    </li>
+                </ul>
+                <ul v-else>
+                    <li class="rewardList" style="text-align: center;height: 4rem;line-height: 4rem">暂无班级抽奖动态</li>
+                </ul>
+            </template>
+        </div>
+    </div>
+
+    <!--中奖弹窗-->
+    <div id="success-popup" ontouchmove="event.preventDefault()" class="w-popup" style="display: none">
+        <div class="p-light"></div>
+        <div class="popupMain">
+            <div class="p-close close-success-popup"></div>
+            <div class="p-title">恭喜你获得</div>
+            <div class="p-main">
+                <div class="pic"><img :src="prize.imgUrl"></div>
+                <div class="txtDes">
+                    <p>{{prize.giftName + prize.giftNum + prize.unit}}</p>
+                    <p class="font-s" v-show="prize.giftType !== 'credit'">(价值{{prize.giftPrice}}自学积分)</p>
+                </div>
+            </div>
+            <div class="p-btnBox">
+                <a href="javascript:void(0)" class="p-btn close-success-popup">确定</a>
+            </div>
+        </div>
+    </div>
+    <!--未中奖弹窗-->
+    <div id="failure-popup" ontouchmove="event.preventDefault()" class="w-popup" style="display: none">
+        <div class="p-light"></div>
+        <div class="popupMain">
+            <div class="p-close close-failure-popup"></div>
+            <div class="p-title">提示</div>
+            <div class="p-main">
+                <div class="errorTips">积分不足，无法参与抽奖</div>
+                <div class="errorIcon"></div>
+            </div>
+            <div class="p-btnBox">
+                <a href="javascript:void(0)" class="p-btn close-failure-popup">确定</a>
+            </div>
+        </div>
+    </div>
+
+    <!--无精灵提示弹窗-->
+    <div id="noFairy-popup" ontouchmove="event.preventDefault()" class="w-popup" style="display: none">
+        <div class="p-light"></div>
+        <div class="popupMain">
+            <div class="p-close close-noFairy-popup"></div>
+            <div class="p-title">提示</div>
+            <div class="p-main">
+                <div class="errorTips">你还没有选择形象哦，可能无法获得部分奖品。先去成长世界选择自己的形象吧！</div>
+            </div>
+            <div class="p-btnBox">
+                <a href="javascript:void(0)" class="p-btn close-noFairy-popup" @click="goGrowingWorld">去选形象</a>
+            </div>
+        </div>
+    </div>
+</div><script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/src/study/iScroll/js/jquery.arctext.js"></script><script src="/dist/17zuoye/activity/抽奖转盘/js/index.js"></script></body></html>

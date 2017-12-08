@@ -1,0 +1,89 @@
+<!doctype html><html><head><meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"><title>幸运大礼包</title><link rel="stylesheet" href="/dist/17zuoye/activity/promotion_20171109/css/index.css"><script>
+        window.env = 'development';
+    </script></head><body class=""><div id="index" style="display: none" v-show="page.success">
+    <div id="math" v-if="isMath">
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/math-pic01.png"></div>
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/math-pic02.png"></div>
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/math-pic03.png"></div>
+        <div class="footer" v-if="page.success">
+            <div class="fixed footer-math">
+                <a href="javascript:void(0)"
+                   class="w-btn open-price-panel"
+                   v-if="page.tasks[0].status === 'ongoing'"
+                   log-op="o_eBd4ny9Q"
+                >立即领取</a>
+                <a href="javascript:void(0)"
+                   class="w-btn"
+                   v-if="page.tasks[0].status === 'reward'"
+                   @click="receiveGift()"
+                >点击领取学习礼包</a>
+                <a href="javascript:void(0)"
+                   class="w-btn big-btn"
+                   v-if="page.tasks[0].status === 'accomplished'"
+                   @click="goTravelEurope"
+                >礼包已领取，去环游欧洲使用礼包</a>
+
+                <p class="txt">需要开通阿分题{{isMath ? '数学' : isEnglish ? '英语' : '语文'}}，最低只需1元</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="chinese"  v-if="isChinese">
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/chinese-pic01.png"></div>
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/chinese-pic02.png"></div>
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/chinese-pic03.png"></div>
+    </div>
+
+    <div id="english" v-if="isEnglish">
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/english-pic01.png"></div>
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/english-pic02.png"></div>
+        <div class="picBox"><img src="/dist/17zuoye/activity/promotion_20171109/images/english-pic03.png"></div>
+    </div>
+
+    <div id="result-popup-mask"
+         class="popup close-result-popup"
+         style="display: none"
+         ontouchmove="event.preventDefault()"
+    ></div>
+    <div id="result-popup"
+         class="popupInner"
+         :class="{'pop-math': isMath, 'pop-english': isEnglish, 'pop-chinese': isChinese}"
+         style="/*display: none*/"
+         ontouchmove="event.preventDefault()">
+
+        <div class="txtInfo">
+            <p class="txt">恭喜你，已经成功领取学习礼包！</p>
+        </div>
+        <a href="javascript:void(0)" class="w-btn">去环游欧洲使用礼包</a>
+    </div>
+
+    <div id="price-panel-mask"
+         class="popup-pay close-price-panel"
+         style="display: none"
+         ontouchmove="event.preventDefault()"
+    ></div>
+    <div id="price-panel"
+         class="payInner"
+         :class="{'pay-math': isMath, 'pay-english': isEnglish, 'pay-chinese': isChinese}"
+         style="display: none"
+         ontouchmove="event.preventDefault()">
+
+        <div class="payTitle">开通{{products.name}}，领取学习大礼包</div>
+
+        <ul class="priceLabel">
+            <li v-for="(item, index) in products.products"
+                :class="{'active': selectedProduct === item, 'super': index === 0}"
+                @click="selectedProduct = item">
+
+                {{item.period}}天<span class="fr">{{item.price}}元</span>
+            </li>
+        </ul>
+
+        <a href="javascript:void(0)"
+           class="w-btn close-price-panel"
+           @click="pay()"
+        >立即开通</a>
+
+        <p class="tips">幸运礼包即将失效</p>
+    </div>
+</div><script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/dist/17zuoye/activity/promotion_20171109/js/index.js"></script></body></html>
