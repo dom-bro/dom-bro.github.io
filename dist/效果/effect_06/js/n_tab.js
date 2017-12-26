@@ -1,1 +1,483 @@
-"use strict";function _classCallCheck(n,t){if(!(n instanceof t))throw new TypeError("Cannot call a class as a function")}var _createClass=function(){function n(n,t){for(var i=0;i<t.length;i++){var e=t[i];e.enumerable=e.enumerable||!1,e.configurable=!0,"value"in e&&(e.writable=!0),Object.defineProperty(n,e.key,e)}}return function(t,i,e){return i&&n(t.prototype,i),e&&n(t,e),t}}();!function(){function n(){var n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},i=function(){var n,t=function(n,t){return""!==n?n+t.slice(0,1).toUpperCase()+t.slice(1):t},i=function(){var i=!1;return"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(e){0==i&&void 0!=document[t(e,"hidden")]&&(n=e,i=!0)}),i}(),e=function(){return i?document[t(n,"hidden")]:void 0},o=function(){return i?document[t(n,"visibilityState")]:void 0};return{hidden:e(),visibilityState:o(),onVisibilityChange:function(t){if(i&&"function"==typeof t)return document.addEventListener(n+"visibilitychange",function(n){this.hidden=e(),this.visibilityState=o(),t.call(this,n)}.bind(this),!1)}}}();i.onVisibilityChange(function(){"visible"===i.visibilityState&&n(),"hidden"===i.visibilityState&&t()})}function t(){console.log.apply(console,arguments)}function i(n){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:function(){};if(n){var o=function(){e[n]=!1};e[n]?i(o):(e[n]=!0,t(o))}else alert("preventRepeatRun 方法缺少 id 参数")}window.navigator.userAgent.toLowerCase();var e={},o=function(){function n(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};_classCallCheck(this,n);var i=this.conf={head:"",item:".item",main:"",active:"active",attr:"item-id",history:!0,triggerClickOnInit:!0,onClick:function(n){}};$.extend(i,t),$(i.head).length||console.error("NormalTab: cannot find "+(i.head||"tab head id")),i.main&&!$(i.main).length&&i.main&&console.error("NormalTab: cannot find "+i.main),this.id="tab_"+n.instances.length,n.instances.push(this),this.initEvent()}return _createClass(n,[{key:"initHtml",value:function(){var n=this.conf;this.initDOM(n.main),this.initDOM(n.head)}},{key:"initDOM",value:function(n){var t=this.conf;if(n){var i=$(n),e=n===t.main,o=i.children(t.item);e&&o.hide(),o.each(function(n){var i=$(this);!i.attr(t.attr)&&i.attr(t.attr,n)});var a=i.children("["+t.attr+"="+function(n){var t=new RegExp("(^|&)"+n+"=([^&]*)(&|$)"),i=window.location.search.substr(1).match(t);return null!=i?decodeURIComponent(i[2]):null}(this.id)+"]");if(!a.length){var r=i.children("."+t.active);a=r.length?r:o.eq(0)}t.triggerClickOnInit?a.click():this.focusOn(a,e)}}},{key:"initEvent",value:function(){var n=this,t=n.conf;t.head&&$(document).on("click",t.head+" "+t.item,function(i){t.onClick.call(this,i);var e=$(this);n.focusOn(e),t.history&&function(n){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=location.href;if(n){var e=n+"="+t,o=new RegExp(n+"=[^&#]*");o.test(i)?i=i.replace(o,e):(e=(/\?/.test(location.search)?"&":"?")+e,/#/.test(location.hash)?i=i.replace(location.hash,e+location.hash):i+=e)}history.replaceState(null,"",i)}(n.id,e.attr(t.attr)),$(t.main).length&&n.focusOn($(t.main).children("["+t.attr+"="+e.attr(t.attr)+"]"),!0)})}},{key:"focusOn",value:function(n,t){var i=this.conf;t&&n.show().siblings(i.item).hide(),n.addClass(i.active).siblings(i.item).removeClass(i.active)}}]),n}();o.instances=[],require(["jquery","vue","dropload","init_mock"],function(e,a){window.Vue=a;var r={};e(document).on("click",".re-init-dropload",function(){});var c=void 0,s=void 0;!function(n){n=$.extend(!0,{el:"#index",data:{errorInfo:""},methods:{onError:function(){alert(this.errorInfo)},newError:function(){var n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"Unknown Error!";this.errorInfo=n,this.onError()},ajax:function(n){var e=this,o={type:(n=$.extend({id:"",errorOnResponseFalse:!0,preventRepeatRun:!1,type:"GET",url:"",data:{},success:function(n){},error:function(){},complete:function(){}},n)).type,url:n.url,data:n.data,success:function(i){i="string"==typeof i?JSON.parse(i):i,t(n.type+" "+n.id+" "+i.success+": %o",JSON.parse(JSON.stringify(i))),n.success(i),n.errorOnResponseFalse&&!i.success&&e.newError(i.info||"Data Error")},error:function(){n.error(),e.newError("ajax "+arguments[1].toString()+": "+arguments[2].toString())},complete:function(){n.complete()}};n.preventRepeatRun?i(n.id,function(t){o.complete=function(){n.complete(),t()},$.ajax(o)}):$.ajax(o)}}},n),new Vue(n)}({el:"#index",data:{server:{success:!1}},methods:{initDropLoad:function(n,i){var e=this;r[i]=n.dropload({domDown:{domRefresh:'<div class="dropload-load"><span class="loading-gif"></span>正在加载</div>',domLoad:'<div class="dropload-load"><span class="loading-gif"></span>正在加载</div>',domNoData:'<div class="dropload-noData">'+i+"没有更多数据了</div>"},threshold:80,loadDownFn:function(){t("event: 上拉加载更多事件"),t("drop-load/"+i),e.ajax({url:"drop-load/"+i,success:function(n){var t=e.server.people[i].description.length<=n.totalPage;t&&e.server.people[i].description.push(n.description),t?e.$nextTick(function(){!function(n){n&&(n.unlock(),n.noData(!1),n.resetload())}(r[i])}):function(n){n&&(n.lock(),n.noData(),n.resetload())}(r[i])}})}})},initData:function(){var n=this;n.ajax({url:"/effect_03",success:function(t){t.success&&(n.server=t,n.$nextTick(function(){c.initHtml(),s.initHtml(),function(n){for(var t=document.querySelectorAll(".unit"),i=0;i<t.length;++i)t[i].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==n&&(t[i].style.display="block",t[i].style.color="#fff",t[i].style.margin=".2rem .2rem .5rem",t[i].style.lineHeight=2,t[i].style.fontWeight=700,t[i].style.textAlign="center",t[i].style.textDecoration="none")}(!1)}))}})}},created:function(){var t=this;c=new o({head:"#person-list",main:"#person-list-main",onClick:function(){var n=e(this).attr("item-id"),o=e("#person-list-main").children(".item[item-id="+n+"]");i("_DROP_LOAD_"+n,function(){t.initDropLoad(o,n)})}}),s=new o({head:"#person-list2"}),t.initData(),n(function(){t.initData()})}})})}();
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function getQuery(key) {
+        var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)"),
+            res = window.location.search.substr(1).match(reg);
+        return res != null ? decodeURIComponent(res[2]) : null;
+    }
+
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function consoleLog() {
+        console.log.apply(console, arguments);
+    }
+    function historyReplaceState(key) {
+        var newValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+        var href = location.href;
+        if (key) {
+            var newPair = key + "=" + newValue;
+            var reg = new RegExp(key + '=[^&#]*');
+            if (reg.test(href)) {
+                href = href.replace(reg, newPair);
+            } else {
+                newPair = (/\?/.test(location.search) ? '&' : '?') + newPair;
+
+                if (/#/.test(location.hash)) {
+                    href = href.replace(location.hash, newPair + location.hash);
+                } else {
+                    href += newPair;
+                }
+            }
+        }
+        history.replaceState(null, '', href);
+    }
+
+    /*
+     * 功能:
+     * 1. 防止连击(选择时机使用 resetRun)
+     * 2. 只执行一次(不使用 resetRun)
+     */
+    var _prevent_repeat_run_ = {};
+    function preventRepeatRun(id) {
+        var func = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+        var func2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};
+
+        if (!id) {
+            alert('preventRepeatRun 方法缺少 id 参数');
+        } else {
+            var resetRun = function resetRun() {
+                _prevent_repeat_run_[id] = false;
+            };
+
+            if (!_prevent_repeat_run_[id]) {
+                _prevent_repeat_run_[id] = true;
+
+                func(resetRun);
+            } else {
+                func2(resetRun);
+            }
+        }
+    }
+
+    /*
+     * deps: ['jqeury', 'Vue']
+     * 将 Vue 封装一层的目的是把每次实例化 Vue 时都要用到的配置项提出来(主要是错误反馈和 ajax 请求)
+     * 增加的 methods:
+     *  onError: 错误出现时的处理方法(比如弹窗提示)，newError 会调用 onError
+     *  newError: 显式抛出一条错误
+     *  ajax: 在 jquery ajax 的基础上封装了一些常用的业务逻辑
+     */
+    function newVue(conf) {
+        conf = $.extend(true, {
+            el: '#index',
+            data: {
+                errorInfo: ''
+            },
+            methods: {
+                onError: function onError() {
+                    var vm = this;
+
+                    alert(vm.errorInfo);
+                },
+                newError: function newError() {
+                    var info = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Unknown Error!';
+
+                    var vm = this;
+                    vm.errorInfo = info;
+                    vm.onError();
+                },
+
+                /*
+                 * 在 jquery ajax 方法原有配置项的基础上新增了一些常用的可配置项
+                 *  id: (可选, 但如果想要使用 preventRepeatRun, 则必须提供一个 unique id)给 ajax 一个 unique id
+                 *  errorOnResponseFalse: (可选，默认true)是否在返回的数据有错误时显式抛出一条错误 newError
+                 *  preventRepeatRun: (可选，默认false)是否防止连续点击(在第一次请求返回结果后才可以发送第二次请求)
+                 */
+                ajax: function ajax(opts) {
+                    var vm = this;
+                    // 可配置项默认值
+                    opts = $.extend({
+                        id: '',
+                        errorOnResponseFalse: true,
+                        preventRepeatRun: false,
+                        type: 'GET',
+                        url: '',
+                        data: {},
+                        success: function success(res) {},
+                        error: function error() {},
+                        complete: function complete() {}
+                    }, opts);
+
+                    var ajaxConfig = {
+                        type: opts.type,
+                        url: opts.url,
+                        data: opts.data,
+                        success: function success(res) {
+                            res = typeof res === 'string' ? JSON.parse(res) : res;
+                            consoleLog(opts.type + " " + opts.id + " " + res.success + ": %o", JSON.parse(JSON.stringify(res)));
+
+                            opts.success(res);
+
+                            if (opts.errorOnResponseFalse && !res.success) {
+                                vm.newError(res.info || 'Data Error');
+                            }
+                        },
+                        error: function error() {
+                            opts.error();
+                            vm.newError('ajax ' + arguments[1].toString() + ': ' + arguments[2].toString());
+                        },
+                        complete: function complete() {
+                            opts.complete();
+                        }
+                    };
+
+                    if (opts.preventRepeatRun) {
+                        preventRepeatRun(opts.id, function (resetRun) {
+                            ajaxConfig.complete = function () {
+                                opts.complete();
+                                resetRun();
+                            };
+
+                            $.ajax(ajaxConfig);
+                        });
+                    } else {
+                        $.ajax(ajaxConfig);
+                    }
+                }
+            }
+        }, conf);
+        return new Vue(conf);
+    }
+
+    /*
+     * deps: ['jquery', 'getQuery', 'historyReplaceState']
+     *
+     * [html 必要结构]
+     * 1. tab id
+     * 2. item class
+     * 3. item-id attributes
+     *
+     * [js]
+     * 实例化只会初始化事件绑定(click), 而不会初始化 HTML (比如高亮选中项, 隐藏 tab main item 等),
+     * 须手动调用 initHTML 完成初始化(考虑到结合 vue 使用时往往需要延迟初始化HTML并且经常需要多次重复初始化, 抽出来就不会导致重复执行事件绑定);
+     */
+
+    var NormalTab = function () {
+        function NormalTab() {
+            var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            _classCallCheck(this, NormalTab);
+
+            var self = this;
+            var conf = self.conf = {
+                head: '', // require tab head id
+                item: '.item', // require tab children class
+                main: '', // optional tab main id
+                active: 'active', // optional active class
+                attr: 'item-id', // optional item identifier
+                history: true, // optional history replace state
+                triggerClickOnInit: true,
+                onClick: function onClick(e) {}
+            };
+            $.extend(conf, config);
+
+            if (!$(conf.head).length) {
+                console.error("NormalTab: cannot find " + (conf.head || 'tab head id'));
+            }
+
+            if (conf.main && !$(conf.main).length) {
+                conf.main && console.error("NormalTab: cannot find " + conf.main);
+            }
+
+            self.id = 'tab_' + NormalTab.instances.length;
+            NormalTab.instances.push(self);
+
+            self.initEvent();
+        }
+
+        _createClass(NormalTab, [{
+            key: "initHtml",
+            value: function initHtml() {
+                var self = this,
+                    conf = self.conf;
+
+                self.initDOM(conf.main);
+
+                self.initDOM(conf.head);
+            }
+        }, {
+            key: "initDOM",
+            value: function initDOM(selector) {
+                var self = this,
+                    conf = self.conf;
+
+                if (selector) {
+                    var tab = $(selector),
+                        isMain = selector === conf.main,
+                        items = tab.children(conf.item);
+
+                    isMain && items.hide();
+
+                    // 添加 item-id 属性
+                    items.each(function (index) {
+                        var item = $(this);
+                        !item.attr(conf.attr) && item.attr(conf.attr, index);
+                    });
+
+                    var activeItem = tab.children("[" + conf.attr + "=" + getQuery(self.id) + "]");
+                    // 初始化 active item
+                    if (!activeItem.length) {
+                        var temp = tab.children("." + conf.active);
+                        activeItem = temp.length ? temp : items.eq(0);
+                    }
+
+                    if (conf.triggerClickOnInit) {
+                        activeItem.click();
+                    } else {
+                        self.focusOn(activeItem, isMain);
+                    }
+                }
+            }
+        }, {
+            key: "initEvent",
+            value: function initEvent() {
+                var self = this,
+                    conf = self.conf;
+
+                if (conf.head) {
+                    $(document).on('click', conf.head + " " + conf.item, function (e) {
+                        conf.onClick.call(this, e);
+
+                        var $this = $(this);
+
+                        self.focusOn($this);
+
+                        conf.history && historyReplaceState(self.id, $this.attr(conf.attr));
+
+                        $(conf.main).length && self.focusOn($(conf.main).children("[" + conf.attr + "=" + $this.attr(conf.attr) + "]"), true);
+                    });
+                }
+            }
+        }, {
+            key: "focusOn",
+            value: function focusOn(ele, isMain) {
+                var self = this,
+                    conf = self.conf;
+
+                isMain && ele.show().siblings(conf.item).hide();
+
+                ele.addClass(conf.active).siblings(conf.item).removeClass(conf.active);
+            }
+        }]);
+
+        return NormalTab;
+    }();
+
+    NormalTab.instances = [];
+
+    require(['jquery', 'vue', 'dropload', 'init_mock'], function ($, Vue) {
+        window.Vue = Vue;
+
+        //<drop-load>
+        var dropload = {};
+        function lock(dl) {
+            if (dl) {
+                dl.lock();
+                dl.noData();
+                dl.resetload();
+            }
+        }
+        function unlock(dl) {
+            if (dl) {
+                dl.unlock();
+                dl.noData(false);
+                dl.resetload();
+            }
+        }
+        $(document).on('click', '.re-init-dropload', function () {// 数据加载失败后点击重新加载
+            // unlock(dropload);
+        });
+        //</drop-load>
+
+        var tab1 = void 0,
+            tab2 = void 0;
+        newVue({
+            el: '#index',
+            data: {
+                server: {
+                    success: false
+                }
+            },
+            methods: {
+                //<drop-load>
+                initDropLoad: function initDropLoad(wrapper, itemId) {
+                    var vm = this;
+
+                    dropload[itemId] = wrapper.dropload({
+                        domDown: {
+                            domRefresh: '<div class="dropload-load"><span class="loading-gif"></span>正在加载</div>',
+                            domLoad: '<div class="dropload-load"><span class="loading-gif"></span>正在加载</div>',
+                            domNoData: "<div class=\"dropload-noData\">" + itemId + "\u6CA1\u6709\u66F4\u591A\u6570\u636E\u4E86</div>"
+                        },
+                        threshold: 80,
+                        loadDownFn: function loadDownFn() {
+                            consoleLog('event: 上拉加载更多事件');
+                            consoleLog("drop-load/" + itemId);
+
+                            vm.ajax({
+                                url: "drop-load/" + itemId,
+                                success: function success(res) {
+                                    //<数据处理>
+                                    var hasData = vm.server.people[itemId].description.length <= res.totalPage;
+                                    if (hasData) {
+                                        vm.server.people[itemId].description.push(res.description);
+                                    }
+                                    //</数据处理>
+
+                                    if (hasData) {
+                                        vm.$nextTick(function () {
+                                            unlock(dropload[itemId]);
+                                        });
+                                    } else {
+                                        lock(dropload[itemId]);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                },
+
+                //</drop-load>
+
+                initData: function initData() {
+                    var vm = this;
+                    vm.ajax({
+                        url: '/effect_03',
+                        success: function success(res) {
+                            if (res.success) {
+                                vm.server = res;
+
+                                vm.$nextTick(function () {
+                                    tab1.initHtml();
+                                    tab2.initHtml();
+
+                                    colour(false);
+                                });
+                            }
+                        }
+                    });
+                }
+            },
+            created: function created() {
+                var vm = this;
+
+                tab1 = new NormalTab({
+                    head: '#person-list',
+                    main: '#person-list-main',
+                    // 注意: dropload.js 使用 scrollHeight，而 DOM 在 display: none 情况下是拿不到 scrollHeight 的
+                    onClick: function onClick() {
+                        var $this = $(this),
+                            itemId = $this.attr('item-id'),
+                            wrapper = $("#person-list-main").children(".item[item-id=" + itemId + "]");
+
+                        // 避免重复初始化导致重复绑定事件
+                        preventRepeatRun("_DROP_LOAD_" + itemId, function () {
+                            vm.initDropLoad(wrapper, itemId);
+                        });
+                    }
+                });
+                tab2 = new NormalTab({
+                    head: '#person-list2'
+
+                });
+
+                vm.initData();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            }
+        });
+    });
+})();

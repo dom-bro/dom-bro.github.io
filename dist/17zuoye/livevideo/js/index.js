@@ -1,1 +1,741 @@
-"use strict";function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var _createClass=function(){function e(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(t,n,o){return n&&e(t.prototype,n),o&&e(t,o),t}}();!function(){function e(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},n=function(){var e,t=function(e,t){return""!==e?e+t.slice(0,1).toUpperCase()+t.slice(1):t},n=function(){var n=!1;return"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(o){0==n&&void 0!=document[t(o,"hidden")]&&(e=o,n=!0)}),n}(),o=function(){return n?document[t(e,"hidden")]:void 0},i=function(){return n?document[t(e,"visibilityState")]:void 0};return{hidden:o(),visibilityState:i(),onVisibilityChange:function(t){if(n&&"function"==typeof t)return document.addEventListener(e+"visibilitychange",function(e){this.hidden=o(),this.visibilityState=i(),t.call(this,e)}.bind(this),!1)}}}();n.onVisibilityChange(function(){"visible"===n.visibilityState&&e(),"hidden"===n.visibilityState&&t()})}function t(){console.log.apply(console,arguments)}function n(e){return!!i[e]}function o(e){if(n("openSecondWebview"))return function(e,t){if(n(e))return(void 0==t?i[e]():i[e](t))||!0;return console.error("未找到 "+e+" 方法"),!1}("openSecondWebview",JSON.stringify({url:e}));location.href=e}window.navigator.userAgent.toLowerCase();var i=window.external||{},r=function(){function e(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};_classCallCheck(this,e);var n=this.conf={maskId:"",popupId:"",openBtnClass:"",closeBtnClass:"",triggerBtnClass:"",animateTime:300,closePopupOnClickDocument:!1,closePopupOnClickMask:!1,closeOthersOnOpen:!0,activeTriggerBtn:"-active-trigger-btn-",panelStatusClass:"-panel-visible-"};$.extend(n,t),n.onOpen=function(){"function"==typeof t.onOpen&&t.onOpen(n)},n.onClose=function(){"function"==typeof t.onClose&&t.onClose(n)},$(n.popupId).hasClass("-popup-created-")||($(n.popupId).addClass("-popup-created-"),this.id="popup_"+e.instances.length,e.instances.push(this),this.event=null,this.initEvent())}return _createClass(e,[{key:"initEvent",value:function(){var e=this,t=e.conf;t.openBtnClass&&$(document).on("click",t.openBtnClass,function(t){t.stopPropagation(),e.event=t,e.open()}),t.closeBtnClass&&$(document).on("click",t.closeBtnClass,function(t){t.stopPropagation(),e.event=t,e.close()}),t.closePopupOnClickMask&&$(document).on("click",t.maskId,function(t){t.stopPropagation(),e.event=t,e.close()}),t.triggerBtnClass&&$(document).on("click",t.triggerBtnClass,function(n){n.stopPropagation(),e.event=n;var o=$(this);o.hasClass(t.activeTriggerBtn)?e.trigger():(e.open(),$(t.triggerBtnClass).removeClass(t.activeTriggerBtn),o.addClass(t.activeTriggerBtn))}),t.closePopupOnClickDocument&&$(document).on("click",function(t){e.event=t,e.close()}),t.popupId&&$(document).on("click",t.popupId,function(t){t.stopPropagation(),e.event=t})}},{key:"closeOthersOnOpen",value:function(){var t=this;t.conf.closeOthersOnOpen&&e.instances.forEach(function(e){e!==t&&e.close()})}},{key:"open",value:function(){arguments.length>0&&void 0!==arguments[0]&&arguments[0]}},{key:"close",value:function(){arguments.length>0&&void 0!==arguments[0]&&arguments[0]}},{key:"trigger",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},n=this.conf;$(n.popupId).hasClass(n.panelStatusClass)?this.close(t):this.open(e)}}]),e}();r.instances=[];var s=function(e){function t(e){_classCallCheck(this,t);var n=_possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e));return n.firstInit=!0,n}return _inherits(t,r),_createClass(t,[{key:"init",value:function(e){var t=this.conf,n=$(t.popupId),o=n.outerHeight();(e||o<Math.abs(parseFloat(n.css("bottom"))))&&n.css({bottom:-n.outerHeight()}),this.firstInit=!1}},{key:"open",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},t=this.conf;this.closeOthersOnOpen();var n=$(t.popupId),o=$(t.maskId);n.hasClass(t.panelStatusClass)||(this.init(this.firstInit),o.fadeIn(t.animateTime),n.show().addClass(t.panelStatusClass).stop(!0).clearQueue().fadeIn(0).animate({bottom:0},t.animateTime),t.onOpen(),e(t))}},{key:"close",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},t=this,n=t.conf,o=$(n.popupId),i=$(n.maskId);o.hasClass(n.panelStatusClass)&&(i.fadeOut(n.animateTime),o.show().removeClass(n.panelStatusClass).stop(!0).clearQueue().animate({bottom:-o.outerHeight()},n.animateTime,function(){t.reinit=!0,o.fadeOut(n.animateTime),e(n)}),n.onClose())}}]),t}(),a=function(e){function t(e){return _classCallCheck(this,t),_possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).call(this,e))}return _inherits(t,r),_createClass(t,[{key:"open",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},t=this.conf;this.closeOthersOnOpen();var n=$(t.popupId),o=$(t.maskId);return n.hasClass(t.panelStatusClass)||(console.log("open"),o.show(),n.show().addClass(t.panelStatusClass),t.onOpen(),e(t)),this}},{key:"close",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},t=this.conf;console.log("close");var n=$(t.popupId),o=$(t.maskId);return n.hasClass(t.panelStatusClass)&&(o.hide(),n.hide().removeClass(t.panelStatusClass),e(t),t.onClose()),this}}]),t}(),c="/studentMobile/babyeagle/index.vpage",u="/wonderland/order/appproducts.vpage",l="http://www.test.17zuoye.net/api/1.0/afenti/order/submit.vpage?hideTopTitle=true",p=function(e){return"http://hello.com:8686//views/17zuoye/livevideo/"+e+".html"};require(["jquery","swiper","vue","fastclick","lazyload","init_mock"],function(n,i,r,f){f.attach(document.body);var d=new s({popupId:"#price-panel",maskId:"#price-panel-mask",openBtnClass:".open-price-panel",closeBtnClass:".close-price-panel"}),h=new a({popupId:"#gift-popup",openBtnClass:".open-gift-popup",closeBtnClass:".close-gift-popup"}),v=new a({popupId:"#honor-popup",openBtnClass:".open-honor-popup",closeBtnClass:".close-honor-popup"}),g=null;new r({el:"#index",data:{error:!1,errorInfo:"",isPC:function(){for(var e=navigator.userAgent,t=["Android","iPhone","SymbianOS","Windows Phone","iPad","iPod"],n=!0,o=0;o<t.length;o++)if(e.indexOf(t[o])>0){n=!1;break}return n}(),currentGradeItem:{},prevGradeItem:{},server:{success:!1},productList:[],giftInfo:{8:{integral:0,mathPower:0,englishPower:0,chinesePower:0},20:{integral:20,mathPower:10,englishPower:10,chinesePower:10},90:{integral:120,mathPower:60,englishPower:60,chinesePower:60},120:{integral:200,mathPower:100,englishPower:100,chinesePower:100}},sampleSackPurchased:!1},methods:{newError:function(e){this.error=!0,this.errorInfo=e||"Error!"},delError:function(){this.error=!1,this.errorInfo=""},getPageUrl:p,openSecondWebView:o,preventPayOnPC:function(){this.newError("手机上购课有特惠，请到手机上购买听课卡吧")},getTimesCardPresell:function(){var e=this;n.get("/wonderland/activity/timescardpresell.vpage",function(n){n="string"==typeof n?JSON.parse(n):n,e.error=!n.success,n.success?(t("数据获取成功%o",JSON.parse(JSON.stringify(n))),e.sampleSackPurchased=n.sampleSackPurchased):e.errorInfo=n.info||"数据获取失败！"}).fail(function(){e.error=!0,e.errorInfo="网络请求失败！"})},getSelectedProduct:function(){for(var e=0;e<this.productList.length;e++)if(this.productList[e].checked)return this.productList[e];return{}},periodBtn:function(e){for(var t=0;t<this.productList.length;t++)this.productList[t].checked=e.id==this.productList[t].id},buyBtn:function(){var e={productId:this.getSelectedProduct().id,refer:330029};setTimeout(function(){location.href=l+"&"+n.param(e)},200)},getPriceInfo:function(){var e=this;n.get(u,function(n){if(n="string"==typeof n?JSON.parse(n):n,e.error=!n.success,n.success){t("数据获取成功%o",JSON.parse(JSON.stringify(n)));for(var o=0;o<n.products.length;o++)n.products[o].checked=90==n.products[o].price;e.productList=n.products,e.$nextTick(function(){})}else e.errorInfo=n.info||"数据获取失败！"}).fail(function(){e.error=!0,e.errorInfo="网络请求失败！"})},forwardHonorName:function(){var e={myLearnedCourseTotal:this.server.myLearnedCourseTotal,nextGradeNeedCount:this.server.nextGradeNeedCount,level:this.server.currentGrade};o(p("honor_name")+"?res="+encodeURIComponent(JSON.stringify(e)))},openPricePanel:function(){h.close(),d.open()},initData:function(){var e=this;n.get(c,function(n){n="string"==typeof n?JSON.parse(n):n,e.error=!n.success,n.success?(t("数据获取成功%o",JSON.parse(JSON.stringify(n))),n.subjectsInfo.forEach(function(e){switch(e.subjectType){case"MATH":e.subjectIcon="subIcon01";break;case"ENGLISH":e.subjectIcon="subIcon02";break;case"CHINESE":e.subjectIcon="subIcon03";break;case"ENCYCLOPEDIA":e.subjectIcon="subIcon04";break;default:e.subjectIcon=""}}),n.learnGradeList.forEach(function(t,o){switch(t.type){case"LV1":t.iconClass="icon01";break;case"LV2":t.iconClass="icon02";break;case"LV3":t.iconClass="icon03";break;case"LV4":t.iconClass="icon04"}t.type===n.currentGrade&&(e.currentGradeItem=t,e.prevGradeItem=n.learnGradeList[o>0?o-1:0])}),e.server=n,e.$nextTick(function(){g&&g.destroy(),g=new i("#subject-swiper",{slidesPerView:"auto",freeMode:!0}),e.server.isUpgraded&&v.open(),window.localStorage.getItem("gift")||(h.open(),window.localStorage.setItem("gift",1))})):e.errorInfo=n.info||"数据获取失败！"}).fail(function(){e.error=!0,e.errorInfo="网络请求失败！"})}},watch:{error:function(e){e&&errorPopup.open()}},created:function(){var t=this;window.errorPopup=new a({popupId:"#error-popup",openBtnClass:".open-error-popup",closeBtnClass:".close-error-popup",onClose:function(){t.delError()}}),t.initData(),t.initData(),t.initData(),t.initData(),t.initData(),t.initData(),t.initData(),t.initData(),t.initData(),t.initData(),t.getPriceInfo(),t.getTimesCardPresell(),e(function(){t.initData()})},mounted:function(){}})})}();
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function isPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function consoleLog() {
+        console.log.apply(console, arguments);
+    }
+    //S 公司内部用
+    var windowExternal = window.external || {};
+    function isExistMethod(methodName) {
+        return windowExternal[methodName] ? true : false;
+    }
+    function doMethod(methodName, params) {
+        if (isExistMethod(methodName)) {
+            var res = params == undefined ? windowExternal[methodName]() : windowExternal[methodName](params);
+            return res || true;
+        } else {
+            console.error("\u672A\u627E\u5230 " + methodName + " \u65B9\u6CD5");
+            return false;
+        }
+    }
+
+    function openSecondWebView(url) {
+        "use strict";
+
+        if (isExistMethod('openSecondWebview')) {
+            return doMethod('openSecondWebview', JSON.stringify({ url: url }));
+        } else {
+            location.href = url;
+        }
+    }
+
+    var Popup = function () {
+        function Popup() {
+            var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            _classCallCheck(this, Popup);
+
+            var self = this;
+
+            var conf = self.conf = {
+                maskId: '', // popup mask
+                popupId: '', // popup content
+                openBtnClass: '', // 点击弹出
+                closeBtnClass: '', // 点击关闭
+                triggerBtnClass: '', // trigger弹出关闭
+                animateTime: 300, // 动画时间
+                closePopupOnClickDocument: false, // 点击 document 空白区域时是否关闭弹窗
+                closePopupOnClickMask: false, // 点击 mask 时是否关闭弹窗
+                closeOthersOnOpen: true, // 打开一个弹窗时是否关闭其它弹窗
+
+                activeTriggerBtn: '-active-trigger-btn-',
+                panelStatusClass: '-panel-visible-' // 标识 panel 的状态
+            };
+
+            $.extend(conf, config);
+
+            conf.onOpen = function () {
+                // 打开 panel 时执行
+                typeof config.onOpen === 'function' && config.onOpen(conf);
+            };
+            conf.onClose = function () {
+                // 关闭 panel 时执行
+                typeof config.onClose === 'function' && config.onClose(conf);
+            };
+
+            if (!$(conf.popupId).hasClass('-popup-created-')) {
+                $(conf.popupId).addClass('-popup-created-');
+
+                self.id = 'popup_' + Popup.instances.length;
+                Popup.instances.push(self);
+
+                self.event = null; // 点击事件
+
+                self.initEvent();
+            }
+        }
+
+        _createClass(Popup, [{
+            key: "initEvent",
+            value: function initEvent() {
+                var self = this,
+                    conf = self.conf;
+
+                if (conf.openBtnClass) {
+                    $(document).on('click', conf.openBtnClass, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        self.open();
+                    });
+                }
+
+                if (conf.closeBtnClass) {
+                    $(document).on('click', conf.closeBtnClass, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        self.close();
+                    });
+                }
+
+                if (conf.closePopupOnClickMask) {
+                    $(document).on('click', conf.maskId, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        self.close();
+                    });
+                }
+
+                if (conf.triggerBtnClass) {
+                    $(document).on('click', conf.triggerBtnClass, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        var $this = $(this);
+                        if ($this.hasClass(conf.activeTriggerBtn)) {
+                            self.trigger();
+                        } else {
+                            self.open();
+                            $(conf.triggerBtnClass).removeClass(conf.activeTriggerBtn);
+                            $this.addClass(conf.activeTriggerBtn);
+                        }
+                    });
+                }
+
+                if (conf.closePopupOnClickDocument) {
+                    $(document).on('click', function (e) {
+                        self.event = e;
+
+                        self.close();
+                    });
+                }
+
+                if (conf.popupId) {
+                    $(document).on('click', conf.popupId, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+                    });
+                }
+            }
+        }, {
+            key: "closeOthersOnOpen",
+            value: function closeOthersOnOpen() {
+                var self = this,
+                    conf = self.conf;
+
+                if (conf.closeOthersOnOpen) {
+                    Popup.instances.forEach(function (instance) {
+                        if (instance !== self) {
+                            instance.close();
+                        }
+                    });
+                }
+            }
+        }, {
+            key: "open",
+            value: function open() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+            }
+        }, {
+            key: "close",
+            value: function close() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+            }
+        }, {
+            key: "trigger",
+            value: function trigger() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+                var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                var panel = $(conf.popupId);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    self.close(onClose);
+                } else {
+                    self.open(onOpen);
+                }
+            }
+        }]);
+
+        return Popup;
+    }();
+
+    Popup.instances = [];
+
+    /*
+     * deps: ['jquery']
+     *
+     * 使用示例:
+     * // 实例化
+     * var panel = new SlideUpPanel({
+     *      maskId: '#mask',
+     *      popupId: '#popup',
+     *      triggerBtnClass: '.trigger-btn',
+     *      animateTime: 300,
+     *
+     *      onOpen: function(conf){
+     *          // 打开 panel 时回调, conf 是配置项
+     *      },
+     *      onClose: function(conf){
+     *          // 关闭 panel 时回调, conf 是配置项
+     *      }
+     * });
+     *
+     * panel.open(function(conf){
+     *      // 打开 panel 时回调, conf 是配置项
+     * });
+     * panel.close(function(conf){
+     *      // 关闭 panel 时回调, conf 是配置项
+     * });
+     *
+     */
+
+    var SlideUpPanel = function (_Popup) {
+        _inherits(SlideUpPanel, _Popup);
+
+        function SlideUpPanel(config) {
+            _classCallCheck(this, SlideUpPanel);
+
+            var _this = _possibleConstructorReturn(this, (SlideUpPanel.__proto__ || Object.getPrototypeOf(SlideUpPanel)).call(this, config));
+
+            var self = _this;
+
+            self.firstInit = true;
+            return _this;
+        }
+
+        _createClass(SlideUpPanel, [{
+            key: "init",
+            value: function init(force) {
+                var self = this,
+                    conf = self.conf,
+                    panel = $(conf.popupId),
+                    panelHeight = panel.outerHeight();
+
+                if (force || panelHeight < Math.abs(parseFloat(panel.css('bottom')))) {
+                    panel.css({
+                        // 对于会出现加载延迟的dom，比如image，务必固定占位高度，否则 outerHeight 拿不到最终高度(加载渲染完毕)
+                        bottom: -panel.outerHeight()
+                    });
+                }
+
+                self.firstInit = false;
+            }
+        }, {
+            key: "open",
+            value: function open() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                self.closeOthersOnOpen();
+
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (!panel.hasClass(conf.panelStatusClass)) {
+                    self.init(self.firstInit);
+
+                    mask.fadeIn(conf.animateTime);
+                    panel.show().addClass(conf.panelStatusClass).stop(true).clearQueue().fadeIn(0).animate({
+                        bottom: 0
+                    }, conf.animateTime);
+
+                    conf.onOpen();
+
+                    onOpen(conf);
+                }
+            }
+        }, {
+            key: "close",
+            value: function close() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    mask.fadeOut(conf.animateTime);
+                    panel.show().removeClass(conf.panelStatusClass).stop(true).clearQueue().animate({
+                        bottom: -panel.outerHeight()
+                    }, conf.animateTime, function () {
+                        self.reinit = true;
+                        panel.fadeOut(conf.animateTime);
+
+                        onClose(conf);
+                    });
+
+                    conf.onClose();
+                }
+            }
+        }]);
+
+        return SlideUpPanel;
+    }(Popup);
+
+    var NormalPopup = function (_Popup2) {
+        _inherits(NormalPopup, _Popup2);
+
+        function NormalPopup(config) {
+            _classCallCheck(this, NormalPopup);
+
+            return _possibleConstructorReturn(this, (NormalPopup.__proto__ || Object.getPrototypeOf(NormalPopup)).call(this, config));
+        }
+
+        _createClass(NormalPopup, [{
+            key: "open",
+            value: function open() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                self.closeOthersOnOpen();
+
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (!panel.hasClass(conf.panelStatusClass)) {
+                    console.log('open');
+                    mask.show();
+                    panel.show().addClass(conf.panelStatusClass);
+                    conf.onOpen();
+
+                    onOpen(conf);
+                }
+
+                return self;
+            }
+        }, {
+            key: "close",
+            value: function close() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+                console.log('close');
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    mask.hide();
+                    panel.hide().removeClass(conf.panelStatusClass);
+                    onClose(conf);
+
+                    conf.onClose();
+                }
+
+                return self;
+            }
+        }]);
+
+        return NormalPopup;
+    }(Popup);
+
+    var URL = {
+        index: '/studentMobile/babyeagle/index.vpage',
+        priceInfo: '/wonderland/order/appproducts.vpage',
+        pay: 'http://www.test.17zuoye.net/api/1.0/afenti/order/submit.vpage?hideTopTitle=true',
+        rank: '/studentMobile/babyeagle/rank.vpage',
+        giveLike: '/studentMobile/babyeagle/givegood.vpage',
+        likeList: '/studentMobile/babyeagle/goodlist.vpage',
+        courseArrangement: '/studentMobile/babyeagle/course/index.vpage',
+        timeTable: '/studentMobile/babyeagle/course/classhoursinfo.vpage',
+        entry: '/studentMobile/babyeagle/course/entry.vpage',
+        buy: '/studentMobile/babyeagle/course/buy.vpage',
+        receive: '/studentMobile/babyeagle/course/receive.vpage'
+    };
+
+    var base = 'http://hello.com:8686//views/17zuoye/livevideo/';
+    var suffix = '.html';
+    var getPageUrl = function getPageUrl(filename) {
+        return base + filename + suffix;
+    };
+
+    require(['jquery', 'swiper', 'vue', 'fastclick', 'lazyload', 'init_mock'], function ($, Swiper, Vue, FastClick) {
+        FastClick.attach(document.body);
+
+        /*--Price Panel--*/
+        var pricePanel = new SlideUpPanel({
+            popupId: '#price-panel',
+            maskId: '#price-panel-mask',
+            openBtnClass: '.open-price-panel',
+            closeBtnClass: '.close-price-panel'
+        });
+
+        var giftPopup = new NormalPopup({
+            popupId: '#gift-popup',
+            openBtnClass: '.open-gift-popup',
+            closeBtnClass: '.close-gift-popup'
+        });
+
+        var honorPopup = new NormalPopup({
+            popupId: '#honor-popup',
+            openBtnClass: '.open-honor-popup',
+            closeBtnClass: '.close-honor-popup'
+        });
+
+        var subjectSwiper = null;
+
+        new Vue({
+            el: '#index',
+            data: {
+                error: false,
+                errorInfo: '',
+
+                // for PC
+                isPC: isPC(),
+
+                currentGradeItem: {}, // 当前段位
+                prevGradeItem: {}, // 上一个段位
+
+                server: {
+                    success: false
+                },
+
+                /*--Price Panel--*/
+                productList: [],
+                giftInfo: {
+                    "8": { integral: 0, mathPower: 0, englishPower: 0, chinesePower: 0 },
+                    "20": { integral: 20, mathPower: 10, englishPower: 10, chinesePower: 10 },
+                    "90": { integral: 120, mathPower: 60, englishPower: 60, chinesePower: 60 },
+                    "120": { integral: 200, mathPower: 100, englishPower: 100, chinesePower: 100 }
+                },
+                sampleSackPurchased: false
+
+            },
+            methods: {
+                newError: function newError(info) {
+                    var vm = this;
+                    vm.error = true;
+                    vm.errorInfo = info || 'Error!';
+                },
+                delError: function delError() {
+                    var vm = this;
+                    vm.error = false;
+                    vm.errorInfo = '';
+                },
+                getPageUrl: getPageUrl,
+                openSecondWebView: openSecondWebView,
+
+                preventPayOnPC: function preventPayOnPC() {
+                    var vm = this;
+                    // if(isPC()){
+                    vm.newError('手机上购课有特惠，请到手机上购买听课卡吧');
+                    // }
+                },
+
+                /*--Price Panel--*/
+                getTimesCardPresell: function getTimesCardPresell() {
+                    var vm = this;
+
+                    $.get('/wonderland/activity/timescardpresell.vpage', function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+                        vm.error = !res.success;
+
+                        if (res.success) {
+                            consoleLog('数据获取成功%o', JSON.parse(JSON.stringify(res)));
+
+                            vm.sampleSackPurchased = res.sampleSackPurchased;
+                        } else {
+                            vm.errorInfo = res.info || '数据获取失败！';
+                        }
+                    }).fail(function () {
+                        vm.error = true;
+                        vm.errorInfo = '网络请求失败！';
+                    });
+                },
+                getSelectedProduct: function getSelectedProduct() {
+                    var self = this;
+                    for (var i = 0; i < self.productList.length; i++) {
+                        if (self.productList[i].checked) {
+                            return self.productList[i];
+                        }
+                    }
+                    return {};
+                },
+                periodBtn: function periodBtn(item) {
+                    var self = this;
+                    for (var i = 0; i < self.productList.length; i++) {
+                        self.productList[i].checked = item.id == self.productList[i].id;
+                    }
+                },
+                buyBtn: function buyBtn() {
+                    var self = this;
+                    var param = {
+                        productId: self.getSelectedProduct().id,
+                        refer: 330029
+                    };
+                    setTimeout(function () {
+                        location.href = URL.pay + '&' + $.param(param);
+                    }, 200);
+                },
+                getPriceInfo: function getPriceInfo() {
+                    var vm = this;
+
+                    // $.get(URL.priceInfo, {appKey: 'ValueAddedLiveTimesCard'}, function(res){
+                    $.get(URL.priceInfo, function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+                        vm.error = !res.success;
+
+                        if (res.success) {
+                            consoleLog('数据获取成功%o', JSON.parse(JSON.stringify(res)));
+
+                            for (var i = 0; i < res.products.length; i++) {
+                                res.products[i].checked = res.products[i].price == 90;
+                            }
+
+                            vm.productList = res.products;
+
+                            vm.$nextTick(function () {});
+                        } else {
+
+                            vm.errorInfo = res.info || '数据获取失败！';
+                        }
+                    }).fail(function () {
+                        vm.error = true;
+                        vm.errorInfo = '网络请求失败！';
+                    });
+                },
+
+                forwardHonorName: function forwardHonorName() {
+                    var vm = this;
+                    var res = {
+                        myLearnedCourseTotal: vm.server.myLearnedCourseTotal,
+                        nextGradeNeedCount: vm.server.nextGradeNeedCount,
+                        level: vm.server.currentGrade
+                    };
+                    openSecondWebView(getPageUrl('honor_name') + '?res=' + encodeURIComponent(JSON.stringify(res)));
+                },
+                openPricePanel: function openPricePanel() {
+                    giftPopup.close();
+                    pricePanel.open();
+                },
+                initData: function initData() {
+                    var vm = this;
+
+                    $.get(URL.index, function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+                        vm.error = !res.success;
+
+                        if (res.success) {
+                            consoleLog('数据获取成功%o', JSON.parse(JSON.stringify(res)));
+
+                            res.subjectsInfo.forEach(function (item) {
+                                switch (item.subjectType) {
+                                    case 'MATH':
+                                        item.subjectIcon = 'subIcon01';
+                                        break;
+                                    case 'ENGLISH':
+                                        item.subjectIcon = 'subIcon02';
+                                        break;
+                                    case 'CHINESE':
+                                        item.subjectIcon = 'subIcon03';
+                                        break;
+                                    case 'ENCYCLOPEDIA':
+                                        item.subjectIcon = 'subIcon04';
+                                        break;
+                                    default:
+                                        item.subjectIcon = '';
+                                        break;
+                                }
+                            });
+
+                            res.learnGradeList.forEach(function (item, index) {
+                                switch (item.type) {
+                                    case 'LV1':
+                                        item.iconClass = 'icon01';
+                                        break;
+                                    case 'LV2':
+                                        item.iconClass = 'icon02';
+                                        break;
+                                    case 'LV3':
+                                        item.iconClass = 'icon03';
+                                        break;
+                                    case 'LV4':
+                                        item.iconClass = 'icon04';
+                                        break;
+                                }
+                                if (item.type === res.currentGrade) {
+                                    vm.currentGradeItem = item;
+                                    vm.prevGradeItem = res.learnGradeList[index > 0 ? index - 1 : 0];
+                                }
+                            });
+
+                            vm.server = res;
+
+                            vm.$nextTick(function () {
+                                if (subjectSwiper) {
+                                    subjectSwiper.destroy();
+                                }
+                                subjectSwiper = new Swiper('#subject-swiper', {
+                                    slidesPerView: 'auto',
+                                    freeMode: true
+                                });
+
+                                if (vm.server.isUpgraded) {
+                                    honorPopup.open();
+                                }
+
+                                if (!window.localStorage.getItem('gift')) {
+                                    giftPopup.open();
+                                    window.localStorage.setItem('gift', 1);
+                                }
+                            });
+                        } else {
+
+                            vm.errorInfo = res.info || '数据获取失败！';
+                        }
+                    }).fail(function () {
+                        vm.error = true;
+                        vm.errorInfo = '网络请求失败！';
+                    });
+                }
+            },
+            watch: {
+                error: function error(newValue) {
+                    if (newValue) {
+                        // 错误出现时给用户一个反馈信息
+                        // alert(vm.errorInfo);
+                        errorPopup.open();
+                    }
+                }
+            },
+            created: function created() {
+                var vm = this;
+
+                /* error popup */
+                window.errorPopup = new NormalPopup({
+                    popupId: '#error-popup',
+                    openBtnClass: '.open-error-popup',
+                    closeBtnClass: '.close-error-popup',
+                    onClose: function onClose() {
+                        vm.delError();
+                    }
+                });
+
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+
+                //*--Price Panel--*/
+                vm.getPriceInfo();
+                vm.getTimesCardPresell();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            },
+            mounted: function mounted() {}
+        });
+    });
+})();

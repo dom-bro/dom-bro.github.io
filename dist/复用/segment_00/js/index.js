@@ -1,1 +1,267 @@
-"use strict";!function(){function t(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},e=function(){var t,n=function(t,n){return""!==t?t+n.slice(0,1).toUpperCase()+n.slice(1):n},e=function(){var e=!1;return"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(i){0==e&&void 0!=document[n(i,"hidden")]&&(t=i,e=!0)}),e}(),i=function(){return e?document[n(t,"hidden")]:void 0},o=function(){return e?document[n(t,"visibilityState")]:void 0};return{hidden:i(),visibilityState:o(),onVisibilityChange:function(n){if(e&&"function"==typeof n)return document.addEventListener(t+"visibilitychange",function(t){this.hidden=i(),this.visibilityState=o(),n.call(this,t)}.bind(this),!1)}}}();e.onVisibilityChange(function(){"visible"===e.visibilityState&&t(),"hidden"===e.visibilityState&&n()})}function n(){console.log.apply(console,arguments)}function e(t){return t=$.extend(!0,{el:"#index",data:{errorInfo:""},methods:{onError:function(){alert(this.errorInfo)},newError:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"Unknown Error!";this.errorInfo=t,this.onError()},ajax:function(t){var e=this,o={type:(t=$.extend({id:"",errorOnResponseFalse:!0,preventRepeatRun:!1,type:"GET",url:"",data:{},success:function(t){},error:function(){},complete:function(){}},t)).type,url:t.url,data:t.data,success:function(i){i="string"==typeof i?JSON.parse(i):i,n(t.type+" "+t.id+" "+i.success+": %o",JSON.parse(JSON.stringify(i))),t.success(i),t.errorOnResponseFalse&&!i.success&&e.newError(i.info||"Data Error")},error:function(){t.error(),e.newError("ajax "+arguments[1].toString()+": "+arguments[2].toString())},complete:function(){t.complete()}};t.preventRepeatRun?function(t){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},e=arguments.length>2&&void 0!==arguments[2]?arguments[2]:function(){};if(t){var o=function(){i[t]=!1};i[t]?e(o):(i[t]=!0,n(o))}else alert("preventRepeatRun 方法缺少 id 参数")}(t.id,function(n){o.complete=function(){t.complete(),n()},$.ajax(o)}):$.ajax(o)}}},t),new Vue(t)}window.navigator.userAgent.toLowerCase();var i={};!function(t){for(var n=document.querySelectorAll(".unit"),e=0;e<n.length;++e)n[e].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==t&&(n[e].style.display="block",n[e].style.color="#fff",n[e].style.margin=".2rem .2rem .5rem",n[e].style.lineHeight=2,n[e].style.fontWeight=700,n[e].style.textAlign="center",n[e].style.textDecoration="none")}(),require(["jquery","vue","init_mock"],function(i,o){window.Vue=o,e({el:"#index",data:{server:{success:!1},products:{success:!1}},methods:{getData:function(){var t=this;t.ajax({id:"getData",preventRepeatRun:!0,type:"GET",url:"/segment_00/get_data",data:{},success:function(e){e.success&&n("get_data"),t.$nextTick(function(){})}})},initData:function(){var t=this;t.ajax({id:"index",type:"GET",url:"/segment_00",data:{},success:function(n){n.success&&(t.server=n),t.$nextTick(function(){})}})}},created:function(){var n=this;n.initData(),n.initData(),n.initData(),n.initData(),t(function(){n.initData()})}})})}();
+'use strict';
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function consoleLog() {
+        console.log.apply(console, arguments);
+    }
+    /*
+     * 功能:
+     * 1. 防止连击(选择时机使用 resetRun)
+     * 2. 只执行一次(不使用 resetRun)
+     */
+    var _prevent_repeat_run_ = {};
+    function preventRepeatRun(id) {
+        var func = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+        var func2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};
+
+        if (!id) {
+            alert('preventRepeatRun 方法缺少 id 参数');
+        } else {
+            var resetRun = function resetRun() {
+                _prevent_repeat_run_[id] = false;
+            };
+
+            if (!_prevent_repeat_run_[id]) {
+                _prevent_repeat_run_[id] = true;
+
+                func(resetRun);
+            } else {
+                func2(resetRun);
+            }
+        }
+    }
+
+    /*
+     * deps: ['jqeury', 'Vue']
+     * 将 Vue 封装一层的目的是把每次实例化 Vue 时都要用到的配置项提出来(主要是错误反馈和 ajax 请求)
+     * 增加的 methods:
+     *  onError: 错误出现时的处理方法(比如弹窗提示)，newError 会调用 onError
+     *  newError: 显式抛出一条错误
+     *  ajax: 在 jquery ajax 的基础上封装了一些常用的业务逻辑
+     */
+    function newVue(conf) {
+        conf = $.extend(true, {
+            el: '#index',
+            data: {
+                errorInfo: ''
+            },
+            methods: {
+                onError: function onError() {
+                    var vm = this;
+
+                    alert(vm.errorInfo);
+                },
+                newError: function newError() {
+                    var info = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Unknown Error!';
+
+                    var vm = this;
+                    vm.errorInfo = info;
+                    vm.onError();
+                },
+
+                /*
+                 * 在 jquery ajax 方法原有配置项的基础上新增了一些常用的可配置项
+                 *  id: (可选, 但如果想要使用 preventRepeatRun, 则必须提供一个 unique id)给 ajax 一个 unique id
+                 *  errorOnResponseFalse: (可选，默认true)是否在返回的数据有错误时显式抛出一条错误 newError
+                 *  preventRepeatRun: (可选，默认false)是否防止连续点击(在第一次请求返回结果后才可以发送第二次请求)
+                 */
+                ajax: function ajax(opts) {
+                    var vm = this;
+                    // 可配置项默认值
+                    opts = $.extend({
+                        id: '',
+                        errorOnResponseFalse: true,
+                        preventRepeatRun: false,
+                        type: 'GET',
+                        url: '',
+                        data: {},
+                        success: function success(res) {},
+                        error: function error() {},
+                        complete: function complete() {}
+                    }, opts);
+
+                    var ajaxConfig = {
+                        type: opts.type,
+                        url: opts.url,
+                        data: opts.data,
+                        success: function success(res) {
+                            res = typeof res === 'string' ? JSON.parse(res) : res;
+                            consoleLog(opts.type + ' ' + opts.id + ' ' + res.success + ': %o', JSON.parse(JSON.stringify(res)));
+
+                            opts.success(res);
+
+                            if (opts.errorOnResponseFalse && !res.success) {
+                                vm.newError(res.info || 'Data Error');
+                            }
+                        },
+                        error: function error() {
+                            opts.error();
+                            vm.newError('ajax ' + arguments[1].toString() + ': ' + arguments[2].toString());
+                        },
+                        complete: function complete() {
+                            opts.complete();
+                        }
+                    };
+
+                    if (opts.preventRepeatRun) {
+                        preventRepeatRun(opts.id, function (resetRun) {
+                            ajaxConfig.complete = function () {
+                                opts.complete();
+                                resetRun();
+                            };
+
+                            $.ajax(ajaxConfig);
+                        });
+                    } else {
+                        $.ajax(ajaxConfig);
+                    }
+                }
+            }
+        }, conf);
+        return new Vue(conf);
+    }
+
+    colour();
+
+    require(['jquery', 'vue', 'init_mock'], function ($, Vue) {
+        // Vue 搭配 require 使用时未暴露为全局变量
+        window.Vue = Vue;
+
+        newVue({
+            el: '#index',
+            data: {
+                server: {
+                    success: false
+                },
+                products: {
+                    success: false
+                }
+            },
+            methods: {
+                getData: function getData() {
+                    var vm = this;
+                    vm.ajax({
+                        id: 'getData',
+                        preventRepeatRun: true,
+                        type: 'GET',
+                        url: '/segment_00/get_data',
+                        data: {},
+                        success: function success(res) {
+                            if (res.success) {
+                                consoleLog('get_data');
+                            } else {}
+
+                            vm.$nextTick(function () {});
+                        }
+                    });
+                },
+                initData: function initData() {
+                    var vm = this;
+
+                    vm.ajax({
+                        id: 'index',
+                        type: 'GET',
+                        url: '/segment_00',
+                        data: {},
+                        success: function success(res) {
+                            if (res.success) {
+                                vm.server = res;
+                            } else {}
+
+                            vm.$nextTick(function () {});
+                        }
+                    });
+                }
+            },
+
+            created: function created() {
+                var vm = this;
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            }
+        });
+    });
+})();

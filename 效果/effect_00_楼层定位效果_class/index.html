@@ -1,6 +1,6 @@
-<!doctype html><html><head><meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"><title>楼层定位效果</title><link rel="stylesheet" href="/lib/swiper/css/swiper.css"><link rel="stylesheet" href="/dist/效果/effect_00_class/css/index.css"></head><body class=""><div id="index" style="display: none" v-show="server.success">
+<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>楼层定位效果</title><link rel="stylesheet" href="/lib/swiper/css/swiper.css"><link rel="stylesheet" href="/dist/效果/effect_00_class/css/index.css"></head><body class=""><div id="index" style="display: none" v-show="server.success">
     <div class="nav fixed-header">
-        <div id="status"></div>
+        <div id="status">0</div>
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <a class="item swiper-slide unit"
@@ -12,18 +12,11 @@
             </div>
         </div>
     </div>
-    <div style="position: fixed;top:20%;line-height: 10;background: red;color:#fff;">
-        <div v-for="i in 10" style="display: inline">test</div>
-    </div>
 
     <div class="floor unit"
          v-for="(item,index) in server.head"
          :id="'floor_0'+index">
         <h3>{{item.name}}</h3>
-        <a href="javascript:;"
-           @click="openSecondWebView('/views/demo/demo')"
-           style="color: blue"
-        >打开一个新的 webview</a>
         <div>{{item.description}}</div>
         <div class="status"></div>
     </div>

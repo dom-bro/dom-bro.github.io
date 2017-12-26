@@ -1,1 +1,164 @@
-"use strict";!function(){function t(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},i=function(){var t,e=function(t,e){return""!==t?t+e.slice(0,1).toUpperCase()+e.slice(1):e},i=function(){var i=!1;return"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(n){0==i&&void 0!=document[e(n,"hidden")]&&(t=n,i=!0)}),i}(),n=function(){return i?document[e(t,"hidden")]:void 0},a=function(){return i?document[e(t,"visibilityState")]:void 0};return{hidden:n(),visibilityState:a(),onVisibilityChange:function(e){if(i&&"function"==typeof e)return document.addEventListener(t+"visibilitychange",function(t){this.hidden=n(),this.visibilityState=a(),e.call(this,t)}.bind(this),!1)}}}();i.onVisibilityChange(function(){"visible"===i.visibilityState&&t(),"hidden"===i.visibilityState&&e()})}window.navigator.userAgent.toLowerCase();require(["jquery","vue","init_mock"],function(e,i){function n(){e(".j-tab-head").each(function(){var t=e(this),i=t.attr("data-tab-serial-number")||"",n=parseInt(function(t){var e=new RegExp("(^|&)"+t+"=([^&]*)(&|$)"),i=window.location.search.substr(1).match(e);return null!=i?decodeURIComponent(i[2]):null}("active"+i))||0;t.children(".active").length&&(n=t.children(".active").index());var a=t.children(".item").eq(n);a.addClass("active"),!t.attr("data-no-main")&&t.siblings(".j-tab-main").children(".item").eq(n).addClass("active").show(),a.hasClass("change-title")&&change_title(a.attr("data-title")||a.html())}),e(document).on("click",".j-tab-head .item",function(){var t=e(this),i=t.parent().attr("data-tab-serial-number")||"",n=t.index(),a=location.href,o=new RegExp("active"+i+"=[^&#]*");o.test(a)?a=a.replace(o,"active"+i+"="+n):a+=(/\?/.test(a)?"&":"?")+"active"+i+"="+n,history.replaceState(null,"",a),!t.hasClass("active")&&!t.parent().attr("data-no-main")&&t.parent().siblings(".j-tab-main").eq(0).children(".item").removeClass("active").hide().eq(n).addClass("active").show(),t.addClass("active").siblings().removeClass("active")})}new i({el:"#index",data:{activeItem:{},server:{success:!1}},methods:{initData:function(){var t=this;e.get("/effect_03",function(e){(function(){console.log.apply(console,arguments)})(e="string"==typeof e?JSON.parse(e):e),e.success?(t.server=e,t.$nextTick(function(){!function(t){for(var e=document.querySelectorAll(".unit"),i=0;i<e.length;++i)e[i].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==t&&(e[i].style.display="block",e[i].style.color="#fff",e[i].style.margin=".2rem .2rem .5rem",e[i].style.lineHeight=2,e[i].style.fontWeight=700,e[i].style.textAlign="center",e[i].style.textDecoration="none")}(!1),n()})):alert("数据错误！")})}},created:function(){var e=this;e.initData(),t(function(){e.initData()})}})})}();
+'use strict';
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function consoleLog() {
+        console.log.apply(console, arguments);
+    }
+
+    require(['jquery', 'vue', 'init_mock'], function ($, Vue) {
+        function tabInit() {
+            //获取url参数
+            function _tabInitGetQuery(key) {
+                var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)"),
+                    res = window.location.search.substr(1).match(reg);
+                return res != null ? decodeURIComponent(res[2]) : null;
+            }
+            //tab切换效果
+            $('.j-tab-head').each(function () {
+                var item = $(this),
+                    tabLevel = item.attr('data-tab-serial-number') || '',
+                    activeNumber = parseInt(_tabInitGetQuery('active' + tabLevel)) || 0;
+                if (item.children('.active').length) {
+                    activeNumber = item.children('.active').index();
+                }
+                var activeChildren = item.children('.item').eq(activeNumber);
+                activeChildren.addClass('active');
+                !item.attr('data-no-main') && item.siblings('.j-tab-main').children('.item').eq(activeNumber).addClass('active').show();
+                activeChildren.hasClass('change-title') && change_title(activeChildren.attr('data-title') || activeChildren.html());
+            });
+            $(document).on('click', '.j-tab-head .item', function () {
+                var $this = $(this),
+                    tabSerialNumber = $this.parent().attr('data-tab-serial-number') || '',
+                    activeNumber = $this.index(),
+                    href = location.href;
+
+                var reg = new RegExp('active' + tabSerialNumber + '=[^&#]*');
+                if (reg.test(href)) {
+                    href = href.replace(reg, 'active' + tabSerialNumber + '=' + activeNumber);
+                } else {
+                    href += (/\?/.test(href) ? '&' : '?') + 'active' + tabSerialNumber + '=' + activeNumber;
+                }
+                history.replaceState(null, '', href);
+                !$this.hasClass('active') && !$this.parent().attr('data-no-main') && $this.parent().siblings('.j-tab-main').eq(0).children('.item').removeClass('active').hide().eq(activeNumber).addClass('active').show();
+                $this.addClass('active').siblings().removeClass('active');
+            });
+        }
+
+        new Vue({
+            el: '#index',
+            data: {
+                activeItem: {},
+
+                server: {
+                    success: false
+                }
+            },
+            methods: {
+                initData: function initData() {
+                    var vm = this;
+                    $.get('/effect_03', function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+                        consoleLog(res);
+
+                        if (res.success) {
+                            vm.server = res;
+
+                            vm.$nextTick(function () {
+                                colour(false);
+
+                                tabInit();
+                            });
+                        } else {
+                            alert('数据错误！');
+                        }
+                    });
+                }
+            },
+            created: function created() {
+                var vm = this;
+                vm.initData();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            }
+        });
+    });
+})();

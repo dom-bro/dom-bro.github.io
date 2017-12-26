@@ -1,1 +1,224 @@
-"use strict";!function(){function t(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},e=function(){var t,n=function(t,n){return""!==t?t+n.slice(0,1).toUpperCase()+n.slice(1):n},e=function(){var e=!1;return"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(i){0==e&&void 0!=document[n(i,"hidden")]&&(t=i,e=!0)}),e}(),i=function(){return e?document[n(t,"hidden")]:void 0},a=function(){return e?document[n(t,"visibilityState")]:void 0};return{hidden:i(),visibilityState:a(),onVisibilityChange:function(n){if(e&&"function"==typeof n)return document.addEventListener(t+"visibilitychange",function(t){this.hidden=i(),this.visibilityState=a(),n.call(this,t)}.bind(this),!1)}}}();e.onVisibilityChange(function(){"visible"===e.visibilityState&&t(),"hidden"===e.visibilityState&&n()})}window.navigator.userAgent.toLowerCase();require(["jquery","vue","init_mock"],function(n,e){var i=function(){function t(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},e=n(a.popupClass),i=n(a.maskClass);e.hasClass(a.panelStatusClass)||(i.fadeIn(a.animateTime),e.show().addClass(a.panelStatusClass).stop(!0).clearQueue().fadeIn(0).animate({bottom:0},a.animateTime),a._onOpen(),t())}function e(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},e=n(a.popupClass),i=n(a.maskClass);e.hasClass(a.panelStatusClass)&&(i.fadeOut(a.animateTime),e.show().removeClass(a.panelStatusClass).stop(!0).clearQueue().animate({bottom:-e.outerHeight()},a.animateTime,function(){e.fadeOut(a.animateTime),t()}),a._onClose())}function i(){var i=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},o=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){};n(a.popupClass).hasClass(a.panelStatusClass)?e(o):t(i)}var a={maskClass:"",popupClass:".popup",triggerBtnClass:".trigger-panel",animateTime:300,activeTriggerBtn:"-active-trigger-btn-",panelStatusClass:"visible"};return a._onOpen=function(){},a._onClose=function(){},n(document).on("click",a.triggerBtnClass,function(e){e.stopPropagation(),function(){console.log.apply(console,arguments)}(2);var o=n(this);o.hasClass(a.activeTriggerBtn)?i():(t(),n(a.triggerBtnClass).removeClass(a.activeTriggerBtn),o.addClass(a.activeTriggerBtn))}),n(document).on("click",function(){e()}),n(document).on("click",a.popupClass,function(t){t.stopPropagation()}),{open:t,close:e,trigger:i,init:function(){var t=n(a.popupClass);t.css({bottom:-t.outerHeight()})}}}();new e({el:"#index",data:{activeItem:{},server:{success:!1}},methods:{initData:function(){var t=this;n.get("/effect_02",function(n){(n="string"==typeof n?JSON.parse(n):n).success?(t.server=n,t.$nextTick(function(){!function(t){for(var n=document.querySelectorAll(".unit"),e=0;e<n.length;++e)n[e].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==t&&(n[e].style.display="block",n[e].style.color="#fff",n[e].style.margin=".2rem .2rem .5rem",n[e].style.lineHeight=2,n[e].style.fontWeight=700,n[e].style.textAlign="center",n[e].style.textDecoration="none")}(),i.init()})):alert("数据错误！")})}},created:function(){var n=this;n.initData(),t(function(){n.initData()})}})})}();
+'use strict';
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function consoleLog() {
+        console.log.apply(console, arguments);
+    }
+
+    require(['jquery', 'vue', 'init_mock'], function ($, Vue) {
+        //S 底部弹出Panel
+        var Panel = function () {
+            var conf = {
+                maskClass: '', // popup mask
+                popupClass: '.popup', // popup content
+                triggerBtnClass: '.trigger-panel', // 点击弹出弹窗的按钮
+                animateTime: 300, // 动画时间
+                activeTriggerBtn: '-active-trigger-btn-',
+                panelStatusClass: 'visible' // 标识 panel 的状态
+            };
+            conf._onOpen = function () {// 打开 panel 时执行
+                // open code here
+            };
+            conf._onClose = function () {// 关闭 panel 时执行
+                // close code here
+            };
+
+            function initPanel() {
+                var panel = $(conf.popupClass);
+                panel.css({
+                    // 对于会出现加载延迟的dom，比如image，务必固定占位高度，否则 outerHeight 拿不到最终高度(加载渲染完毕)
+                    bottom: -panel.outerHeight()
+                });
+            }
+
+            function openPanel() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var panel = $(conf.popupClass),
+                    mask = $(conf.maskClass);
+                if (!panel.hasClass(conf.panelStatusClass)) {
+                    mask.fadeIn(conf.animateTime);
+                    panel.show().addClass(conf.panelStatusClass).stop(true).clearQueue().fadeIn(0).animate({
+                        bottom: 0
+                    }, conf.animateTime);
+
+                    conf._onOpen();
+
+                    onOpen();
+                }
+            }
+            function closePanel() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var panel = $(conf.popupClass),
+                    mask = $(conf.maskClass);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    mask.fadeOut(conf.animateTime);
+                    panel.show().removeClass(conf.panelStatusClass).stop(true).clearQueue().animate({
+                        bottom: -panel.outerHeight()
+                    }, conf.animateTime, function () {
+                        panel.fadeOut(conf.animateTime);
+
+                        onClose();
+                    });
+
+                    conf._onClose();
+                }
+            }
+            function triggerPanel() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+                var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+                var panel = $(conf.popupClass);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    closePanel(onClose);
+                } else {
+                    openPanel(onOpen);
+                }
+            }
+
+            $(document).on('click', conf.triggerBtnClass, function (e) {
+                e.stopPropagation();
+                consoleLog(2);
+
+                var $this = $(this);
+                if ($this.hasClass(conf.activeTriggerBtn)) {
+                    triggerPanel();
+                } else {
+                    openPanel();
+                    $(conf.triggerBtnClass).removeClass(conf.activeTriggerBtn);
+                    $this.addClass(conf.activeTriggerBtn);
+                }
+            });
+            $(document).on('click', function () {
+                closePanel();
+            });
+            $(document).on('click', conf.popupClass, function (e) {
+                e.stopPropagation();
+            });
+
+            return {
+                open: openPanel,
+                close: closePanel,
+                trigger: triggerPanel,
+                init: initPanel
+            };
+        }();
+        //E 底部弹出Panel
+
+        new Vue({
+            el: '#index',
+            data: {
+                activeItem: {},
+
+                server: {
+                    success: false
+                }
+            },
+            methods: {
+                initData: function initData() {
+                    var vm = this;
+                    $.get('/effect_02', function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+
+                        if (res.success) {
+                            vm.server = res;
+
+                            vm.$nextTick(function () {
+                                colour();
+                                Panel.init();
+                            });
+                        } else {
+                            alert('数据错误！');
+                        }
+                    });
+                }
+            },
+            created: function created() {
+                var vm = this;
+                vm.initData();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            }
+        });
+    });
+})();

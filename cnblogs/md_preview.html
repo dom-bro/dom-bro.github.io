@@ -1,0 +1,148 @@
+<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>我是一个demo</title><link rel="stylesheet" href="/dist/cnblogs/css/cnblogs.css"><script>
+        window.env = 'development';
+    </script><style>
+        body{
+            background: #fff;
+            font-size: 1rem !important;
+        }
+    </style></head><body class=""><div id="catalog"><div class="bq"><div style="margin-bottom: .6rem"><strong>阅读目录</strong></div><ul class="list"><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_0">优化 AST</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_1">生成 render 函数</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_2">小结</a></li></ul></div></div>
+<p>本来以为 Vue 的编译器模块比较好欺负，结果发现并没有那么简单。每一种语法指令都要考虑到，处理起来相当复杂。<a href="http://www.cnblogs.com/iovec/p/vue_03.html">上篇</a>已经生成了 AST，本篇依然对 Vue 源码做简化处理，探究 Vue 是如果根据 AST 生成所需要的 render 函数的。</p>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_0">优化 AST</h1>
+<p>优化 AST 的目的是优化整体性能，避免不必要计算。比如那些不存在数据绑定的节点，即纯静态的（purely static）在更新视图时根本不需要改变，因此在数据批处理，页面重渲染时可直接跳过它们。</p>
+<p>Vue 通过遍历 AST 找出内容为纯静态的节点并将其标记为 static：</p>
+
+```js 
+function optimize (root) {
+    //-- 第一步 标记 AST 所有静态节点 --
+    markStatic(root)
+    //-- 第二步 标记 AST 所有父节点（即子树根节点） --
+    markStaticRoots(root, false)
+}
+ 
+```
+
+<p>首先标记所有静态节点：</p>
+
+```js 
+function markStatic (node) {
+    // 标记
+    if (node.type === 2) {    // 插值表达式
+        node.static = false
+    }
+
+    if (node.type === 3) {    // 普通文本
+        node.static = true
+    }
+
+    if (node.type === 1) {      // 元素
+        // 如果所有子节点均是 static，则该节点也是 static
+        for (let i = 0; i < node.children.length; i++) {
+            const child = node.children[i]
+            markStatic(child)
+            if (!child.static) {
+                node.static = false
+            }
+        }
+    }
+}
+ 
+```
+
+<p>ASTNode 的 type 字段用于标识节点的类型，可查看<a href="http://www.cnblogs.com/iovec/p/vue_03.html">上一篇的 AST 节点定义</a>：<code>type</code> 为 <code>1</code> 表示元素，<code>type</code> 为 <code>2</code> 表示插值表达式，<code>type</code> 为 <code>3</code> 表示普通文本。可以看到，在标记 ASTElement 时会依次检查所有子元素节点的静态标记，从而得出该元素是否为 static。</p>
+<p>上面 <code>markStatic</code> 函数使用的是树形数据结构的深度优先遍历算法，使用递归实现。</p>
+<p>接下来标记出静态子树：</p>
+
+```js 
+function markStaticRoots (node) {
+   if (node.type === 1) {
+       // For a node to qualify as a static root, it should have children that
+       // are not just static text. Otherwise the cost of hoisting out will
+       // outweigh the benefits and it's better off to just always render it fresh.
+       if (node.static && node.children.length && !(
+               node.children.length === 1 &&
+               node.children[0].type === 3
+           )) {
+
+           node.staticRoot = true
+           return
+       } else {
+           node.staticRoot = false
+       }
+
+       for (let i = 0; i < node.children.length; i++) {
+           markStaticRoots(node.children[i])
+       }
+   }
+}
+ 
+```
+
+<p><code>markStaticRoots</code> 函数里并没有什么特别的地方，仅仅是对静态节点又做了一层筛选。请注意函数中的那几行注释：</p>
+
+<p class="bq">For a node to qualify as a static root, it should have children that are not just static text. Otherwise the cost of hoisting out will outweigh the benefits and it's better off to just always render it fresh.</p>
+<p>翻译过来大概意思是：一个节点如果想要成为静态根，它的子节点不能单纯只是静态文本。否则，把它单独提取出来还不如重渲染时总是更新它性能高。</p>
+<p>这也是为什么要在标记了所有 AST 节点之后又要标记一遍静态子树根。</p>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_1">生成 render 函数</h1>
+<p>不了解 render 函数的可以先看一下 <a href="https://cn.vuejs.org/v2/guide/render-function.html">Vue 的 render 函数</a>。不了解也没关系，就把它当成 Vue 最终需要的一段特定字符串拼接就行了。</p>
+
+```js 
+function generate (el) {
+    if (el.staticRoot && !el.staticProcessed) {
+        return genStatic(el)
+    } else if (el.once && !el.onceProcessed) {
+        return genOnce(el)
+    } else if (el.for && !el.forProcessed) {
+        return genFor(el)
+    } else if (el.if && !el.ifProcessed) {
+        return genIf(el)
+    } else if (el.tag === 'template' && !el.slotTarget) {
+        return genChildren(el) || 'void 0'
+    } else if (el.tag === 'slot') {
+        return genSlot(el)
+    } else {
+        // component or element
+        let code
+        if (el.component) {
+            code = genComponent(el.component, el)
+        } else {
+            const data = el.plain ? undefined : genData(el)
+
+            const children = el.inlineTemplate ? null : genChildren(el)
+            code = `_c('${el.tag}'${
+                    data ? `,${data}` : '' // data
+                }${
+                    children ? `,${children}` : '' // children
+                })`
+        }
+        return code
+    }
+}
+ 
+```
+
+<p>上面生成 render 函数的过程比较繁琐，需要对不同情况作单独处理，这里不再一一展开。感兴趣的可在 Vue 项目的 <kbd>src/compiler/codegen/index.js</kbd> 文件里仔细研究一下。</p>
+<p>现在结合<a href="http://www.cnblogs.com/iovec/p/vue_03.html">生成 AST</a> 的方法就可以将<a href="http://www.cnblogs.com/iovec/p/vue_02.html">编译器初探</a>中遗留的 <code>compileToFunctions</code> 方法定义出来了：</p>
+
+```js 
+function compileToFunctions(el){
+    let ast = parseHTML(el)
+    optimize(ast)
+    return generate(ast)
+}
+ 
+```
+
+<p>也就是之前说的三步走：</p>
+
+<ol class="well-success list">
+<li>将 html 模板解析成抽象语法树(AST)。</li>
+<li>对 AST 做优化处理。</li>
+<li>根据 AST 生成 render 函数。</li>
+</ol>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_2">小结</h1>
+<p>Vue 首先根据使用者的传参获得待编译的模板片段，然后使用正则匹配对片段里的标签各个击破，用步步蚕食的方法将整块模板片段最终解析成一棵 AST。获得 AST 后，后续的处理就非常方便了。Vue 会首先优化这棵 AST，将其中的静态子树找出来，这些静态节点在之后的视图更新和数据计算中是可以忽略掉的，从而提高性能。最后 Vue 遍历这棵 AST 的每个节点，根据节点的类型生成不同的函数碎片，最后拼接成整个 render 函数。</p>
+<p>值得一提的是，将 AST 作为编译的中间形式是非常方便的，当 AST 构建出来之后，使用树形结构的深度优先遍历算法就可以方便地对树的每一个节点做处理。Vue 最后生成 render 函数也是通过遍历 AST ，根据每个节点生成函数的一小部分，最后拼接成整个函数。</p>
+<p>本篇完，Vue 编译器部分到此完结。将在下篇开始进行 Vue 运行时相关的代码剖析，运行时这部分代码应该会是非常有意思的，包括 Vue 对象实例化，双向绑定，虚拟 DOM 等内容。</p>
+<p><a href="http://www.cnblogs.com/iovec/p/vue_catalog.html">大白话 Vue 源码系列目录</a></p>
+<p class="color-red">本系列会以每周一篇的速度持续更新，喜欢的小伙伴记得点关注哦。</p>
+<script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/dist/cnblogs/js/demo.js"></script></body></html>

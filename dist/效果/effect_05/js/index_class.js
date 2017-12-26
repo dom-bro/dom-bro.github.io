@@ -1,1 +1,460 @@
-"use strict";function _possibleConstructorReturn(t,n){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!n||"object"!=typeof n&&"function"!=typeof n?t:n}function _inherits(t,n){if("function"!=typeof n&&null!==n)throw new TypeError("Super expression must either be null or a function, not "+typeof n);t.prototype=Object.create(n&&n.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),n&&(Object.setPrototypeOf?Object.setPrototypeOf(t,n):t.__proto__=n)}function _classCallCheck(t,n){if(!(t instanceof n))throw new TypeError("Cannot call a class as a function")}var _createClass=function(){function t(t,n){for(var e=0;e<n.length;e++){var i=n[e];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(t,i.key,i)}}return function(n,e,i){return e&&t(n.prototype,e),i&&t(n,i),n}}();!function(){function t(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},e=function(){var t,n=function(t,n){return""!==t?t+n.slice(0,1).toUpperCase()+n.slice(1):n},e=function(){var e=!1;return"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(i){0==e&&void 0!=document[n(i,"hidden")]&&(t=i,e=!0)}),e}(),i=function(){return e?document[n(t,"hidden")]:void 0},o=function(){return e?document[n(t,"visibilityState")]:void 0};return{hidden:i(),visibilityState:o(),onVisibilityChange:function(n){if(e&&"function"==typeof n)return document.addEventListener(t+"visibilitychange",function(t){this.hidden=i(),this.visibilityState=o(),n.call(this,t)}.bind(this),!1)}}}();e.onVisibilityChange(function(){"visible"===e.visibilityState&&t(),"hidden"===e.visibilityState&&n()})}window.navigator.userAgent.toLowerCase();var n=function(){function t(){var n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};_classCallCheck(this,t);var e=this.conf={maskId:"",popupId:"",openBtnClass:"",closeBtnClass:"",triggerBtnClass:"",animateTime:300,closePopupOnClickDocument:!1,closePopupOnClickMask:!1,closeOthersOnOpen:!0,activeTriggerBtn:"-active-trigger-btn-",panelStatusClass:"-panel-visible-"};$.extend(e,n),e.onOpen=function(){"function"==typeof n.onOpen&&n.onOpen(e)},e.onClose=function(){"function"==typeof n.onClose&&n.onClose(e)},$(e.popupId).hasClass("-popup-created-")||($(e.popupId).addClass("-popup-created-"),this.id="popup_"+t.instances.length,t.instances.push(this),this.event=null,this.initEvent())}return _createClass(t,[{key:"initEvent",value:function(){var t=this,n=t.conf;n.openBtnClass&&$(document).on("click",n.openBtnClass,function(n){n.stopPropagation(),t.event=n,t.open()}),n.closeBtnClass&&$(document).on("click",n.closeBtnClass,function(n){n.stopPropagation(),t.event=n,t.close()}),n.closePopupOnClickMask&&$(document).on("click",n.maskId,function(n){n.stopPropagation(),t.event=n,t.close()}),n.triggerBtnClass&&$(document).on("click",n.triggerBtnClass,function(e){e.stopPropagation(),t.event=e;var i=$(this);i.hasClass(n.activeTriggerBtn)?t.trigger():(t.open(),$(n.triggerBtnClass).removeClass(n.activeTriggerBtn),i.addClass(n.activeTriggerBtn))}),n.closePopupOnClickDocument&&$(document).on("click",function(n){t.event=n,t.close()}),n.popupId&&$(document).on("click",n.popupId,function(n){n.stopPropagation(),t.event=n})}},{key:"closeOthersOnOpen",value:function(){var n=this;n.conf.closeOthersOnOpen&&t.instances.forEach(function(t){t!==n&&t.close()})}},{key:"open",value:function(){arguments.length>0&&void 0!==arguments[0]&&arguments[0]}},{key:"close",value:function(){arguments.length>0&&void 0!==arguments[0]&&arguments[0]}},{key:"trigger",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},e=this.conf;$(e.popupId).hasClass(e.panelStatusClass)?this.close(n):this.open(t)}}]),t}();n.instances=[];var e=function(t){function e(t){_classCallCheck(this,e);var n=_possibleConstructorReturn(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t)),i=n,o=i.conf,a=$(o.popupId);return i.x=0,i.y=0,i.panelData={width:a.outerWidth(!0),height:a.outerHeight(!0)},n}return _inherits(e,n),_createClass(e,[{key:"init",value:function(){var t=this.conf;this.x=this.event.clientX,this.y=this.event.clientY;$(t.popupId).css({left:this.x,top:this.y,width:0,height:0})}},{key:"open",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=this.conf;this.closeOthersOnOpen();var e=$(n.popupId),i=$(n.maskId);e.hasClass(n.panelStatusClass)||(this.init(),i.fadeIn(n.animateTime),e.show().addClass(n.panelStatusClass).stop(!0).clearQueue().fadeIn(0).animate({left:($(window).width()-this.panelData.width)/2,top:($(window).height()-this.panelData.height)/2,width:this.panelData.width,height:this.panelData.height},n.animateTime),n.onOpen(),t(n))}},{key:"close",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=this.conf,e=$(n.popupId),i=$(n.maskId);e.hasClass(n.panelStatusClass)&&(i.fadeOut(n.animateTime),e.show().removeClass(n.panelStatusClass).stop(!0).clearQueue().animate({left:this.x,top:this.y,width:0,height:0},n.animateTime,function(){e.fadeOut(n.animateTime),t(n)}),t(n),n.onClose())}}]),e}();require(["jquery","vue","init_mock"],function(n,i){var o,a,s=function(t){"function"==typeof t&&(t={fn:t}),t=$.extend({fn:function(){},context:this,fn2:function(){},context2:this},t);var n;return function(){return t.fn?(n=t.fn.apply(t.context,arguments),t.fn=null):n=t.fn2.apply(t.context2,arguments),n}}(function(){o=new e({popupId:".panel-01",closeBtnClass:".close-panel-01",closeOthersOnOpen:!1,closePopupOnClickDocument:!1,openBtnClass:".trigger-panel-01"}),a=new e({popupId:".panel-02",triggerBtnClass:".trigger-panel-02"})});new i({el:"#index",data:{activeItem:{},server:{success:!1}},methods:{closePanel01:function(){var t=this;o.close(function(){t.initData()})},closePanel02:function(){var t=this;a.close(function(){t.initData()})},initData:function(){var t=this;n.get("/effect_02",function(n){(n="string"==typeof n?JSON.parse(n):n).success?(t.activeItem=n.contents[0],t.server=n,t.$nextTick(function(){!function(t){for(var n=document.querySelectorAll(".unit"),e=0;e<n.length;++e)n[e].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==t&&(n[e].style.display="block",n[e].style.color="#fff",n[e].style.margin=".2rem .2rem .5rem",n[e].style.lineHeight=2,n[e].style.fontWeight=700,n[e].style.textAlign="center",n[e].style.textDecoration="none")}(),s()})):alert("数据错误！")})}},created:function(){var n=this;n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),t(function(){n.initData()})}})})}();
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function runOnce(conf) {
+        if (typeof conf === 'function') {
+            conf = {
+                fn: conf
+            };
+        }
+
+        conf = $.extend({
+            fn: function fn() {
+                // 第一次运行执行
+            },
+            context: this, // fn 的执行上下文
+
+            fn2: function fn2() {
+                // 之后每次运行执行
+            },
+            context2: this // fn2 的执行上下文
+        }, conf);
+
+        var result;
+        return function () {
+            if (conf.fn) {
+                result = conf.fn.apply(conf.context, arguments);
+                conf.fn = null;
+            } else {
+                result = conf.fn2.apply(conf.context2, arguments);
+            }
+
+            return result;
+        };
+    }
+
+    var Popup = function () {
+        function Popup() {
+            var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            _classCallCheck(this, Popup);
+
+            var self = this;
+
+            var conf = self.conf = {
+                maskId: '', // popup mask
+                popupId: '', // popup content
+                openBtnClass: '', // 点击弹出
+                closeBtnClass: '', // 点击关闭
+                triggerBtnClass: '', // trigger弹出关闭
+                animateTime: 300, // 动画时间
+                closePopupOnClickDocument: false, // 点击 document 空白区域时是否关闭弹窗
+                closePopupOnClickMask: false, // 点击 mask 时是否关闭弹窗
+                closeOthersOnOpen: true, // 打开一个弹窗时是否关闭其它弹窗
+
+                activeTriggerBtn: '-active-trigger-btn-',
+                panelStatusClass: '-panel-visible-' // 标识 panel 的状态
+            };
+
+            $.extend(conf, config);
+
+            conf.onOpen = function () {
+                // 打开 panel 时执行
+                typeof config.onOpen === 'function' && config.onOpen(conf);
+            };
+            conf.onClose = function () {
+                // 关闭 panel 时执行
+                typeof config.onClose === 'function' && config.onClose(conf);
+            };
+
+            if (!$(conf.popupId).hasClass('-popup-created-')) {
+                $(conf.popupId).addClass('-popup-created-');
+
+                self.id = 'popup_' + Popup.instances.length;
+                Popup.instances.push(self);
+
+                self.event = null; // 点击事件
+
+                self.initEvent();
+            }
+        }
+
+        _createClass(Popup, [{
+            key: 'initEvent',
+            value: function initEvent() {
+                var self = this,
+                    conf = self.conf;
+
+                if (conf.openBtnClass) {
+                    $(document).on('click', conf.openBtnClass, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        self.open();
+                    });
+                }
+
+                if (conf.closeBtnClass) {
+                    $(document).on('click', conf.closeBtnClass, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        self.close();
+                    });
+                }
+
+                if (conf.closePopupOnClickMask) {
+                    $(document).on('click', conf.maskId, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        self.close();
+                    });
+                }
+
+                if (conf.triggerBtnClass) {
+                    $(document).on('click', conf.triggerBtnClass, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        var $this = $(this);
+                        if ($this.hasClass(conf.activeTriggerBtn)) {
+                            self.trigger();
+                        } else {
+                            self.open();
+                            $(conf.triggerBtnClass).removeClass(conf.activeTriggerBtn);
+                            $this.addClass(conf.activeTriggerBtn);
+                        }
+                    });
+                }
+
+                if (conf.closePopupOnClickDocument) {
+                    $(document).on('click', function (e) {
+                        self.event = e;
+
+                        self.close();
+                    });
+                }
+
+                if (conf.popupId) {
+                    $(document).on('click', conf.popupId, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+                    });
+                }
+            }
+        }, {
+            key: 'closeOthersOnOpen',
+            value: function closeOthersOnOpen() {
+                var self = this,
+                    conf = self.conf;
+
+                if (conf.closeOthersOnOpen) {
+                    Popup.instances.forEach(function (instance) {
+                        if (instance !== self) {
+                            instance.close();
+                        }
+                    });
+                }
+            }
+        }, {
+            key: 'open',
+            value: function open() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+            }
+        }, {
+            key: 'close',
+            value: function close() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+            }
+        }, {
+            key: 'trigger',
+            value: function trigger() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+                var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                var panel = $(conf.popupId);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    self.close(onClose);
+                } else {
+                    self.open(onOpen);
+                }
+            }
+        }]);
+
+        return Popup;
+    }();
+
+    Popup.instances = [];
+
+    var ShrinkPopup = function (_Popup) {
+        _inherits(ShrinkPopup, _Popup);
+
+        function ShrinkPopup(config) {
+            _classCallCheck(this, ShrinkPopup);
+
+            var _this = _possibleConstructorReturn(this, (ShrinkPopup.__proto__ || Object.getPrototypeOf(ShrinkPopup)).call(this, config));
+
+            var self = _this,
+                conf = self.conf,
+                panel = $(conf.popupId);
+
+            self.x = 0;
+            self.y = 0;
+
+            // 适用场景(必要条件)：弹窗宽高固定(即渲染之后弹窗宽高不会发生变化，因为该效果是对宽高进行操作，所以要求宽高固定)
+            self.panelData = {
+                width: panel.outerWidth(true),
+                height: panel.outerHeight(true)
+            };
+            return _this;
+        }
+
+        _createClass(ShrinkPopup, [{
+            key: 'init',
+            value: function init() {
+                var self = this,
+                    conf = self.conf;
+
+                self.x = self.event.clientX;
+                self.y = self.event.clientY;
+
+                var panel = $(conf.popupId);
+                panel.css({
+                    left: self.x,
+                    top: self.y,
+                    width: 0,
+                    height: 0
+
+                });
+            }
+        }, {
+            key: 'open',
+            value: function open() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                self.closeOthersOnOpen();
+
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (!panel.hasClass(conf.panelStatusClass)) {
+                    self.init();
+
+                    mask.fadeIn(conf.animateTime);
+                    panel.show().addClass(conf.panelStatusClass).stop(true).clearQueue().fadeIn(0).animate({
+                        left: ($(window).width() - self.panelData.width) / 2,
+                        top: ($(window).height() - self.panelData.height) / 2,
+                        width: self.panelData.width,
+                        height: self.panelData.height
+                    }, conf.animateTime);
+
+                    conf.onOpen();
+
+                    onOpen(conf);
+                }
+            }
+        }, {
+            key: 'close',
+            value: function close() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    mask.fadeOut(conf.animateTime);
+                    panel.show().removeClass(conf.panelStatusClass).stop(true).clearQueue().animate({
+                        left: self.x,
+                        top: self.y,
+                        width: 0,
+                        height: 0
+                    }, conf.animateTime, function () {
+                        panel.fadeOut(conf.animateTime);
+
+                        onClose(conf);
+                    });
+
+                    onClose(conf);
+
+                    conf.onClose();
+                }
+            }
+        }]);
+
+        return ShrinkPopup;
+    }(Popup);
+
+    require(['jquery', 'vue', 'init_mock'], function ($, Vue) {
+        var panel_01, panel_02;
+        var initPanel = runOnce(function () {
+            panel_01 = new ShrinkPopup({
+                popupId: '.panel-01',
+                closeBtnClass: '.close-panel-01',
+                closeOthersOnOpen: false,
+                closePopupOnClickDocument: false,
+                openBtnClass: '.trigger-panel-01'
+                // animateTime: 3000,
+            });
+            panel_02 = new ShrinkPopup({
+                popupId: '.panel-02',
+                triggerBtnClass: '.trigger-panel-02'
+                // animateTime: 3000,
+            });
+        });
+
+        new Vue({
+            el: '#index',
+            data: {
+                activeItem: {},
+
+                server: {
+                    success: false
+                }
+            },
+            methods: {
+                closePanel01: function closePanel01() {
+                    var vm = this;
+
+                    panel_01.close(function () {
+                        vm.initData();
+                    });
+                },
+                closePanel02: function closePanel02() {
+                    var vm = this;
+
+                    panel_02.close(function () {
+                        vm.initData();
+                    });
+                },
+                initData: function initData() {
+                    var vm = this;
+                    $.get('/effect_02', function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+
+                        if (res.success) {
+                            vm.activeItem = res.contents[0];
+                            vm.server = res;
+
+                            vm.$nextTick(function () {
+                                colour();
+
+                                initPanel();
+                            });
+                        } else {
+                            alert('数据错误！');
+                        }
+                    });
+                }
+            },
+            created: function created() {
+                var vm = this;
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            }
+        });
+    });
+})();

@@ -1,1 +1,7 @@
-"use strict";console.log(Vue);
+'use strict';
+
+(function () {
+  'use strict';
+
+  console.log(Vue);
+})();

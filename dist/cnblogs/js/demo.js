@@ -1,1 +1,156 @@
-"use strict";function _classCallCheck(t,o){if(!(t instanceof o))throw new TypeError("Cannot call a class as a function")}var _createClass=function(){function t(t,o){for(var n=0;n<o.length;n++){var e=o[n];e.enumerable=e.enumerable||!1,e.configurable=!0,"value"in e&&(e.writable=!0),Object.defineProperty(t,e.key,e)}}return function(o,n,e){return n&&t(o.prototype,n),e&&t(o,e),o}}();!function(){function t(t,o){return Math.random()*(o-t)+t}function o(o){var e=o.clientX,i=$(window).height()-o.clientY;!function(o,e,i){var s=20,l=setInterval(function(){s-- >0?new n({left:o,bottom:e,background:a[Math.floor(t(0,a.length))]}):(clearInterval(l),i())},30)}(e,i,function(){new n({left:e,bottom:i,speed:1,radius:50,background:a[Math.floor(t(0,a.length))],innerHtml:'<div class="heart-inner">Thanks</div>'})})}window.navigator.userAgent.toLowerCase();var n=function(){function o(n){_classCallCheck(this,o);var e=this;e.opts=$.extend({bottom:"50%",left:"50%",speed:t(2,6),radius:t(5,20),swing:t(-40,40),innerHtml:"",background:"rgba(250,0,0, 0.6)"},n),e.dom=$('<div class="heart">'+e.opts.innerHtml+"</div>"),e.dom.css({width:0,height:0,bottom:e.opts.bottom,left:e.opts.left,background:e.opts.background}),$(document.body).append(e.dom),e.startX=parseFloat(e.dom.css("left")),e.startY=parseFloat(e.dom.css("bottom")),e.interval=20,e.time=0,e.timer=setInterval(function(){e.update()},e.interval)}return _createClass(o,[{key:"update",value:function(){this.time+=1;var t=parseFloat(this.dom.css("bottom")),o=this.dom[0].offsetWidth;o=Math.min(++o,this.opts.radius),t-$(window).height()>2*o?(clearInterval(this.timer),this.dom.remove()):this.dom.css({left:this.startX+Math.sin((t-this.startY)/80)*(this.opts.swing+this.time),bottom:t+this.opts.speed*(1+Math.log10(this.time)/2),width:o,height:o})}}]),o}(),e=[{title:"调用栈",content:"调用栈是解析器（如浏览器中的的javascript解析器）的一种机制，可以在脚本调用多个函数时，跟踪每个函数在完成执行时应该返回控制的点。（如什么函数正在执行，什么函数被这个函数调用，下一个调用的函数是谁）"},{title:"局部变量和全局变量",content:"变量分为局部与全局，局部变量又可称之为内部变量。由某对象或某个函数所创建的变量通常都是局部变量，只能被内部引用，而无法被其它对象或函数引用。全局变量既可以是某对象函数创建，也可以是在本程序任何地方创建。全局变量是可以被本程序所有对象或函数引用。javascript 的全局变量一般会挂在 window 对象上。"},{title:"三元运算符",content:"三元运算符是软件编程中的一个固定格式，语法是“条件表达式 ? 表达式1 : 表达式2”。问号前面的条件表达式是判断的条件，判断结果为 bool 型，为true时调用表达式1，为false时调用表达式2。"},{title:"Cookie",content:"特指某些网站为了辨别用户身份、进行 session 跟踪而储存在用户本地终端上的数据（通常经过加密）。Cookie会在浏览器向服务器发送http请求时放在请求头里一起发送给服务器，这通常是很有用的，服务器可以根据Cookie判断该次请求的状态。"},{title:"单页面应用（SPA）",content:"单页面应用（SPA）是旨在对Web应用发动革命的软件运动中可信度很高的一种。此类应用有望进行更加模块化的开发，令应用更加容易地适配与多个设备，并拥有更好的应用生命周期管理——这些几乎是软件架构师希望的全部。SPA 使前端开发者拿到了监管url的权利，通过监听页面地址变化来调用前端模块，渲染不同页面。当然，前端这时也拥有了修改url的能力。管理好前端视图与url，整个单页面就已经架构完成。"}],i=[{img:"https://images2018.cnblogs.com/blog/882926/201711/882926-20171127223306878-992347498.png",txt:"觉得有用就点个推荐吧，来波关注就更好了:)"},{img:"http://images2017.cnblogs.com/blog/882926/201712/882926-20171205115750925-52177603.png",txt:"点赞有特效哦，Duang~"},{img:"http://images2017.cnblogs.com/blog/882926/201712/882926-20171205115939534-65708820.png",txt:"大家好，我是强迫症，如果你们看到我的赞是单数，请一定帮我点成双数，不然我会疯掉的。。。"},{img:"http://images2017.cnblogs.com/blog/882926/201712/882926-20171206214601769-863817097.png",txt:"都看到这了，点个赞吧，有特效哦"},{img:"http://images2017.cnblogs.com/blog/882926/201712/882926-20171206214813019-1014813799.png",txt:"不点赞好悲桑"}],a=["#F00","#FF4040","#FF7373","#CD0074","#FF5983"],s=$("#cnblogs_post_body");!function(){var o=e[Math.floor(t(0,e.length))],n='\n        <div class="random-term">随机术语词条</div>\n        <div class="term-content">\n            <div style="margin-bottom: 8px"><strong>'+o.title+"</strong></div>\n            <div>"+o.content+"</div>\n        </div>\n        ";s.append(n)}();var l=location.pathname+"_digg";localStorage.getItem(l)||($(document).one("click",".diggit, #green_channel_digg",function(t){localStorage.setItem(l,1),o(t),$(".thumb-up").animate({opacity:0},"slow")}),function(){var o=i[Math.floor(t(0,i.length))],n='\n        <div class="thumb-up clearfix">\n            <img class="thumb-up-img" src="'+o.img+'">\n            <div class="color-red thumb-up-txt">'+o.txt+"</div>\n        </div>\n        ";s.append(n)}());var r=location.pathname+"_follow";localStorage.getItem(r)||$(document).one("click","#green_channel_follow",function(t){localStorage.setItem(r,1),o(t)}),$(document).on("click","[scroll-to]",function(){var t=$(this).attr("scroll-to");$("html,body").animate({scrollTop:Math.max(($(t).length?$(t).offset().top:parseInt(t))-20,0)},"fast")})}();
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    var Bubble = function () {
+        function Bubble(options) {
+            _classCallCheck(this, Bubble);
+
+            var self = this;
+
+            self.opts = $.extend({
+                bottom: '50%',
+                left: '50%',
+                speed: randomInRange(2, 6), // 初始上升速度，会随时间越来越快
+                radius: randomInRange(5, 20), // 物体尺寸，会随时间从零长大到该值
+                // radius: 20,
+                swing: randomInRange(-40, 40), // 上升时左右浮动区间，该区间随时间越来越大
+                innerHtml: '',
+                background: 'rgba(250,0,0, 0.6)'
+            }, options);
+
+            self.dom = $('<div class="heart">' + self.opts.innerHtml + '</div>');
+            self.dom.css({
+                width: 0,
+                height: 0,
+                bottom: self.opts.bottom,
+                left: self.opts.left,
+                background: self.opts.background
+            });
+            $(document.body).append(self.dom);
+            self.startX = parseFloat(self.dom.css('left'));
+            self.startY = parseFloat(self.dom.css('bottom'));
+
+            self.interval = 20;
+            self.time = 0;
+            self.timer = setInterval(function () {
+                self.update();
+            }, self.interval);
+        }
+
+        _createClass(Bubble, [{
+            key: 'update',
+            value: function update() {
+                var self = this;
+                self.time += 1;
+
+                var y = parseFloat(self.dom.css('bottom'));
+
+                // 注意：使用了 transform:rotate 的元素 $(dom).width() 取的是转换后的虚框的宽高，而不是转换前实框的宽高。
+                // $(dom).width($(dom).width()) 会无限变大。因此使用 offsetWidth 取得实际宽高。
+                var radius = self.dom[0].offsetWidth;
+
+                // if(self.time % 2 === 0){
+                radius = Math.min(++radius, self.opts.radius);
+                // }
+
+                if (y - $(window).height() > radius * 2) {
+                    // 已飘到屏幕之外
+                    clearInterval(self.timer);
+                    self.dom.remove();
+                } else {
+                    self.dom.css({
+                        left: self.startX + Math.sin((y - self.startY) / 80) * (self.opts.swing + self.time), // 横向越来越宽
+                        bottom: y + self.opts.speed * (1 + Math.log10(self.time) / 2), // 纵向上升速度越来越快
+                        width: radius,
+                        height: radius
+                    });
+                }
+            }
+        }]);
+
+        return Bubble;
+    }();
+
+    $('[name="viewport"]').attr('content', 'width=device-width, initial-scale=1, user-scalable=no');
+
+    /**
+     * @left bubble 初始 left 位置
+     * @bottom bubble 初始 bottom 位置
+     * @cb 所有 bubble 生成完回调
+     */
+    var COLORS = ['#F00', '#FF4040', '#FF7373', '#CD0074', '#FF5983'];
+    function generateHearts(left, bottom, cb) {
+        var count = 20;
+        var generator = setInterval(function () {
+            if (count-- > 0) {
+                new Bubble({
+                    left: left,
+                    bottom: bottom,
+                    background: COLORS[Math.floor(randomInRange(0, COLORS.length))]
+                });
+            } else {
+                clearInterval(generator);
+                cb();
+            }
+        }, 30);
+    }
+    function triggerEffect(e) {
+        var left = e.clientX,
+            bottom = $(window).height() - e.clientY;
+        generateHearts(left, bottom, function () {
+            new Bubble({
+                left: left,
+                bottom: bottom,
+                speed: 1,
+                radius: 50,
+                background: COLORS[Math.floor(randomInRange(0, COLORS.length))],
+                innerHtml: '<div class="heart-inner">Thanks</div>'
+            });
+        });
+    }
+    // $(document).on('click', triggerEffect);
+
+    /*
+     * 关注 & 推荐个性化
+     */
+    var diggKey = location.pathname + '_digg';
+    if (!localStorage.getItem(diggKey)) {
+        // 点击推荐出特效
+        $(document).one('click', '.diggit, #green_channel_digg', function (e) {
+            localStorage.setItem(diggKey, 1);
+            triggerEffect(e);
+        });
+    }
+    var followKey = location.pathname + '_follow';
+    if (!localStorage.getItem(followKey)) {
+        // 点击关注出特效
+        $(document).one('click', '#green_channel_follow', function (e) {
+            localStorage.setItem(followKey, 1);
+            triggerEffect(e);
+        });
+    }
+
+    /*
+     * 滚动到指定位置
+     */
+    $(document).on('click', '[scroll-to]', function () {
+        var position = $(this).attr('scroll-to');
+
+        // 滚动到指定元素位置 #dom|.pos
+        // 滚动到指定高度 0|1000
+        $('html,body').stop(true).clearQueue().animate({
+            scrollTop: Math.max(($(position).length ? $(position).offset().top : parseInt(position)) - 20, 0)
+        });
+    });
+})();

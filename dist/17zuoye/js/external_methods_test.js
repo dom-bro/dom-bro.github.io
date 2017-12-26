@@ -1,1 +1,313 @@
-"use strict";!function(){function e(e){var n=new RegExp("(^|&)"+e+"=([^&]*)(&|$)"),t=window.location.search.substr(1).match(n);return null!=t?decodeURIComponent(t[2]):null}function n(e){return!!a[e]}function t(e,t){if(n(e)){return(void 0==t?a[e]():a[e](t))||!0}return console.error("未找到 "+e+" 方法"),!1}function o(){var n=t("getInitParams");return n?JSON.parse(n).native_version:e("app_version")||e("version")||"2.5.0"}function i(e,n,t){var i=o().split("."),r=parseInt(i[0]),a=parseInt(i[1]),c=parseInt(i[2]),l=!1;if("string"==typeof e){var s=e.split(".");e=parseInt(s[0]),n=parseInt(s[1]),t=parseInt(s[2])}return r<e&&(l=!0),r==e&&a<n&&(l=!0),r==e&&a==n&&c<t&&(l=!0),l}function r(e,n,t){var i=o().split("."),r=parseInt(i[0]),a=parseInt(i[1]),c=parseInt(i[2]);if("string"==typeof e){var l=e.split(".");e=parseInt(l[0]),n=parseInt(l[1]),t=parseInt(l[2])}return r==e&&a==n&&c==t}window.navigator.userAgent.toLowerCase();var a=window.external||{};!function(e){for(var n=document.querySelectorAll(".unit"),t=0;t<n.length;++t)n[t].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==e&&(n[t].style.display="block",n[t].style.color="#fff",n[t].style.margin=".2rem .2rem .5rem",n[t].style.lineHeight=2,n[t].style.fontWeight=700,n[t].style.textAlign="center",n[t].style.textDecoration="none")}(),$(document).on("click",".getAppVersion",function(){$(this).next(".preview").html(o())}),$(".getAppVersion").click(),$(document).on("click",".isLowVersion",function(){var e=$(this);e.next(".preview").html(i(e.siblings(".version").val()).toString())}),$(".isLowVersion").click(),$(document).on("click",".isEqualVersion",function(){var e=$(this);e.next(".preview").html(r(e.siblings(".version").val()).toString())}),$(".isEqualVersion").click(),$(document).on("click",".isHighVersion",function(){var e=$(this);e.next(".preview").html(function(e,n,t){return!(i(e,n,t)||r(e,n,t))}(e.siblings(".version").val()).toString())}),$(".isHighVersion").click(),$(document).on("change",".version",function(){$(".isLowVersion").click(),$(".isEqualVersion").click(),$(".isHighVersion").click()}),$(document).on("click",".openSecondWebView",function(){$(this).next(".preview").html(function(e){if(n("openSecondWebview"))return t("openSecondWebview",JSON.stringify({url:e}));location.href=e}("http://hello.com:8686//views/demo/demo.html"))}),$(document).on("click",".openLiveStream",function(){t("openLiveStream",JSON.stringify({type:"live_talkfun",play_mode:"1",access_key:"wkDOiRGNwkDOkZWMjFjYjV2NiljMyEzNxIWYwgTZ1MDf8xXfigjN5UDNfNzNzQjN2IiOiUWbh5mciwCM6ISYiwSXbpjIyRHdhJCLycjMzMTNwATNxojIl1Wa0dWZyJCLiUDM4cTNwITMiojIklGeiwSN0ITMxojIklGciwCM6ICZpdmIsgjN5UDN6ICZp9VZzJXdvNmIsIiI6IichRXY2FmIsAjOiIXZk5WZnJCLycDO2MTNwATNxojIlJXawhXZiwyM3MDN2YjOiQWat92byJCLikXZsRHanlmbLFmcpV2SiojIl1WYut2Yp5mIsIiclNXdiojIlx2byJCLiETMwAzMiojIklWdiwSN0ITMxojIkl2XyVmb0JXYwJye",course_id:"45968"}))||alert("未找到 openLiveStream 方法")});var c=function(e){var n={parent:{schema:"a17parent",sj_download:"com.yiqizuoye.jzt",yq_url_pre:"j/jzt",yq_type:"tab",ad_type:"news_detail"},student:{schema:"a17zuoye",sj_download:"com.A17zuoye.mobile.homework",yq_url_pre:"s/student",yq_type:"tab",ad_type:"news_detail"},teacher:{schema:"a17teacher",sj_download:"com.yiqizuoye.teacher",yq_url_pre:"t/teacher",yq_type:"tab",ad_type:"news_detail"}},t=navigator.userAgent.toLowerCase(),o=t.search("android")>-1,i=/(micromessenger|qq)\//.test(t),r=function(e){return encodeURIComponent("location"===e?location.href:e)},a=function(e){return e.schema+"://platform.open.api:/"+(e.pathname||e.schema.replace("a17","")+"_main")+(function(e){return e.search?"?"+e.search:o?e.ad_val?"?from=h5&type="+e.ad_type+"&url="+r(e.ad_val)+"&val="+r(e.ad_val):"":e.yq_val?"?yq_from=h5&yq_type="+e.yq_type+"&yq_val="+r(e.yq_val):""}(e)||"")},c=function(){var c=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},l=c.client||"parent",s=(c=e.extend({},n[l],c)).schema,p=function(e,n){return e.download_url||"https://wx.17zuoye.com/download/17"+n+"app?cid="+e.channel}(c,l),u="https://a.app.qq.com/o/simple.jsp?pkgname="+c.sj_download;if(o)s=a(c),i&&(s=u+(c.ad_val?"&android_scheme="+encodeURIComponent(s):""));else{var d=/ip(ad|hone|od)/.test(t)&&t.match(/os (\d+)_(\d+)/);s=d?i?+d[1]>8?function(e){return"https://wechat.17zuoye.com/"+e.yq_url_pre+"?yq_from=h5&yq_type="+e.yq_type+"&yq_val="+r(e.yq_val)}(c):u:a(c):p}setTimeout(function(e){location.href=e},2200,p),location.href=s};return e(document).on("click",".do_open_client",function(){c(e(this).data())}),c}($),l="//wx.17zuoye.com/download/17parentapp?cid=203009",s=location.origin+"/view/mobile/student/wrong_question/question_list.vpage?subject=MATH&tab_0=0";$(document).on("click",".openStudentApp",function(){c({download_url:l,client:"student",yq_type:"webview",yq_val:s,ad_val:s})}),$(document).on("click",".openParentApp",function(){c({download_url:l,yq_type:"webview",yq_val:s,ad_val:s})}),window.vox={task:{refreshData:function(){$(document.body).prepend("<div>come back</div>")}}}}();
+"use strict";
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function getQuery(key) {
+        var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)"),
+            res = window.location.search.substr(1).match(reg);
+        return res != null ? decodeURIComponent(res[2]) : null;
+    }
+
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    //S 公司内部用
+    var windowExternal = window.external || {};
+    function isExistMethod(methodName) {
+        return windowExternal[methodName] ? true : false;
+    }
+    function doMethod(methodName, params) {
+        if (isExistMethod(methodName)) {
+            var res = params == undefined ? windowExternal[methodName]() : windowExternal[methodName](params);
+            return res || true;
+        } else {
+            console.error("\u672A\u627E\u5230 " + methodName + " \u65B9\u6CD5");
+            return false;
+        }
+    }
+
+    function getAppVersion() {
+        var res = doMethod('getInitParams');
+        if (res) {
+            return JSON.parse(res).native_version;
+        } else {
+            return getQuery("app_version") || getQuery("version") || "2.5.0";
+        }
+    }
+    // isLowVersion(2, 8, 2) || isLowVersion('2.8.2')
+    function isLowVersion(a, b, c) {
+        "use strict";
+
+        var native_version = getAppVersion(),
+            version = native_version.split('.'),
+            part1 = parseInt(version[0]),
+            part2 = parseInt(version[1]),
+            part3 = parseInt(version[2]),
+            res = false;
+        if (typeof a == "string") {
+            var target = a.split('.');
+            a = parseInt(target[0]);
+            b = parseInt(target[1]);
+            c = parseInt(target[2]);
+        }
+        if (part1 < a) {
+            res = true;
+        }
+        if (part1 == a && part2 < b) {
+            res = true;
+        }
+        if (part1 == a && part2 == b && part3 < c) {
+            res = true;
+        }
+        return res;
+    }
+    function isEqualVersion(a, b, c) {
+        "use strict";
+
+        var native_version = getAppVersion(),
+            version = native_version.split('.'),
+            part1 = parseInt(version[0]),
+            part2 = parseInt(version[1]),
+            part3 = parseInt(version[2]);
+
+        if (typeof a == "string") {
+            var target = a.split('.');
+            a = parseInt(target[0]);
+            b = parseInt(target[1]);
+            c = parseInt(target[2]);
+        }
+        return part1 == a && part2 == b && part3 == c;
+    }
+    function isHighVersion(a, b, c) {
+        return !(isLowVersion(a, b, c) || isEqualVersion(a, b, c));
+    }
+
+    function openSecondWebView(url) {
+        "use strict";
+
+        if (isExistMethod('openSecondWebview')) {
+            return doMethod('openSecondWebview', JSON.stringify({ url: url }));
+        } else {
+            location.href = url;
+        }
+    }
+
+    var open_app = function open_app($) {
+        var default_opts = {
+            parent: {
+                schema: 'a17parent',
+                sj_download: 'com.yiqizuoye.jzt',
+                yq_url_pre: 'j/jzt',
+                yq_type: 'tab',
+                ad_type: 'news_detail'
+            },
+            student: {
+                schema: 'a17zuoye',
+                sj_download: 'com.A17zuoye.mobile.homework',
+                yq_url_pre: 's/student',
+                yq_type: 'tab',
+                ad_type: 'news_detail'
+            },
+            teacher: {
+                schema: 'a17teacher',
+                sj_download: 'com.yiqizuoye.teacher',
+                yq_url_pre: 't/teacher',
+                yq_type: 'tab',
+                ad_type: 'news_detail'
+            }
+        };
+
+        var ua = navigator.userAgent.toLowerCase(),
+            is_android = ua.search('android') > -1,
+            from_wechat_or_qq_ua_reg = /(micromessenger|qq)\//.test(ua);
+
+        var get_default_schema_pathname = function get_default_schema_pathname(schema) {
+            return schema.replace('a17', '') + '_main';
+        },
+            get_webview_url = function get_webview_url(url) {
+            return encodeURIComponent(url === 'location' ? location.href : url);
+        },
+            get_schema_search = function get_schema_search(dataset) {
+            if (dataset.search) {
+                return '?' + dataset.search;
+            }
+
+            if (is_android) {
+                return dataset.ad_val ? "?from=h5&type=" + dataset.ad_type + "&url=" + get_webview_url(dataset.ad_val) + "&val=" + get_webview_url(dataset.ad_val) : '';
+            }
+
+            return dataset.yq_val ? "?yq_from=h5&yq_type=" + dataset.yq_type + "&yq_val=" + get_webview_url(dataset.yq_val) : '';
+        },
+            build_sj_download = function build_sj_download(pkgname) {
+            return "https://a.app.qq.com/o/simple.jsp?pkgname=" + pkgname;
+        },
+            build_schema = function build_schema(data_set) {
+            return data_set.schema + "://platform.open.api:/" + (data_set.pathname || get_default_schema_pathname(data_set.schema)) + (get_schema_search(data_set) || '');
+        },
+            build_download_url = function build_download_url(dataset, client) {
+            return dataset.download_url || "https://wx.17zuoye.com/download/17" + client + "app?cid=" + dataset.channel;
+        },
+            build_ios_universal_link = function build_ios_universal_link(dataset) {
+            return "https://wechat.17zuoye.com/" + dataset.yq_url_pre + "?yq_from=h5&yq_type=" + dataset.yq_type + "&yq_val=" + get_webview_url(dataset.yq_val);
+        };
+
+        var do_open_app = function do_open_app() {
+            var dataset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var client = dataset.client || 'parent';
+
+            dataset = $.extend({}, default_opts[client], dataset);
+
+            var schema = dataset.schema,
+                download_url = build_download_url(dataset, client),
+                sj_download = build_sj_download(dataset.sj_download);
+
+            if (is_android) {
+                schema = build_schema(dataset);
+
+                if (from_wechat_or_qq_ua_reg) {
+                    var android_scheme = dataset.ad_val ? "&android_scheme=" + encodeURIComponent(schema) : '';
+
+                    schema = "" + sj_download + android_scheme;
+                }
+            } else {
+                var ios_version = /ip(ad|hone|od)/.test(ua) && ua.match(/os (\d+)_(\d+)/);
+
+                if (ios_version) {
+                    if (from_wechat_or_qq_ua_reg) {
+                        schema = +ios_version[1] > 8 ? build_ios_universal_link(dataset) : sj_download;
+                    } else {
+                        schema = build_schema(dataset);
+                    }
+                } else {
+                    schema = download_url;
+                }
+            }
+
+            setTimeout(function (url) {
+                location.href = url;
+            }, 2200, download_url);
+
+            location.href = schema;
+        };
+
+        $(document).on('click', '.do_open_client', function () {
+            do_open_app($(this).data());
+        });
+
+        return do_open_app;
+    };
+
+    colour();
+
+    $(document).on('click', '.getAppVersion', function () {
+        var $this = $(this);
+        $this.next('.preview').html(getAppVersion());
+    });
+    $('.getAppVersion').click();
+
+    $(document).on('click', '.isLowVersion', function () {
+        var $this = $(this);
+        $this.next('.preview').html(isLowVersion($this.siblings('.version').val()).toString());
+    });
+    $('.isLowVersion').click();
+
+    $(document).on('click', '.isEqualVersion', function () {
+        var $this = $(this);
+        $this.next('.preview').html(isEqualVersion($this.siblings('.version').val()).toString());
+    });
+    $('.isEqualVersion').click();
+
+    $(document).on('click', '.isHighVersion', function () {
+        var $this = $(this);
+        $this.next('.preview').html(isHighVersion($this.siblings('.version').val()).toString());
+    });
+    $('.isHighVersion').click();
+
+    $(document).on('change', '.version', function () {
+        $('.isLowVersion').click();
+        $('.isEqualVersion').click();
+        $('.isHighVersion').click();
+    });
+
+    $(document).on('click', '.openSecondWebView', function () {
+        var $this = $(this);
+        $this.next('.preview').html(openSecondWebView('http://hello.com:8686//views/demo/demo.html'));
+    });
+
+    $(document).on('click', '.openLiveStream', function () {
+        if (!doMethod('openLiveStream', JSON.stringify({
+            type: 'live_talkfun',
+            play_mode: '1',
+            access_key: 'wkDOiRGNwkDOkZWMjFjYjV2NiljMyEzNxIWYwgTZ1MDf8xXfigjN5UDNfNzNzQjN2IiOiUWbh5mciwCM6ISYiwSXbpjIyRHdhJCLycjMzMTNwATNxojIl1Wa0dWZyJCLiUDM4cTNwITMiojIklGeiwSN0ITMxojIklGciwCM6ICZpdmIsgjN5UDN6ICZp9VZzJXdvNmIsIiI6IichRXY2FmIsAjOiIXZk5WZnJCLycDO2MTNwATNxojIlJXawhXZiwyM3MDN2YjOiQWat92byJCLikXZsRHanlmbLFmcpV2SiojIl1WYut2Yp5mIsIiclNXdiojIlx2byJCLiETMwAzMiojIklWdiwSN0ITMxojIkl2XyVmb0JXYwJye',
+            course_id: '45968'
+        }))) {
+            alert('未找到 openLiveStream 方法');
+        }
+    });
+
+    var openApp = open_app($);
+    var download_url = '//wx.17zuoye.com/download/17parentapp?cid=203009';
+    var activity_index_url = location.origin + "/view/mobile/student/wrong_question/question_list.vpage?subject=MATH&tab_0=0";
+    $(document).on('click', '.openStudentApp', function () {
+        openApp({
+            download_url: download_url,
+            client: 'student',
+            yq_type: 'webview',
+            yq_val: activity_index_url,
+            ad_val: activity_index_url
+        });
+        // location.href = 'a17zuoye://platform.open.api/student/primary/main/?paper="/view/mobile/student/wrong_question/question_list.vpage?subject=MATH&from=parents';
+        // doMethod('openApp', JSON.stringify({
+        //     name: "a17zuoye",
+        //     type: 'h5',
+        //     url: '/view/mobile/student/wrong_question/question_list.vpage?subject=MATH&from=parents'
+        //
+        // }))
+        // doMethod('openApp', JSON.stringify({
+        //     name: "a17zuoye",
+        //     type: 'h5',
+        //     url: '/view/mobile/student/wrong_question/question_list.vpage?subject=MATH&from=parents'
+        //     params: '',
+        // }))
+    });
+    $(document).on('click', '.openParentApp', function () {
+
+        openApp({
+            download_url: download_url,
+            yq_type: 'webview',
+            yq_val: activity_index_url,
+            ad_val: activity_index_url
+        });
+    });
+
+    window.vox = {
+        task: {
+            refreshData: function refreshData() {
+                $(document.body).prepend('<div>come back</div>');
+            }
+        }
+    };
+    // alert(1);
+    // openSecondWebView('/view/mobile/student/wrong_question/question_list.vpage');
+    // doMethod('homeworkHTMLLoaded');
+})();
