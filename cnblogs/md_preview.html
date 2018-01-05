@@ -5,144 +5,233 @@
             background: #fff;
             font-size: 1rem !important;
         }
-    </style></head><body class=""><div id="catalog"><div class="bq"><div style="margin-bottom: .6rem"><strong>阅读目录</strong></div><ul class="list"><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_0">优化 AST</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_1">生成 render 函数</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_2">小结</a></li></ul></div></div>
-<p>本来以为 Vue 的编译器模块比较好欺负，结果发现并没有那么简单。每一种语法指令都要考虑到，处理起来相当复杂。<a href="http://www.cnblogs.com/iovec/p/vue_03.html">上篇</a>已经生成了 AST，本篇依然对 Vue 源码做简化处理，探究 Vue 是如果根据 AST 生成所需要的 render 函数的。</p>
-<h1 class="head bg-blue floor" scroll-to="0" id="f_0">优化 AST</h1>
-<p>优化 AST 的目的是优化整体性能，避免不必要计算。比如那些不存在数据绑定的节点，即纯静态的（purely static）在更新视图时根本不需要改变，因此在数据批处理，页面重渲染时可直接跳过它们。</p>
-<p>Vue 通过遍历 AST 找出内容为纯静态的节点并将其标记为 static：</p>
+    </style></head><body class=""><div id="catalog"><div class="bq"><div style="margin-bottom: .6rem"><strong>阅读目录</strong></div><ul class="list"><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_0">Vue 实例的生命周期</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_1">实例创建</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_2">响应的数据绑定</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_3">挂载到 DOM 节点</a></li><li style="margin-bottom: .2rem !important"><a href="javascript:" scroll-to="#f_4">结论</a></li></ul></div></div>
+<div class="block-info" style="max-width: 600px;margin: 0 auto;line-height: 2;padding: 1rem 2rem">
+    <p>研究 runtime<br>
+        一边 Vue<br>
+        一边源码</p>
+    <p>初看 Vue 是 Vue<br>
+        源码是源码</p>
+    <p>再看 Vue 不是 Vue<br>
+        源码不是源码</p>
+    <p>再再看<br>
+        Vue 是调用栈<br>
+        源码也是调用栈</p>
+    <p style="text-align: right">—— By DOM哥</p>
+</div>
+<p>Vue 运行时这一块是非常有意思的，不像 Vue 编译器那么枯燥，这里面有大量的实用技巧和设计思想可以学习。使用过 Vue 的小伙伴应该对 Vue 【响应的数据绑定】（也叫双向绑定）的印象非常深刻，在修改了数据之后，视图就会实时得到相应更新，这无疑极大地减轻了开发者的负担，使得开发人员可以专注于处理业务逻辑和操作数据，也就是闻名遐迩的【数据驱动开发】。至于操作 DOM 更新视图这件苦脏累的活，Vue 已经帮你妥善处理完毕并且对你完全透明（意思是它就像空气一样你完全注意不到它，却又深度依赖它，离不开它）。</p>
+<p>Vue 运行时模块主要是围绕 Vue 实例的生命周期展开的，它涵盖了 Vue 实例生命周期内所需要的全部设施，包括实例创建，响应的数据绑定，挂载到 DOM 节点以及数据变化时自动更新视图等关键部分。本篇也将沿着 Vue 实例的生命周期路线，结合运行时关键实现伪代码，一步步清晰地描绘出 Vue 运行时的空中鸟瞰图。</p>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_0">Vue 实例的生命周期</h1>
+<p>本段的部分内容参考自 <a href="https://cn.vuejs.org/v2/guide/instance.html#%E5%AE%9E%E4%BE%8B%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Vue 官网的生命周期描述</a>。</p>
+<p>就像每个人的生命周期有 <strong>幼年</strong>、<strong>童年</strong>、<strong>少年</strong>、<strong>青年</strong>、<strong>中年</strong>、<strong>老年</strong>，每个 Vue 实例的生命周期也有 <strong>beforeCreate</strong>、<strong>created</strong>、<strong>beforeMount</strong>、<strong>mounted</strong>、<strong>beforeUpdate</strong>、<strong>updated</strong>、<strong>activated</strong>、<strong>deactivated</strong>、<strong>beforeDestroy</strong>、<strong>destroyed</strong> 等多个阶段。</p>
+<p>Vue 实例生命周期代码示例：</p>
+
+```html 
+<div id="index">{{msg}}</div>
+ 
+```
+
 
 ```js 
-function optimize (root) {
-    //-- 第一步 标记 AST 所有静态节点 --
-    markStatic(root)
-    //-- 第二步 标记 AST 所有父节点（即子树根节点） --
-    markStaticRoots(root, false)
+new Vue({
+    el: '#index',
+    data: {
+        msg: 'lifecycle',
+    },
+
+    beforeCreate(){ console.log('beforeCreate')},
+    created(){ console.log('created')},
+    beforeMount(){ console.log('beforeMount')},
+    mounted(){ console.log('mounted')},
+})
+
+// Console output:
+//      beforeCreate
+//      created
+//      beforeMount
+//      mounted
+ 
+```
+
+<p>每个 Vue 实例在被创建时都要经过一系列的初始化过程，例如设置数据监听，编译 HTML 模板，将实例挂载到 DOM 等。在这个初始化的过程中会在特定的地方运行一些叫做【生命周期钩子】的函数，这些钩子其实就是开发者可以自定义的回调函数，如上面传入的 <code>created</code> 函数就会在 Vue 实例 created 时被调用。</p>
+<p>下面一张图可以非常清晰地说明 Vue 各个生命周期钩子的调用时机（图片来自 Vue 官网<a href="https://cn.vuejs.org/v2/guide/instance.html#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%9B%BE%E7%A4%BA">生命周期图示</a>）：</p>
+<p><img src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180102153203315-1258650885.png" alt="" class="img img-border"></p>
+<p class="img-description">Vue 的生命周期图示</p>
+<p>你不需要立马弄明白图上所有的东西，不过随着你的不断学习和使用，它的参考价值会越来越高。</p>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_1">实例创建</h1>
+<p>众所周知 Vue 是通过 <code>new Vue()</code> 的方式进行使用的，也就是说 Vue 内部将自己封装成了一个类。然而 Vue 并没有使用 ES6 最新的 <code>class</code> 方式进行实现，而是用了原来 prototype 那一套，这是让宝宝有些伤心的。闲话待会再叙，先看一下源码：</p>
+
+```js 
+// vue/src/core/instance/index.js
+function Vue (options) {
+  this._init(options)
 }
  
 ```
 
-<p>首先标记所有静态节点：</p>
+<p>Vue 将初始化工作全部放在了 <code>Vue.prototype._init()</code> 方法里。去伪存真，<code>_init</code> 方法主代码如下：</p>
 
 ```js 
-function markStatic (node) {
-    // 标记
-    if (node.type === 2) {    // 插值表达式
-        node.static = false
+// vue/src/core/instance/init.js
+Vue.prototype._init = function (options) {
+    const vm = this
+
+    vm.$options = mergeOptions(options || {})
+
+    initEvents(vm)
+    initRender(vm)
+    callHook(vm, 'beforeCreate')
+    initState(vm)
+    callHook(vm, 'created')
+
+    if (vm.$options.el) {
+        vm.$mount(vm.$options.el)
+    }
+}
+ 
+```
+
+<p><code>initEvents</code> 和 <code>initRender</code> 函数主要用来初始化 Vue 实例的一些容器字段，现在可暂时忽略它们。接下来重点来了，在 <code>initState</code> 函数中封装了实现【响应的数据绑定】的关键代码，虽然这不是 Vue 最流弊的部分，但却是咱对 Vue 最好奇的地方，也是咱开始本源码系列的最初动力。在 <code>initState</code> 之前和之后分别调用了 Vue 的生命周期钩子函数 <code>beforeCreate</code> 和 <code>created</code>，接下来看看 Vue 是如何实现响应的数据绑定的。</p>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_2">响应的数据绑定</h1>
+<p>响应的数据绑定并不是 Vue 独创的，而是 <a href="http://www.cnblogs.com/iovec/p/7840228.html">MVVVM 模式</a>理论的一部分，它是 View 层和 ViewModel 层的连接方式。如下图所示：</p>
+<p><img src="http://images2017.cnblogs.com/blog/882926/201711/882926-20171115175958671-1955710845.png" alt="" class="img img-border"></p>
+<p class="img-description">MVVM 分层示意图</p>
+<p>Vue 通过【观察者模式】实现了一套响应式系统。观察者模式（也叫发布/订阅模式）会将观察者和被观察的对象严格分离开，当被观察对象的状态发生变化时，所有依赖于它的观察者都将得到通知并自动刷新。举个栗子，用户界面可以作为一个观察者，业务数据是被观察者，用户界面观察业务数据的变化，当数据发生变化时，用户界面就会自动更新。</p>
+<p>该模式必须包含两个角色：观察者和被观察对象。Vue 定义了一个 <code>Watcher</code> 类来创建观察者，定义了一个 <code>Dep</code> 类来创建被观察对象。 Dep 是 Dependent 的缩写，意思是作为观察者的依赖存在，也就是被观察对象。</p>
+<p>首先看一下【观察者】 <code>Watcher</code> 的定义：</p>
+
+```js 
+// vue/src/core/observer/watcher.js
+import Dep from './dep'
+export default class Watcher {
+    constructor(vm) {
+        this.vm = vm
+        this.newDeps = []
+        Dep.target = this
     }
 
-    if (node.type === 3) {    // 普通文本
-        node.static = true
+    // 添加一个观察者，或者说注册一个依赖
+    addDep(dep) {
+        this.newDeps.push(dep)
+        // 在【观察者】收集【被观察者】的同时，【被观察者】也会收集【观察者】
+        // 这好比王八看绿豆对眼儿了，遂互存了电话号码，就有了后来的相识相知
+        dep.addSub(this)
     }
 
-    if (node.type === 1) {      // 元素
-        // 如果所有子节点均是 static，则该节点也是 static
-        for (let i = 0; i < node.children.length; i++) {
-            const child = node.children[i]
-            markStatic(child)
-            if (!child.static) {
-                node.static = false
+    // 在被观察对象状态发生变化时调用此方法
+    update() {
+        let {vm} = this
+        // 更新视图
+        vm._update(vm._render())
+    }
+}
+ 
+```
+
+<p>每一个【观察者】都会收集自己要观察的数据对象(Dep)，当【被观察对象】发生变化时，【被观察对象】会通知【观察者】，【观察者】收到通知后执行 <code>update</code> 方法更新视图。</p>
+<p>接下来看一下【被观察者】 <code>Dep</code>：</p>
+
+```js 
+export default class Dep {
+    constructor () {
+        this.subs = []
+    }
+    addSub (sub) {
+        this.subs.push(sub)
+    }
+    depend () {
+        if (Dep.target) {
+            Dep.target.addDep(this)
+        }
+    }
+    // 通知所有对自己有依赖的观察者
+    notify () {
+        const subs = this.subs
+        for (let i = 0; i < subs.length; i++) {
+            subs[i].update()
+        }
+    }
+}
+Dep.target = null
+ 
+```
+
+<p>每个【被观察对象】同样会收集依赖自己的【观察者】，当自己发生变化时，就会通知(<code>notify</code>)这些观察者 <code>update</code>。</p>
+<p>那么问题来了，<strong>这两个角色是如何收集对方的呢？又如何得知【被观察者】发生变化了呢？</strong> 这就用到了并不常用的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty()</a> 方法，通过在 JavaScript 对象每个属性描述符的 <code>setter</code> 和 <code>getter</code> 里做文章，就能实时捕捉 JavaScript 对象的变化。</p>
+<p>需要注意的是，<code>Object.defineProperty()</code> 是 JS 语言本身的一个 API 而不是 Vue 实现的，<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty</a> 是 ES5 中一个无法 shim 的特性，这也是为什么 Vue 不支持 IE8 以及更低版本浏览器的原因。如果想支持 IE8 以及更低版本浏览器怎么办呢？那就只有放弃 Vue，选择 Knockout。更好的解决方案就是直接让 IE8 以及更 low 的家伙见鬼去吧。不过基本上不用担心这个问题了，因为据最新浏览器使用调查报告，IE8 以及更低版本浏览器的市场份额已经微不足道，直接忽略不计就行了。</p>
+<p>既然 JS 已经支持在对象属性变化时添加自定义处理，Vue 需要做的事就是遍历传入的 <code>data</code> 选项，为 <code>data</code> 的每个属性设置 <code>setter</code> 和 <code>getter</code>。这就解决了如何得知【被观察者】发生了变化这个问题。</p>
+<p>接下来说说这两者是如何收集对方的。【观察者】和【被观察者】就好比单身男和单身女，得有人安排相亲才能建立起联系呵，Vue 就是这个牵线搭桥的媒婆。下面是相亲源码：</p>
+
+```js 
+// vue/src/core/observer/index.js
+import Dep from './dep'
+export function observe (obj) {
+    const keys = Object.keys(obj)
+    for (let i = 0; i < keys.length; i++) {
+        let key = keys[i], value = obj[key];
+        // 深度优先遍历
+        observe(value)
+
+        const dep = new Dep()
+        Object.defineProperty(obj, key, {
+            enumerable: true,
+            configurable: true,
+            get() {
+                // 【观察者】收集【被观察者】
+                // 同时【被观察者】也会收集【观察者】
+                if (Dep.target) {
+                    Dep.target.addDep(dep)
+                }
+                return value
+            },
+            set(newVal) {
+                value = newVal
+                // 【被观察者】通知【观察者】
+                dep.notify()
             }
-        }
+        })
     }
 }
  
 ```
 
-<p>ASTNode 的 type 字段用于标识节点的类型，可查看<a href="http://www.cnblogs.com/iovec/p/vue_03.html">上一篇的 AST 节点定义</a>：<code>type</code> 为 <code>1</code> 表示元素，<code>type</code> 为 <code>2</code> 表示插值表达式，<code>type</code> 为 <code>3</code> 表示普通文本。可以看到，在标记 ASTElement 时会依次检查所有子元素节点的静态标记，从而得出该元素是否为 static。</p>
-<p>上面 <code>markStatic</code> 函数使用的是树形数据结构的深度优先遍历算法，使用递归实现。</p>
-<p>接下来标记出静态子树：</p>
+<p>可以看到，Vue 在遍历 <code>data</code> 对象时完成了【观察者】和【被观察对象】彼此之间的收集工作。并且在 <code>data</code> 的某字段发生变化时，相应的依赖就会通知【观察者】自己发生了变化，【观察者】就可以做出反应。</p>
+<p>Vue 接下来就会在 <code>initState()</code> 中调用 <code>observe(vm.$options.data)</code>，执行之后实例化 Vue 时传入的 <code>data</code> 对象就会成为响应式的，当你修改 <code>data</code> 对象的数据时（通常是根据用户操作执行对应的业务逻辑），【被观察者】就会通知已收集的所有【观察者】，观察者就会调用自己的 <code>update</code> 方法，从而更新视图。这基本上就是 Vue 所实现的响应的数据绑定的工作原理。</p>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_3">挂载到 DOM 节点</h1>
+<p>在构建完响应式系统之后，Vue 接下来会检查用户是否传入了 <code>el</code> 选项，因为 Vue 在将包含指令的 HTML 模板编译成最终的朴素的 HTML 之后会执行 DOM 替换操作，最终展示在页面上，如果没有 <code>el</code> 选项，Vue 就不知道要把产出的 HTML 放到哪里去展示。</p>
+<p>挂载到 DOM 节点并非替换一下 DOM 那么简单，它包括将模板编译成 <code>render</code> 函数，执行 <code>render</code> 函数生成虚拟DOM，计算出新旧虚拟DOM之间的最小变更，打补丁式地更新页面视图等几大步。</p>
+<h2>将模板编译成 render 函数</h2>
+<p>这个编译过程在前几篇的 <a href="http://www.cnblogs.com/iovec/p/vue_catalog.html">Vue 编译器模块</a>里已经讲得很清楚了，主要分为根据模板生成 AST，对 AST 进行优化，根据 AST 生成 render 函数这三步，这里不再赘述，感兴趣的可<a href="http://www.cnblogs.com/iovec/p/vue_catalog.html">前往查看</a>。</p>
+<h2>执行 render 函数生成虚拟DOM</h2>
+<p><a href="https://www.zhihu.com/question/29504639">【虚拟DOM】</a>并非 Vue 提出的概念，而是老早就被发掘出来的新型DOM操作方式，MVVM 框架在引入虚拟DOM之后如虎添翼。之所以叫做虚拟DOM，是相对于真实DOM而言的。直接操作DOM很慢，因为<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement">真实的DOM对象很重</a>，操作真实DOM对象(HTMLElement)花销很大，而且操作完之后往往会引起<a href="http://www.cnblogs.com/iovec/p/7904416.html">浏览器对页面的重绘和重排</a>。如果频繁的进行DOM操作，页面性能会急剧下降。于是聪明的 Jser 决定使用简单的 JS 对象格式来表示真实 DOM，也就是虚拟DOM。先执行对虚拟DOM的操作（这会执行的很快，因为是纯 JS 操作），最后对比操作前后的新旧虚拟DOM树，找出最小变更，一次性地应用到真实DOM上。虽然还是要对真实DOM操作，但次数却大大减少，从而在更新视图的同时可有效保证页面性能。</p>
+<p>Vue 的虚拟DOM系统是在开源虚拟DOM库 <a href="https://github.com/snabbdom/snabbdom">Snabbdom</a> 的基础上做了适当的改进。</p>
+<p>下面是 Vue 的 VNode 定义（正是一个个这样的 VNode 组成了一棵虚拟DOM树）：</p>
 
 ```js 
-function markStaticRoots (node) {
-   if (node.type === 1) {
-       // For a node to qualify as a static root, it should have children that
-       // are not just static text. Otherwise the cost of hoisting out will
-       // outweigh the benefits and it's better off to just always render it fresh.
-       if (node.static && node.children.length && !(
-               node.children.length === 1 &&
-               node.children[0].type === 3
-           )) {
-
-           node.staticRoot = true
-           return
-       } else {
-           node.staticRoot = false
-       }
-
-       for (let i = 0; i < node.children.length; i++) {
-           markStaticRoots(node.children[i])
-       }
-   }
-}
- 
-```
-
-<p><code>markStaticRoots</code> 函数里并没有什么特别的地方，仅仅是对静态节点又做了一层筛选。请注意函数中的那几行注释：</p>
-
-<p class="bq">For a node to qualify as a static root, it should have children that are not just static text. Otherwise the cost of hoisting out will outweigh the benefits and it's better off to just always render it fresh.</p>
-<p>翻译过来大概意思是：一个节点如果想要成为静态根，它的子节点不能单纯只是静态文本。否则，把它单独提取出来还不如重渲染时总是更新它性能高。</p>
-<p>这也是为什么要在标记了所有 AST 节点之后又要标记一遍静态子树根。</p>
-<h1 class="head bg-blue floor" scroll-to="0" id="f_1">生成 render 函数</h1>
-<p>不了解 render 函数的可以先看一下 <a href="https://cn.vuejs.org/v2/guide/render-function.html">Vue 的 render 函数</a>。不了解也没关系，就把它当成 Vue 最终需要的一段特定字符串拼接就行了。</p>
-
-```js 
-function generate (el) {
-    if (el.staticRoot && !el.staticProcessed) {
-        return genStatic(el)
-    } else if (el.once && !el.onceProcessed) {
-        return genOnce(el)
-    } else if (el.for && !el.forProcessed) {
-        return genFor(el)
-    } else if (el.if && !el.ifProcessed) {
-        return genIf(el)
-    } else if (el.tag === 'template' && !el.slotTarget) {
-        return genChildren(el) || 'void 0'
-    } else if (el.tag === 'slot') {
-        return genSlot(el)
-    } else {
-        // component or element
-        let code
-        if (el.component) {
-            code = genComponent(el.component, el)
-        } else {
-            const data = el.plain ? undefined : genData(el)
-
-            const children = el.inlineTemplate ? null : genChildren(el)
-            code = `_c('${el.tag}'${
-                    data ? `,${data}` : '' // data
-                }${
-                    children ? `,${children}` : '' // children
-                })`
-        }
-        return code
+// vue/src/core/vdom/vnode.js
+export default class VNode {
+    constructor (tag, data, children, text, elm) {
+        this.tag = tag
+        this.data = data
+        this.children = children
+        this.text = text
+        this.elm = elm  // 此字段存放真实DOM
     }
 }
  
 ```
 
-<p>上面生成 render 函数的过程比较繁琐，需要对不同情况作单独处理，这里不再一一展开。感兴趣的可在 Vue 项目的 <kbd>src/compiler/codegen/index.js</kbd> 文件里仔细研究一下。</p>
-<p>现在结合<a href="http://www.cnblogs.com/iovec/p/vue_03.html">生成 AST</a> 的方法就可以将<a href="http://www.cnblogs.com/iovec/p/vue_02.html">编译器初探</a>中遗留的 <code>compileToFunctions</code> 方法定义出来了：</p>
+<h2>计算出新旧虚拟DOM之间的最小变更</h2>
+<p>在上一步执行 <code>render</code> 函数生成虚拟DOM后，接下来就需要对比新旧虚拟DOM之间的差异，从而获得DOM的最小变更。比较两棵DOM树的差异是虚拟DOM库最核心的部分，这也是所谓的 Virtual DOM 的 diff 算法。就像版本控制系统 Git 的 diff 可以计算出两次提交之间的变更，虚拟DOM的 diff 也可以计算出新旧虚拟DOM之间的差异。计算出来的差异称为一个 <strong>patch</strong>，也就是补丁。</p>
+<h2>打补丁式更新页面视图</h2>
+<p>如果是首次渲染，也就是页面刚加载进来第一次渲染，Vue 会用模板编译后的DOM替换掉传入的 <code>el</code> 元素。请注意这一点，对模板内DOM的操作（绑定事件，引用DOM等）应该始终放在 Vue 的 <code>mounted</code> 之后，否则所有处理都将丢失，因为模板会被替换掉。</p>
+<p>如果是后续数据发生变化，Vue 就会用打补丁的方式更新视图，尽可能重用现有DOM，将真实的DOM操作减到最少。</p>
+<h1 class="head bg-blue floor" scroll-to="0" id="f_4">结论</h1>
+<p>在上面【观察者】 <code>Watcher</code> 的定义中 <code>update</code> 方法里执行视图更新。因此 Vue 运行时的整个工作流程基本上是这样的：</p>
 
-```js 
-function compileToFunctions(el){
-    let ast = parseHTML(el)
-    optimize(ast)
-    return generate(ast)
-}
- 
-```
-
-<p>也就是之前说的三步走：</p>
-
-<ol class="well-success list">
-<li>将 html 模板解析成抽象语法树(AST)。</li>
-<li>对 AST 做优化处理。</li>
-<li>根据 AST 生成 render 函数。</li>
-</ol>
-<h1 class="head bg-blue floor" scroll-to="0" id="f_2">小结</h1>
-<p>Vue 首先根据使用者的传参获得待编译的模板片段，然后使用正则匹配对片段里的标签各个击破，用步步蚕食的方法将整块模板片段最终解析成一棵 AST。获得 AST 后，后续的处理就非常方便了。Vue 会首先优化这棵 AST，将其中的静态子树找出来，这些静态节点在之后的视图更新和数据计算中是可以忽略掉的，从而提高性能。最后 Vue 遍历这棵 AST 的每个节点，根据节点的类型生成不同的函数碎片，最后拼接成整个 render 函数。</p>
-<p>值得一提的是，将 AST 作为编译的中间形式是非常方便的，当 AST 构建出来之后，使用树形结构的深度优先遍历算法就可以方便地对树的每一个节点做处理。Vue 最后生成 render 函数也是通过遍历 AST ，根据每个节点生成函数的一小部分，最后拼接成整个函数。</p>
-<p>本篇完，Vue 编译器部分到此完结。将在下篇开始进行 Vue 运行时相关的代码剖析，运行时这部分代码应该会是非常有意思的，包括 Vue 对象实例化，双向绑定，虚拟 DOM 等内容。</p>
+<p class="well-success">用户调用 <code>new Vue(options)</code> 实例化 Vue，Vue 在 <code>_init</code> 方法中初始化相关字段和事件，最重要的，建立起响应式系统，Vue 实例的后续运行重度依赖于此响应式系统。Vue 会新建一个【观察者】，该观察者在创建时会执行 <code>update</code> 方法首次渲染视图，包含 Vue 指令的模板会被替换成编译后的朴素 HTML。Vue 会遍历传入的 <code>data</code> 选项，通过 <code>Object.defineProperty</code> 设置 <code>setter</code> 和 <code>getter</code> 将其变成【被观察对象】。当 <code>data</code> 的数据发生变化时，被观察对象就会通知观察者，观察者就会再次调用 <code>update</code> 方法打补丁式地更新视图。</p>
+<p>本篇完，将在下一篇中开始深究运行时实现细节。</p>
 <p><a href="http://www.cnblogs.com/iovec/p/vue_catalog.html">大白话 Vue 源码系列目录</a></p>
-<p class="color-red">本系列会以每周一篇的速度持续更新，喜欢的小伙伴记得点关注哦。</p>
+
+<p class="color-red">本系列会以每周一篇的速度持续更新，喜欢的小伙伴记得点关注哦</p>
 <script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/dist/cnblogs/js/demo.js"></script></body></html>

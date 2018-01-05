@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -10,89 +10,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 (function () {
     'use strict';
-
-    var ua = window.navigator.userAgent.toLowerCase();
-    function getPageVisibility() {
-        var prefixSupport,
-            keyWithPrefix = function keyWithPrefix(prefix, key) {
-            if (prefix !== "") {
-                // 首字母大写
-                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
-            }
-            return key;
-        },
-            isPageVisibilitySupport = function () {
-            var support = false;
-            if (typeof window.screenX === "number") {
-                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
-                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
-                        prefixSupport = prefix;
-                        support = true;
-                    }
-                });
-            }
-            return support;
-        }(),
-            isHidden = function isHidden() {
-            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
-        },
-            visibilityState = function visibilityState() {
-            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
-        };
-
-        return {
-            hidden: isHidden(),
-            visibilityState: visibilityState(),
-            onVisibilityChange: function onVisibilityChange(fn) {
-                if (isPageVisibilitySupport && typeof fn === "function") {
-                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
-                        this.hidden = isHidden();
-                        this.visibilityState = visibilityState();
-                        fn.call(this, evt);
-                    }.bind(this), false);
-                }
-                return undefined;
-            }
-        };
-    }
-    function onPageVisibilityChange() {
-        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-
-        var pageVisibility = getPageVisibility();
-
-        pageVisibility.onVisibilityChange(function () {
-            pageVisibility.visibilityState === 'visible' && onPageVisible();
-            pageVisibility.visibilityState === 'hidden' && onPageHidden();
-        });
-    }
-    function consoleLog() {
-        console.log.apply(console, arguments);
-    }
-    //S 公司内部用
-    var windowExternal = window.external || {};
-    function isExistMethod(methodName) {
-        return windowExternal[methodName] ? true : false;
-    }
-    function doMethod(methodName, params) {
-        if (isExistMethod(methodName)) {
-            var res = params == undefined ? windowExternal[methodName]() : windowExternal[methodName](params);
-            return res || true;
-        } else {
-            console.error("\u672A\u627E\u5230 " + methodName + " \u65B9\u6CD5");
-            return false;
-        }
-    }
-
-    function openSecondWebView(url) {
-        "use strict";
-
-        if (isExistMethod('openSecondWebview')) {
-            return doMethod('openSecondWebview', JSON.stringify({ url: url }));
-        } else {
-            location.href = url;
-        }
-    }
 
     var Popup = function () {
         function Popup() {
@@ -131,10 +48,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             var popup = $(conf.popup);
 
             if (!popup.length) {
-                console.error("[Popup warn]: \u672A\u627E\u5230 " + conf.popup + " \u5143\u7D20\uFF01");
+                console.error('[Popup warn]: \u672A\u627E\u5230 ' + conf.popup + ' \u5143\u7D20\uFF01');
             }
 
-            self.id = "popup_" + Popup.instances.length;
+            self.id = 'popup_' + Popup.instances.length;
             Popup.instances.push(self);
 
             // 兼容对同一个 DOM 重复实例化（强烈不推荐）
@@ -145,7 +62,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         _createClass(Popup, [{
-            key: "initEvents",
+            key: 'initEvents',
             value: function initEvents() {
                 var self = this,
                     conf = self.conf;
@@ -198,7 +115,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 });
             }
         }, {
-            key: "closeOthersOnOpen",
+            key: 'closeOthersOnOpen',
             value: function closeOthersOnOpen() {
                 var self = this,
                     conf = self.conf;
@@ -213,17 +130,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 }
             }
         }, {
-            key: "open",
+            key: 'open',
             value: function open() {
                 var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
             }
         }, {
-            key: "close",
+            key: 'close',
             value: function close() {
                 var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
             }
         }, {
-            key: "toggle",
+            key: 'toggle',
             value: function toggle() {
                 var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
                 var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
@@ -254,7 +171,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         _createClass(NormalPopup, [{
-            key: "open",
+            key: 'open',
             value: function open() {
                 var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
                 var self = this,
@@ -287,7 +204,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 return self;
             }
         }, {
-            key: "close",
+            key: 'close',
             value: function close() {
                 var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
                 var self = this,
@@ -322,139 +239,70 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return NormalPopup;
     }(Popup);
 
-    var URL = {
-        index: '/studentMobile/babyeagle/index.vpage',
-        priceInfo: '/wonderland/order/appproducts.vpage',
-        pay: 'http://www.test.17zuoye.net/api/1.0/afenti/order/submit.vpage?hideTopTitle=true',
-        rank: '/studentMobile/babyeagle/rank.vpage',
-        giveLike: '/studentMobile/babyeagle/givegood.vpage',
-        likeList: '/studentMobile/babyeagle/goodlist.vpage',
-        courseArrangement: '/studentMobile/babyeagle/course/index.vpage',
-        timeTable: '/studentMobile/babyeagle/course/classhoursinfo.vpage',
-        entry: '/studentMobile/babyeagle/course/entry.vpage',
-        buy: '/studentMobile/babyeagle/course/buy.vpage',
-        receive: '/studentMobile/babyeagle/course/receive.vpage'
-    };
+    var popupA = new NormalPopup({
+        popup: '#popup-A',
+        openBtn: '.open-popup-A',
+        closeBtn: '.close-popup-A'
+    });
 
-    var base = 'http://hello.com:8686//views/17zuoye/livevideo/';
-    var suffix = '.html';
-    var getPageUrl = function getPageUrl(filename) {
-        return base + filename + suffix;
-    };
+    var popupB = new NormalPopup({
+        popup: '#popup-B',
+        openBtn: '.open-popup-B',
+        closeBtn: '.close-popup-B',
+        onOpen: function onOpen() {
+            alert('open B');
+        },
+        onClose: function onClose() {
+            alert('close B');
+        }
+    });
 
-    require(['jquery', 'swiper', 'vue', 'fastclick', 'lazyload', 'init_mock'], function ($, Swiper, Vue, FastClick) {
-        FastClick.attach(document.body);
-        var giftPopup = new NormalPopup({
-            popupId: '#rule-popup',
-            openBtnClass: '.open-rule-popup',
-            closeBtnClass: '.close-rule-popup'
+    var popupC = new NormalPopup({
+        mask: '#popup-C-mask',
+        popup: '#popup-C',
+        openBtn: '.open-popup-C',
+        closeBtn: '.close-popup-C',
+        effect: 'fade',
+        closeOnClickMask: true
+    });
+
+    var popupD = new NormalPopup({
+        popup: '#popup-D',
+        openBtn: '.open-popup-D',
+        closeBtn: '.close-popup-D',
+        effect: 'fade',
+        onOpen: function onOpen() {
+            alert('open D');
+        },
+        onClose: function onClose() {
+            alert('close D');
+        }
+    });
+
+    $(document).on('click', '.clickBtnA', function () {
+        popupA.open(function () {
+            alert('open A with jQuery');
         });
+    });
+    $(document).on('click', '.clickBtnB', function () {
+        popupB.open(function () {
+            alert('open B with jQuery');
+        });
+    });
 
-        new Vue({
-            el: '#index',
-            data: {
-                error: false,
-                errorInfo: '',
-                server: {
-                    success: false,
-                    rankList: []
-                }
-            },
-            methods: {
-                getPageUrl: getPageUrl,
-                openSecondWebView: openSecondWebView,
-
-                // 点赞
-                giveLike: function giveLike(item) {
-                    var vm = this;
-
-                    if (!item.isGaveGood && item.studentId !== vm.server.studentId) {
-                        // $.get(URL.like, {targetStudentId: item.studentId}, function(res){
-                        $.get(URL.giveLike, function (res) {
-                            res = typeof res === 'string' ? JSON.parse(res) : res;
-                            vm.error = !res.success;
-
-                            if (res.success) {
-                                consoleLog('数据获取成功%o', JSON.parse(JSON.stringify(res)));
-
-                                item.isGaveGood = true;
-                                item.goodTotal = res.currentGoodTotal;
-                            } else {
-
-                                vm.errorInfo = res.info || '数据获取失败！';
-                            }
-                        }).fail(function () {
-                            vm.error = true;
-                            vm.errorInfo = '网络请求失败！';
-                        });
-                    }
-                },
-
-                initData: function initData() {
-                    var vm = this;
-
-                    $.get(URL.rank, function (res) {
-                        res = typeof res === 'string' ? JSON.parse(res) : res;
-                        vm.error = !res.success;
-
-                        if (res.success) {
-                            consoleLog('数据获取成功%o', JSON.parse(JSON.stringify(res)));
-
-                            res.rankList.forEach(function (item) {
-                                switch (item.learnGrade) {
-                                    case 'LV1':
-                                        item.iconClass = 'type01';
-                                        item.levelName = '见习';
-                                        break;
-                                    case 'LV2':
-                                        item.iconClass = 'type02';
-                                        item.levelName = '学徒';
-                                        break;
-                                    case 'LV3':
-                                        item.iconClass = 'type03';
-                                        item.levelName = '资深';
-                                        break;
-                                    case 'LV4':
-                                        item.iconClass = 'type04';
-                                        item.levelName = '精英';
-                                        break;
-                                }
-                            });
-
-                            vm.server = res;
-
-                            vm.$nextTick(function () {});
-                        } else {
-
-                            vm.errorInfo = res.info || '数据获取失败！';
-                        }
-                    }).fail(function () {
-                        vm.error = true;
-                        vm.errorInfo = '网络请求失败！';
-                    });
-                }
-            },
-            watch: {
-                error: function error(newValue) {}
-            },
-            created: function created() {
-                var vm = this;
-                vm.initData();
-                // vm.initData();
-                // vm.initData();
-                // vm.initData();
-                // vm.initData();
-                // vm.initData();
-                // vm.initData();
-                // vm.initData();
-                // vm.initData();
-                // vm.initData();
-
-                onPageVisibilityChange(function () {
-                    vm.initData();
+    new Vue({
+        el: '#index',
+        methods: {
+            openPopupC: function openPopupC() {
+                popupC.open(function () {
+                    alert('open C with Vue');
                 });
             },
-            mounted: function mounted() {}
-        });
+            openPopupD: function openPopupD() {
+                popupD.open(function () {
+                    alert('open D with Vue');
+                });
+            }
+        }
     });
 })();

@@ -265,119 +265,113 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var Popup = function () {
         function Popup() {
-            var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
             _classCallCheck(this, Popup);
 
             var self = this;
 
             var conf = self.conf = {
-                maskId: '', // popup mask
-                popupId: '', // popup content
-                openBtnClass: '', // 点击弹出
-                closeBtnClass: '', // 点击关闭
-                triggerBtnClass: '', // trigger弹出关闭
-                animateTime: 300, // 动画时间
-                closePopupOnClickDocument: false, // 点击 document 空白区域时是否关闭弹窗
-                closePopupOnClickMask: false, // 点击 mask 时是否关闭弹窗
+                mask: '', // popup 遮罩（推荐传入 id）
+                popup: '', // popup 内容（推荐传入 id）
+                openBtn: '', // 打开弹窗按钮（推荐传入 class）
+                closeBtn: '', // 关闭弹窗按钮（推荐传入 class）
+                toggleBtn: '', // 打开/关闭按钮（推荐传入 class）
+                effect: '', // 过渡效果
+                speed: 300, // 动画时间
+                closeOnClickMask: false, // 点击遮罩时是否关闭弹窗
                 closeOthersOnOpen: true, // 打开一个弹窗时是否关闭其它弹窗
+                popupStatus: '-popup-visible-', // 标识弹窗的状态
+                activeToggleBtn: '-active-trigger-btn-', // 多个 toggle btn 情况
 
-                activeTriggerBtn: '-active-trigger-btn-',
-                panelStatusClass: '-panel-visible-' // 标识 panel 的状态
+                // 回调会在动画结束之后调用
+                onOpen: function onOpen() {},
+                // 打开回调
+                onClose: function onClose() {}
             };
 
-            $.extend(conf, config);
+            if (!$) {
+                console.error('[Popup warn]: 该模块依赖 jQuery 库！');
+                return;
+            }
 
-            conf.onOpen = function () {
-                // 打开 panel 时执行
-                typeof config.onOpen === 'function' && config.onOpen(conf);
-            };
-            conf.onClose = function () {
-                // 关闭 panel 时执行
-                typeof config.onClose === 'function' && config.onClose(conf);
-            };
+            $.extend(conf, options);
 
-            if (!$(conf.popupId).hasClass('-popup-created-')) {
-                $(conf.popupId).addClass('-popup-created-');
+            var popup = $(conf.popup);
 
-                self.id = 'popup_' + Popup.instances.length;
-                Popup.instances.push(self);
+            if (!popup.length) {
+                console.error("[Popup warn]: \u672A\u627E\u5230 " + conf.popup + " \u5143\u7D20\uFF01");
+            }
 
-                self.event = null; // 点击事件
+            self.id = "popup_" + Popup.instances.length;
+            Popup.instances.push(self);
 
-                self.initEvent();
+            // 兼容对同一个 DOM 重复实例化（强烈不推荐）
+            if (!popup.hasClass('-popup-created-')) {
+                popup.addClass('-popup-created-');
+                self.initEvents();
             }
         }
 
         _createClass(Popup, [{
-            key: "initEvent",
-            value: function initEvent() {
+            key: "initEvents",
+            value: function initEvents() {
                 var self = this,
                     conf = self.conf;
 
-                if (conf.openBtnClass) {
-                    $(document).on('click', conf.openBtnClass, function (e) {
+
+                if (conf.openBtn) {
+                    $(document).on('click', conf.openBtn, function (e) {
                         e.stopPropagation();
                         self.event = e;
-
                         self.open();
                     });
                 }
 
-                if (conf.closeBtnClass) {
-                    $(document).on('click', conf.closeBtnClass, function (e) {
+                if (conf.closeBtn) {
+                    $(document).on('click', conf.closeBtn, function (e) {
                         e.stopPropagation();
                         self.event = e;
-
                         self.close();
                     });
                 }
 
-                if (conf.closePopupOnClickMask) {
-                    $(document).on('click', conf.maskId, function (e) {
+                if (conf.closeOnClickMask) {
+                    $(document).on('click', conf.mask, function (e) {
                         e.stopPropagation();
                         self.event = e;
-
                         self.close();
                     });
                 }
 
-                if (conf.triggerBtnClass) {
-                    $(document).on('click', conf.triggerBtnClass, function (e) {
+                // 此处的 toggle 第一次点击总是打开
+                if (conf.toggleBtn) {
+                    $(document).on('click', conf.toggleBtn, function (e) {
                         e.stopPropagation();
                         self.event = e;
 
                         var $this = $(this);
-                        if ($this.hasClass(conf.activeTriggerBtn)) {
-                            self.trigger();
+                        if ($this.hasClass(conf.activeToggleBtn)) {
+                            self.toggle();
                         } else {
                             self.open();
-                            $(conf.triggerBtnClass).removeClass(conf.activeTriggerBtn);
-                            $this.addClass(conf.activeTriggerBtn);
+                            $(conf.activeToggleBtn).removeClass(conf.activeToggleBtn);
+                            $this.addClass(conf.activeToggleBtn);
                         }
                     });
                 }
 
-                if (conf.closePopupOnClickDocument) {
-                    $(document).on('click', function (e) {
-                        self.event = e;
-
-                        self.close();
-                    });
-                }
-
-                if (conf.popupId) {
-                    $(document).on('click', conf.popupId, function (e) {
-                        e.stopPropagation();
-                        self.event = e;
-                    });
-                }
+                $(document).on('click', conf.popup, function (e) {
+                    e.stopPropagation();
+                    self.event = e;
+                });
             }
         }, {
             key: "closeOthersOnOpen",
             value: function closeOthersOnOpen() {
                 var self = this,
                     conf = self.conf;
+
 
                 if (conf.closeOthersOnOpen) {
                     Popup.instances.forEach(function (instance) {
@@ -398,20 +392,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
             }
         }, {
-            key: "trigger",
-            value: function trigger() {
+            key: "toggle",
+            value: function toggle() {
                 var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
                 var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-
                 var self = this,
                     conf = self.conf;
 
-                var panel = $(conf.popupId);
-                if (panel.hasClass(conf.panelStatusClass)) {
-                    self.close(onClose);
-                } else {
-                    self.open(onOpen);
-                }
+
+                var popup = $(conf.popup);
+
+                popup.hasClass(conf.popupStatus) ? self.close(onClose) : self.open(onOpen);
             }
         }]);
 
@@ -536,31 +527,43 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var NormalPopup = function (_Popup2) {
         _inherits(NormalPopup, _Popup2);
 
-        function NormalPopup(config) {
+        function NormalPopup() {
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
             _classCallCheck(this, NormalPopup);
 
-            return _possibleConstructorReturn(this, (NormalPopup.__proto__ || Object.getPrototypeOf(NormalPopup)).call(this, config));
+            return _possibleConstructorReturn(this, (NormalPopup.__proto__ || Object.getPrototypeOf(NormalPopup)).call(this, options));
         }
 
         _createClass(NormalPopup, [{
             key: "open",
             value: function open() {
                 var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
                 var self = this,
                     conf = self.conf;
 
+
                 self.closeOthersOnOpen();
 
-                var panel = $(conf.popupId),
-                    mask = $(conf.maskId);
-                if (!panel.hasClass(conf.panelStatusClass)) {
-                    console.log('open');
-                    mask.show();
-                    panel.show().addClass(conf.panelStatusClass);
-                    conf.onOpen();
+                var popup = $(conf.popup),
+                    mask = $(conf.mask);
+                if (!popup.hasClass(conf.popupStatus)) {
+                    var openCallback = function openCallback() {
+                        setTimeout(function () {
+                            conf.onOpen.call(self);
+                            onOpen.call(self);
+                        }, 0);
+                    };
 
-                    onOpen(conf);
+                    if (conf.effect === 'fade') {
+                        mask.stop(true).clearQueue().fadeIn(conf.duration);
+                        popup.stop(true).clearQueue().fadeIn(conf.duration, openCallback);
+                    } else {
+                        mask.show();
+                        popup.show();
+                        openCallback();
+                    }
+                    popup.addClass(conf.popupStatus);
                 }
 
                 return self;
@@ -569,18 +572,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             key: "close",
             value: function close() {
                 var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
                 var self = this,
                     conf = self.conf;
-                console.log('close');
-                var panel = $(conf.popupId),
-                    mask = $(conf.maskId);
-                if (panel.hasClass(conf.panelStatusClass)) {
-                    mask.hide();
-                    panel.hide().removeClass(conf.panelStatusClass);
-                    onClose(conf);
 
-                    conf.onClose();
+
+                var popup = $(conf.popup),
+                    mask = $(conf.mask);
+                if (popup.hasClass(conf.popupStatus)) {
+                    var closeCallback = function closeCallback() {
+                        setTimeout(function () {
+                            conf.onClose.call(self);
+                            onClose.call(self);
+                        }, 0);
+                    };
+
+                    if (conf.effect === 'fade') {
+                        mask.stop(true).clearQueue().fadeOut(conf.duration);
+                        popup.stop(true).clearQueue().fadeOut(conf.duration, closeCallback);
+                    } else {
+                        mask.hide();
+                        popup.hide();
+                        closeCallback();
+                    }
+                    popup.removeClass(conf.popupStatus);
                 }
 
                 return self;

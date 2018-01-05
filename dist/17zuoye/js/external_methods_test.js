@@ -4,6 +4,10 @@
     'use strict';
 
     var ua = window.navigator.userAgent.toLowerCase();
+    function isIOS() {
+        return (/iphone|ipad|ipod/.test(ua)
+        );
+    }
     function getQuery(key) {
         var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)"),
             res = window.location.search.substr(1).match(reg);
@@ -108,6 +112,65 @@
             return doMethod('openSecondWebview', JSON.stringify({ url: url }));
         } else {
             location.href = url;
+        }
+    }
+    function studentOpenFairylandPage(appInfo) {
+        //打开应用
+        function openApp(appInfo) {
+            "use strict";
+            // 获取可以调用的壳方法
+
+            var en = 'openFairylandPage';
+            if (!isExistMethod(en)) {
+                en = 'pageQueueNew';
+            }
+            // IOS 2.7.7 以下 从作业进的 需要使用pageQueueNew，其它可使用 openFairylandPage
+            if (getQuery('from') === 'homework' && isIOS() && isLowVersion(2, 7, 8)) {
+                en = 'pageQueueNew';
+            }
+
+            // 加 refer
+            var referStr = '';
+            if (/refer=/.test(appInfo.launchUrl)) {
+                var connector = /\?/.test(appInfo.launchUrl) ? '?' : '&';
+                var referId = getQuery('refer') || window.refer || '';
+                referStr = connector + "refer=" + referId;
+            }
+
+            // 加页面 hash
+            var hashStr = appInfo.location_hash ? appInfo.location_hash : '';
+
+            var fullLaunchUrl = appInfo.launchUrl + referStr + hashStr;
+
+            if (isExistMethod(en)) {
+                doMethod(en, JSON.stringify({
+                    url: fullLaunchUrl,
+                    useNewCore: appInfo.browser || "system",
+                    orientation: appInfo.orientation || "sensor",
+                    initParams: JSON.stringify({ hwPrimaryVersion: appInfo.hwPrimaryVersion || "V2_4_0" }),
+
+                    // page_viewable: 是否保留当前 webview，true保留， false 不保留，默认保留
+                    page_viewable: appInfo.page_viewable !== false,
+                    // use_native_title: 是否使用壳的 title，true使用，false 不使用，默认不使用
+                    name: (appInfo.use_native_title ? "" : "fairyland_app:") + (appInfo.appKey || "link")
+                }));
+            } else {
+                location.href = 'http://www.test.17zuoye.net' + fullLaunchUrl;
+            }
+        }
+
+        switch (appInfo.appKey) {
+            case 'BookListen':
+                // 随身听打开方式
+                doMethod('innerJump', JSON.stringify({ name: 'book_listen' }));
+                break;
+            case 'Arithmetic':
+                // 速算脑力王
+                doMethod('innerJump', JSON.stringify({ name: 'arithmetic', page_viewable: true }));
+                break;
+            default:
+                openApp(appInfo);
+                break;
         }
     }
 
@@ -251,7 +314,22 @@
 
     $(document).on('click', '.openSecondWebView', function () {
         var $this = $(this);
-        $this.next('.preview').html(openSecondWebView('http://hello.com:8686//views/demo/demo.html'));
+        var url = void 0;
+
+        // url = 'http://hello.com:3002/views/效果/effect_04_通用弹窗/index'
+        // url = 'http://hello.com:3002/view/mobile/student/wrong_question/index.vpage'
+        url = 'http://hello.com:3002/view/mobile/student/wrong_question/index.vpage?subject=MATH&from=world&refer=330049&app_version=2.9.3.731&client_type=mobile&client_name=17Student&app_product_id=101&imei=8D7739D3-079F-4655-960E-54165E1C50EC&env=test';
+        $this.next('.preview').html(openSecondWebView(url));
+    });
+
+    $(document).on('click', '.openFairylandPage', function () {
+        var $this = $(this);
+        $this.next('.preview').html(studentOpenFairylandPage({
+            // launchUrl: 'http://hello.com:3002/view/mobile/student/wrong_question/question_list.vpage?subject=MATH&from=world&refer=330049&app_version=2.9.3.731&client_type=mobile&client_name=17Student&app_product_id=101&imei=8D7739D3-079F-4655-960E-54165E1C50EC&env=test',
+            launchUrl: 'http://hello.com:3002/view/mobile/student/wrong_question/index.vpage?subject=MATH&from=world&refer=330049&app_version=2.9.3.731&client_type=mobile&client_name=17Student&app_product_id=101&imei=8D7739D3-079F-4655-960E-54165E1C50EC&env=test'
+            // launchUrl: 'http://hello.com:3002',
+            // launchUrl: 'http://hello.com:3002/view/mobile/student/activity/guide_pay_20170525/index',
+        }));
     });
 
     $(document).on('click', '.openLiveStream', function () {
