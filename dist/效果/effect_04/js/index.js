@@ -239,6 +239,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return NormalPopup;
     }(Popup);
 
+    hljs.initHighlightingOnLoad();
+    $('.db-sourcecode').show();
+
     var popupA = new NormalPopup({
         popup: '#popup-A',
         openBtn: '.open-popup-A',
@@ -261,8 +264,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         mask: '#popup-C-mask',
         popup: '#popup-C',
         openBtn: '.open-popup-C',
-        closeBtn: '.close-popup-C',
-        effect: 'fade',
         closeOnClickMask: true
     });
 
@@ -271,12 +272,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         openBtn: '.open-popup-D',
         closeBtn: '.close-popup-D',
         effect: 'fade',
-        onOpen: function onOpen() {
-            alert('open D');
-        },
-        onClose: function onClose() {
-            alert('close D');
-        }
+        duration: 600
     });
 
     $(document).on('click', '.clickBtnA', function () {
