@@ -104,8 +104,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 openBtn: '', // 打开弹窗按钮（推荐传入 class）
                 closeBtn: '', // 关闭弹窗按钮（推荐传入 class）
                 toggleBtn: '', // 打开/关闭按钮（推荐传入 class）
-                effect: '', // 过渡效果
-                speed: 300, // 动画时间
+                duration: 0, // 动画时长
                 closeOnClickMask: false, // 点击遮罩时是否关闭弹窗
                 closeOthersOnOpen: true, // 打开一个弹窗时是否关闭其它弹窗
                 popupStatus: '-popup-visible-', // 标识弹窗的状态
@@ -117,7 +116,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 onClose: function onClose() {}
             };
 
-            if (!$) {
+            if (!window.$) {
                 console.error('[Popup warn]: 该模块依赖 jQuery 库！');
                 return;
             }

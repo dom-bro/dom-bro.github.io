@@ -108,8 +108,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 openBtn: '', // 打开弹窗按钮（推荐传入 class）
                 closeBtn: '', // 关闭弹窗按钮（推荐传入 class）
                 toggleBtn: '', // 打开/关闭按钮（推荐传入 class）
-                effect: '', // 过渡效果
-                speed: 300, // 动画时间
+                duration: 0, // 动画时长
                 closeOnClickMask: false, // 点击遮罩时是否关闭弹窗
                 closeOthersOnOpen: true, // 打开一个弹窗时是否关闭其它弹窗
                 popupStatus: '-popup-visible-', // 标识弹窗的状态
@@ -121,7 +120,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 onClose: function onClose() {}
             };
 
-            if (!$) {
+            if (!window.$) {
                 console.error('[Popup warn]: 该模块依赖 jQuery 库！');
                 return;
             }
@@ -263,24 +262,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 self.closeOthersOnOpen();
 
+                /*
+                 * 回调总是在打开/关闭动画结束之后被调用的，但是某些阻塞页面渲染的
+                 * 操作（比如 window.alert）可能会阻止弹窗显现，导致看上去回调
+                 * 像是在打开/关闭动画之前执行的。如果想避免这种情况，可在回调中使
+                 * 用 setTimeout 延迟执行这些阻塞操作。
+                 */
+                function openCallback() {
+                    conf.onOpen.call(self);
+                    onOpen.call(self);
+                }
+
                 var popup = $(conf.popup),
                     mask = $(conf.mask);
                 if (!popup.hasClass(conf.popupStatus)) {
-                    var openCallback = function openCallback() {
-                        setTimeout(function () {
-                            conf.onOpen.call(self);
-                            onOpen.call(self);
-                        }, 0);
-                    };
-
-                    if (conf.effect === 'fade') {
-                        mask.stop(true).clearQueue().fadeIn(conf.duration);
-                        popup.stop(true).clearQueue().fadeIn(conf.duration, openCallback);
-                    } else {
-                        mask.show();
-                        popup.show();
-                        openCallback();
-                    }
+                    mask.stop(true).clearQueue().fadeIn(conf.duration);
+                    popup.stop(true).clearQueue().fadeIn(conf.duration, openCallback);
                     popup.addClass(conf.popupStatus);
                 }
 
@@ -294,24 +291,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     conf = self.conf;
 
 
+                function closeCallback() {
+                    conf.onClose.call(self);
+                    onClose.call(self);
+                }
+
                 var popup = $(conf.popup),
                     mask = $(conf.mask);
                 if (popup.hasClass(conf.popupStatus)) {
-                    var closeCallback = function closeCallback() {
-                        setTimeout(function () {
-                            conf.onClose.call(self);
-                            onClose.call(self);
-                        }, 0);
-                    };
-
-                    if (conf.effect === 'fade') {
-                        mask.stop(true).clearQueue().fadeOut(conf.duration);
-                        popup.stop(true).clearQueue().fadeOut(conf.duration, closeCallback);
-                    } else {
-                        mask.hide();
-                        popup.hide();
-                        closeCallback();
-                    }
+                    mask.stop(true).clearQueue().fadeOut(conf.duration);
+                    popup.stop(true).clearQueue().fadeOut(conf.duration, closeCallback);
                     popup.removeClass(conf.popupStatus);
                 }
 

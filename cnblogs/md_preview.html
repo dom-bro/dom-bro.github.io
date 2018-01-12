@@ -5,7 +5,107 @@
             background: #fff;
             font-size: 1rem !important;
         }
-    </style></head><body class=""><p><img src="../images/cookie.jpg" alt="" class="img img-border"></p>
+    </style></head><body class=""><p><img style="border:none; border-radius:0" src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180112155221691-1241039299.jpg" class="img img-border"></p>
 <p>小点心，顾名思义，开箱即食，拿来即用。</p>
-<p>弹窗就不用多说了，几乎所有存在交互的页面都会有</p>
+<p>前端业务逻辑主要分为【交互效果】和【数据展示】两方面。数据展示可使用 MVVM 框架来实现。前端的交互效果常用的也就那么几种，比如弹窗，楼层定位，倒计时，下拉刷新，上拉加载更多等等。这些交互效果完全可以提出来做成通用的模块，以后不必再劳心费神去想怎么实现。就像 Swiper 封装了一个类来专门做轮播图一样，本系列的目的是通过封装一系列类来实现弹窗，楼层定位，倒计时等交互功能。</p>
+<p>弹窗就无需多说了，几乎所有存在交互的页面都会用到，一个页面上甚至会有 N 多个弹窗。弹弹弹，弹出鱼尾纹。</p>
+<p>弹窗的逻辑其实很简单，就是打开和关闭。如果这还不够，那就再加个回调。如果从面向对象的角度去看，把弹窗看成一个类想必是极好的，与之绑定的DOM块是它的属性，打开和关闭是它的方法，而且这样可以实现弹窗样式和逻辑的分离。</p>
+<p>由于需要操作DOM，果断选择了王者级库——jQuery。</p>
+<p>先定一个小目标：</p>
+
+<ul class="well-success list">
+<li>易用性，如果自己都觉得难用，那就没有分享的必要了￣□￣｜｜；</li>
+<li>兼容性，兼容主流浏览器，但并非所有（比如 IE 低版本）；</li>
+<li>移动优先，主要为移动端做更多的考虑；</li>
+</ul>
+<p>Swiper 在这方面已经树立了典范。因此本系列均效仿 Swiper 的 API 风格，力求 Keep It Simple and Stupid。只需要相对宽松有序的 DOM 结构和一致的实例化风格，That's it，多一点不人性化的东西算俄输。</p>
+<div class="hr"></div>
+<p>然后就有了第一个小点心：<strong>NormalPopup</strong>。</p>
+<p><a href="https://github.com/dom-bro/es6-dessert"><strong>GitHub</strong></a></p>
+<p><a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_04_%E9%80%9A%E7%94%A8%E5%BC%B9%E7%AA%97/index.html"><strong>在线演示</strong></a></p>
+<div class="hr"></div>
+<h3>基本示例</h3>
+<p>本示例包含了最基本的使用，只需传入弹窗 DOM 的选择器和要作为打开/关闭弹窗的选择器。</p>
+
+```js 
+const popupA = new NormalPopup({
+    popup: '#popup-A',
+    openBtn: '.open-popup-A',
+    closeBtn: '.close-popup-A',
+})
+ 
+```
+
+<h3>使用回调</h3>
+<p>可以在实例化时传入打开或关闭回调函数，回调将在弹窗完全打开或关闭后（即在打开或关闭动画结束之后）被调用。</p>
+
+```js 
+const popupB = new NormalPopup({
+    popup: '#popup-B',
+    openBtn: '.open-popup-B',
+    closeBtn: '.close-popup-B',
+    onOpen(){
+        alert('open B')
+    },
+    onClose(){
+        alert('close B')
+    },
+})
+ 
+```
+
+<h3>点击遮罩关闭</h3>
+<p>可以在实例化时设置点击遮罩关闭，但需要提供一个额外的 <code>mask</code> 选项，也就是需要弹窗的遮罩和弹窗的内容相分离。</p>
+
+```js 
+const popupC = new NormalPopup({
+    mask: '#popup-C-mask',
+    popup: '#popup-C',
+    openBtn: '.open-popup-C',
+    closeOnClickMask: true,
+})
+ 
+```
+
+<h3>过渡动画时长</h3>
+<p>可以在实例化时传入可选的动画时长，默认是 0 毫秒。</p>
+
+```js 
+const popupD = new NormalPopup({
+    popup: '#popup-D',
+    openBtn: '.open-popup-D',
+    closeBtn: '.close-popup-D',
+    duration: 600,
+})
+ 
+```
+
+<h3>with jQuery</h3>
+<p>每个 NormalPopup 实例都有一个 <code>open</code> 方法和一个 <code>close</code> 方法，并且可在调用时传入一个回调。请注意，在API方法中传入的回调将排在实例化传入的回调之后被调用。</p>
+
+```js 
+$(document).on('click', '.clickBtnA', function(){
+    popupA.open(function(){
+        alert('open A with jQuery')
+    })
+})
+ 
+```
+
+<h3>with Vue</h3>
+<p>可以在任何时候实例化 NormalPopup 而不必非要等到 Vue 挂载到 DOM 之后。</p>
+
+```js 
+...
+methods: {
+    openPopupC(){
+        popupC.open(function(){
+            alert('open C with Vue')
+        })
+    },
+}
+...
+ 
+```
+
 <script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/dist/cnblogs/js/demo.js"></script></body></html>

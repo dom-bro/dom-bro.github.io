@@ -1,5 +1,15 @@
 <!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>通用弹窗</title><link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/vs.min.css"><link rel="stylesheet" href="/dist/index/css/github_pages.css"><link rel="stylesheet" href="/dist/效果/effect_04/css/index.css"></head><body class=""><div class="body-wrapper"><div class="nav navbar-default db-navbar-wrapper"><div class="container"><div class="navbar-header"><a href="javascript:" class="navbar-brand">DOM哥</a><button class="navbar-toggle" data-toggle="collapse" data-target="#bs-nav"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="bs-nav" class="collapse navbar-collapse"><ul class="nav navbar-nav db-nav"><li><a href="/">首页</a></li><li class="active"><a href="">前端</a></li><li><a href="">博客</a></li><li><a href="">About me</a></li></ul></div></div></div><div class="container">
-    <h2 class="page-header" style="margin-top: 0">实例化</h2>
+    <ol class="breadcrumb">
+        <li><a href="javascript:">交互效果</a></li>
+        <li class="active">通用弹窗</li>
+    </ol>
+
+    <div class="jumbotron">
+        <h1>NormalPopup</h1>
+        <p>通用弹窗</p>
+    </div>
+
+    <h2 class="page-header" style="margin-top: 1rem">实例化</h2>
 
     <h3>基本示例</h3>
     <p>本示例包含了最基本的使用，只需传入弹窗 DOM 的选择器和要作为打开/关闭弹窗的选择器。</p>
@@ -53,18 +63,18 @@
 </code></pre>
     </div>
 
-    <h3>过渡效果</h3>
-    <p>可以在实例化时传入可选的过渡效果，目前仅支持 <code>fade</code> 一个值。还可以设置过渡的时间（毫秒数），默认是 300 毫秒。</p>
+    <h3>过渡动画时长</h3>
+    <p>可以在实例化时传入可选的动画时长，默认是<code>0</code>毫秒。</p>
 
     <div class="db-example">
-        <div class="btn btn-danger btn-lg open-popup-D">打开弹窗D | 渐现效果</div>
+        <div class="btn btn-danger btn-lg open-popup-D">打开弹窗D | 动画时长</div>
     </div>
     <div class="db-sourcecode">
 <pre><code class="javascript">const popupD = new NormalPopup({
     popup: '#popup-D',
     openBtn: '.open-popup-D',
     closeBtn: '.close-popup-D',
-    effect: 'fade',
+    duration: 600,
 })
 </code></pre>
     </div>
@@ -134,7 +144,7 @@ methods: {
     </div>
 </div>
 
-<div id="popup-C-mask" class="popup" style="display: none"></div>
+<div id="popup-C-mask" class="popup" style="display: none;cursor: pointer"></div>
 <div id="popup-C" class="popup-inner" style="display: none">
     <div class="popup-content">C</div>
 </div>
@@ -147,4 +157,54 @@ methods: {
         </div>
     </div>
 </div>
-<footer class="footer">Copyright ©2018 DOM哥</footer></div><script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script src="/dist/效果/effect_04/js/index.js"></script></body></html>
+<div class="container">
+    <h2 class="page-header">API</h2>
+
+    <h3 class="api-title">new NormalPopup(options)</h3>
+    <div>
+        <p>用于实例化一个通用弹窗，返回该实例的引用。</p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>options</strong>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-success">
+                    <div class="pull-left"><span class="color-red">popup</span>：</div>
+                    <div style="overflow: hidden">必选，弹窗DOM，可传入id，class等css选择器，强烈推荐传入id，这符合面向对象哲学^_^；</div>
+                </li>
+                <li class="list-group-item">
+                    <div class="pull-left">mask：</div>
+                    <div style="overflow: hidden">可选，弹窗背景遮罩，如果需要点击遮罩关闭弹窗功能，则必须传入此项，因为需要在上面绑定点击事件；</div>
+                </li>
+                <li class="list-group-item">
+                    <div class="pull-left">openBtn：</div>
+                    <div style="overflow: hidden">可选，点击打开弹窗的css选择器，其实就是绑了个click事件；</div>
+                </li>
+                <li class="list-group-item">
+                    <div class="pull-left">closeBtn：</div>
+                    <div style="overflow: hidden">可选，点击关闭弹窗的css选择器；</div>
+                </li>
+                <li class="list-group-item">
+                    <div class="pull-left">duration：</div>
+                    <div style="overflow: hidden">可选，动画时长，即弹窗渐隐渐现的时间，单位是毫秒，默认值为<code>0</code>；</div>
+                </li>
+                <li class="list-group-item">
+                    closeOnClickMask：可选，点击遮罩关闭弹窗，默认为<code>false</code>，注意启用此项需提供上面的<code>mask</code>选项；
+                </li>
+                <li class="list-group-item">
+                    closeOthersOnOpen：可选，当存在多个弹窗时，打开弹窗时是否关闭其它已打开弹窗，默认为<code>true</code>（即会先将已打开弹窗关闭）；
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 class="api-title">popup.open(callback)</h3>
+    <div>
+        <p>实例的打开弹窗方法。可以传入一个可选的回调函数，回调将在弹窗完全打开后执行。</p>
+    </div>
+
+    <h3 class="api-title">popup.close(callback)</h3>
+    <div>
+        <p>实例的关闭弹窗方法。可以传入一个可选的回调函数，回调将在弹窗完全关闭后执行。</p>
+    </div>
+</div><footer class="footer">Copyright ©2018 DOM哥</footer></div><script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script src="/dist/效果/effect_04/js/index.js"></script></body></html>
