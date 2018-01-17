@@ -11,6 +11,75 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
+  /**
+   * @param el：朴素的DOM元素
+   * @param axis：哪个方向的偏移量（'x'|'y'）
+   * @returns {number} 返回一个浮点型数值
+   * @作用 获取DOM元素的transform:translate量
+   *
+   * !!! Don't edit this !!!
+   * 该函数摘自 Swiper，为了方便以后同步，请不要做任何编辑
+   */
+
+  function getType(val) {
+    return val ? Object(val).constructor.name : Object.prototype.toString.call(val).match(/\[object (.*)]/)[1];
+  }
+  function isObject(val) {
+    return getType(val) === 'Object';
+  }
+
+  function isBoolean(val) {
+    return getType(val) === 'Boolean';
+  }
+
+  function isArray(val) {
+    return getType(val) === 'Array';
+  }
+
+  /**
+   * $.extend
+   */
+  function extend() {
+    var target = arguments.length <= 0 ? undefined : arguments[0],
+        i = 1,
+        deep = false;
+
+    // Handle a deep copy situation
+    if (isBoolean(target)) {
+      var _ref;
+
+      deep = target;
+
+      // Skip the boolean and the target
+      target = Object((_ref = i++, arguments.length <= _ref ? undefined : arguments[_ref]));
+    }
+    for (; i < arguments.length; ++i) {
+      var nextSource = arguments.length <= i ? undefined : arguments[i];
+      // Skip over if null/undefined
+      if (nextSource !== undefined && nextSource !== null) {
+        for (var nextKey in nextSource) {
+          // Avoid bugs when hasOwnProperty is shadowed
+          if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+            var from = nextSource[nextKey],
+                to = target[nextKey];
+
+            if (deep && getType(to) === getType(from) && (isObject(to) || isArray(to))) {
+              extend(deep, to, from);
+            } else {
+              target[nextKey] = from;
+            }
+          }
+        }
+      }
+    }
+    return target;
+  }
+
+  // 将插件需要的样式写到 <style> 里 append 到 <head> 里
+  var stylesheet = document.createElement('style');
+  stylesheet.setAttribute('id', 'es6-dessert-stylesheet');
+  document.head.appendChild(stylesheet);
+
   var Popup = function () {
     function Popup() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -37,25 +106,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         onClose: function onClose() {}
       };
 
-      if (!window.$) {
-        console.error('[Popup warn]: 该模块依赖 jQuery 库！');
-        return;
-      }
+      extend(conf, options);
 
-      $.extend(conf, options);
+      self.required();
 
       var popup = $(conf.popup);
-
-      if (!popup.length) {
-        console.error('[Popup warn]: \u672A\u627E\u5230 ' + conf.popup + ' \u5143\u7D20\uFF01');
-      }
-
-      self.id = 'popup_' + Popup.instances.length;
-      Popup.instances.push(self);
-
       // 兼容对同一个 DOM 重复实例化（强烈不推荐）
       if (!popup.hasClass('-popup-created-')) {
         popup.addClass('-popup-created-');
+
+        self.id = 'popup_' + Popup.instances.length;
+        Popup.instances.push(self);
+
         self.initEvents();
       }
     }
@@ -102,7 +164,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               self.toggle();
             } else {
               self.open();
-              $(conf.activeToggleBtn).removeClass(conf.activeToggleBtn);
+              $('.' + conf.activeToggleBtn).removeClass(conf.activeToggleBtn);
               $this.addClass(conf.activeToggleBtn);
             }
           });
@@ -128,26 +190,59 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       }
+
+      /*
+       * 子类实现时务必调用 super.xxx()
+       */
+
+    }, {
+      key: 'required',
+      value: function required() {
+        var self = this,
+            conf = self.conf;
+
+
+        if (!window.$) {
+          throw self.constructor.name + ' Error: \u8BE5\u6A21\u5757\u4F9D\u8D56 jQuery \u5E93\u5E76\u4E14\u987B\u5C06 jQuery \u66B4\u9732\u4E3A\u5168\u5C40\u53D8\u91CF window.$';
+        }
+
+        var popup = $(conf.popup);
+        if (!popup.length) {
+          throw self.constructor.name + ' Error: \u672A\u627E\u5230 ' + conf.popup + ' \u5143\u7D20\uFF01';
+        }
+        if (popup.css('display') !== 'none') {
+          throw self.constructor.name + ' Error: \u8981\u6C42 ' + conf.popup + ' \u5143\u7D20\u5FC5\u987B\u8BBE\u7F6E\u4E3A display:none\uFF01\u5982\u679C\u9700\u8981\u5728\u9875\u9762\u52A0\u8F7D\u8FDB\u6765\u5C31\u5C55\u793A\uFF0C\u8BF7\u901A\u8FC7\u5728\u5B9E\u4F8B\u5316\u540E\u76F4\u63A5\u8C03\u7528 open \u6765\u5B9E\u73B0\uFF0C\u6BD4\u5982 new ' + self.constructor.name + '(options).open()';
+        }
+
+        if (conf.mask && !$(conf.mask).length) {
+          throw self.constructor.name + ' Error: \u672A\u627E\u5230 ' + conf.mask + ' \u5143\u7D20\uFF01';
+        }
+
+        if (conf.closeOnClickMask) {
+          if (!conf.mask) {
+            throw self.constructor.name + ' Error: closeOnClickMask \u4E3A true \u65F6\u5FC5\u987B\u4F20\u5165 mask \u9009\u9879';
+          }
+        }
+      }
     }, {
       key: 'open',
       value: function open() {
-        var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var self = this;
+
+        self.closeOthersOnOpen();
       }
     }, {
       key: 'close',
-      value: function close() {
-        var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-      }
+      value: function close() {}
     }, {
       key: 'toggle',
       value: function toggle() {
         var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
         var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
         var self = this,
-            conf = self.conf;
+            conf = self.conf,
+            popup = $(conf.popup);
 
-
-        var popup = $(conf.popup);
 
         popup.hasClass(conf.popupStatus) ? self.close(onClose) : self.open(onOpen);
       }
@@ -157,9 +252,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }();
 
   Popup.instances = [];
+  Popup.addStyle = function (rules) {
+    stylesheet.innerHTML += rules;
+  };
 
   /**
-   * ES6小点心之通用弹窗
+   * 通用弹窗
    */
 
   var NormalPopup = function (_Popup) {
@@ -198,8 +296,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             mask = $(conf.mask);
         if (!popup.hasClass(conf.popupStatus)) {
           mask.stop(true).clearQueue().fadeIn(conf.duration);
-          popup.stop(true).clearQueue().fadeIn(conf.duration, openCallback);
-          popup.addClass(conf.popupStatus);
+
+          popup.stop(true).clearQueue().addClass(conf.popupStatus).fadeIn(conf.duration, openCallback);
         }
 
         return self;
@@ -221,8 +319,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             mask = $(conf.mask);
         if (popup.hasClass(conf.popupStatus)) {
           mask.stop(true).clearQueue().fadeOut(conf.duration);
-          popup.stop(true).clearQueue().fadeOut(conf.duration, closeCallback);
-          popup.removeClass(conf.popupStatus);
+
+          popup.removeClass(conf.popupStatus).stop(true).clearQueue().fadeOut(conf.duration, closeCallback);
         }
 
         return self;
@@ -232,8 +330,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     return NormalPopup;
   }(Popup);
 
-  hljs.initHighlightingOnLoad();
-  $('.db-sourcecode').show();
+  var requiredSlidePopupStyle = '\n.es6Dessert-SlidePopup{\n  position: fixed !important;\n  top: auto !important;\n  bottom: 0 !important;\n  width: 100%;\n  margin-bottom: 0 !important;\n  -webkit-transform: translate3d(0,100%,0);\n  transform: translate3d(0,100%,0);\n  -webkit-transition-property: -webkit-transform;\n  transition-property: -webkit-transform;\n  -o-transition-property: transform;\n  transition-property: transform,-webkit-transform;\n}';
+
+  /**
+   * 底部浮现弹窗
+   */
+  Popup.addStyle(requiredSlidePopupStyle);
 
   var popupA = new NormalPopup({
     popup: '#popup-A',

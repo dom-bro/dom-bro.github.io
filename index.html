@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>DOM哥的菜园子</title><link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="/dist/index/css/github_pages.css"><link rel="stylesheet" href="/dist/index/css/index.css"></head><body class=""><div class="body-wrapper"><div class="nav navbar-default db-navbar-wrapper"><div class="container"><div class="navbar-header"><a href="javascript:" class="navbar-brand">DOM哥</a><button class="navbar-toggle" data-toggle="collapse" data-target="#bs-nav"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="bs-nav" class="collapse navbar-collapse"><ul class="nav navbar-nav db-nav"><li class="active"><a href="/">首页</a></li><li><a href="">前端</a></li><li><a href="">博客</a></li><li><a href="">About me</a></li></ul></div></div></div><div class="container">
+<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>DOM哥的菜园子</title><link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/vs.min.css"><link rel="stylesheet" href="/dist/index/css/github_pages.css"><link rel="stylesheet" href="/dist/index/css/index.css"></head><body class=""><div class="body-wrapper"><div class="nav navbar-default db-navbar-wrapper"><div class="container"><div class="navbar-header"><a href="javascript:" class="navbar-brand">DOM哥</a><button class="navbar-toggle" data-toggle="collapse" data-target="#bs-nav"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="bs-nav" class="collapse navbar-collapse"><ul class="nav navbar-nav db-nav"><li class="active"><a href="/">首页</a></li><li><a href="">前端</a></li><li><a href="">博客</a></li><li><a href="">About me</a></li></ul></div></div></div><div class="container">
     <div class="tiles-container-fix">
         <div class="tiles-container">
             <div class="tile-square third-width">
@@ -12,9 +12,12 @@
             </div>
             <div class="tile-square third-width">
                 <div class="tile-rect full-width">
-                    <div class="tile-inner">
-
-                    </div>
+                    <a href="/效果/effect_02_底部浮现弹窗/index.html" class="tile-inner">
+                        <div class="tile-content-main">
+                            Slide Popup
+                        </div>
+                        <div class="tile-content-description">底部浮现弹窗</div>
+                    </a>
                 </div>
                 <div class="tile-square half-width">
                     <div class="tile-inner">
@@ -64,4 +67,11 @@
             </div>
         </div>
     </div>
-</div><footer class="footer">Copyright ©2018 DOM哥</footer></div><script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="/dist/index/js/index.js"></script></body></html>
+</div><footer class="footer">Copyright ©2018 DOM哥</footer></div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script src="/dist/index/js/index.js"></script><script>
+        // 代码高亮 highlight.js
+        hljs.initHighlightingOnLoad()
+        $('.db-sourcecode').show()
+
+        // 二维码图片
+        $('.qr-img').attr('src', 'http://qr.liantu.com/api.php?text=' + window.location.href)
+    </script></body></html>

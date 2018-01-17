@@ -4,9 +4,18 @@
         <li class="active">通用弹窗</li>
     </ol>
 
-    <div class="jumbotron">
-        <h1>NormalPopup</h1>
-        <p>通用弹窗</p>
+    <div class="jumbotron-wrapper clearfix">
+        <div class="panel panel-info pull-right qr-code">
+            <div class="panel-heading text-center">手机扫一扫</div>
+            <div class="panel-body">
+                <img class="qr-img">
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h1>NormalPopup</h1>
+            <p>通用弹窗</p>
+        </div>
     </div>
 
     <h2 class="page-header" style="margin-top: 1rem">实例化</h2>
@@ -207,4 +216,11 @@ methods: {
     <div>
         <p>实例的关闭弹窗方法。可以传入一个可选的回调函数，回调将在弹窗完全关闭后执行。</p>
     </div>
-</div><footer class="footer">Copyright ©2018 DOM哥</footer></div><script src="/lib/jquery/jquery-3.1.1.min.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script src="/dist/效果/effect_04/js/index.js"></script></body></html>
+</div><footer class="footer">Copyright ©2018 DOM哥</footer></div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script src="/dist/效果/effect_04/js/index.js"></script><script>
+        // 代码高亮 highlight.js
+        hljs.initHighlightingOnLoad()
+        $('.db-sourcecode').show()
+
+        // 二维码图片
+        $('.qr-img').attr('src', 'http://qr.liantu.com/api.php?text=' + window.location.href)
+    </script></body></html>
