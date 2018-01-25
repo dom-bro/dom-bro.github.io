@@ -1,5 +1,7 @@
 'use strict';
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -20,6 +22,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * !!! Don't edit this !!!
    * 该函数摘自 Swiper，为了方便以后同步，请不要做任何编辑
    */
+  /* eslint-disable */
+
+  /* eslint-enable */
 
   function getType(val) {
     return val ? Object(val).constructor.name : Object.prototype.toString.call(val).match(/\[object (.*)]/)[1];
@@ -74,6 +79,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
     return target;
   }
+
+  /**
+   * @el jQuery对象 | DOM | 选择器
+   * @event 事件类型（如 click，transitionend 等等），多个以空格分割
+   * @callback 事件回调
+   * @作用 改进 $.fn.one
+   * @Why el 子元素的 event 事件会冒泡触发 el 的 event 事件，这不是本插件期望的效果。
+   *      比如为 el 添加 click 事件，点击其子元素时也会触发 el 的 click 事件，
+   *      本插件希望只在 event target 为 el 时才执行且仅执行一次事件处理器。
+   */
 
   // 将插件需要的样式写到 <style> 里 append 到 <head> 里
   var stylesheet = document.createElement('style');
@@ -275,29 +290,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'open',
       value: function open() {
         var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+        _get(NormalPopup.prototype.__proto__ || Object.getPrototypeOf(NormalPopup.prototype), 'open', this).call(this);
+
         var self = this,
-            conf = self.conf;
-
-
-        self.closeOthersOnOpen();
-
-        /*
-         * 回调总是在打开/关闭动画结束之后被调用的，但是某些阻塞页面渲染的
-         * 操作（比如 window.alert）可能会阻止弹窗显现，导致看上去回调
-         * 像是在打开/关闭动画之前执行的。如果想避免这种情况，可在回调中使
-         * 用 setTimeout 延迟执行这些阻塞操作。
-         */
-        function openCallback() {
-          conf.onOpen.call(self);
-          onOpen.call(self);
-        }
-
-        var popup = $(conf.popup),
+            conf = self.conf,
+            popup = $(conf.popup),
             mask = $(conf.mask);
+
+
         if (!popup.hasClass(conf.popupStatus)) {
           mask.stop(true).clearQueue().fadeIn(conf.duration);
 
-          popup.stop(true).clearQueue().addClass(conf.popupStatus).fadeIn(conf.duration, openCallback);
+          popup.stop(true).clearQueue().addClass(conf.popupStatus).fadeIn(conf.duration, function () {
+            /*
+             * 回调总是在打开/关闭动画结束之后被调用的，但是某些阻塞页面渲染的
+             * 操作（比如 window.alert）可能会阻止弹窗显现，导致看上去回调
+             * 像是在打开/关闭动画之前执行的。如果想避免这种情况，可在回调中使
+             * 用 setTimeout 延迟执行这些阻塞操作。
+             */
+            conf.onOpen.call(self);
+            onOpen.call(self);
+          });
         }
 
         return self;
@@ -306,21 +320,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'close',
       value: function close() {
         var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+        _get(NormalPopup.prototype.__proto__ || Object.getPrototypeOf(NormalPopup.prototype), 'close', this).call(this);
+
         var self = this,
-            conf = self.conf;
-
-
-        function closeCallback() {
-          conf.onClose.call(self);
-          onClose.call(self);
-        }
-
-        var popup = $(conf.popup),
+            conf = self.conf,
+            popup = $(conf.popup),
             mask = $(conf.mask);
+
+
         if (popup.hasClass(conf.popupStatus)) {
           mask.stop(true).clearQueue().fadeOut(conf.duration);
 
-          popup.removeClass(conf.popupStatus).stop(true).clearQueue().fadeOut(conf.duration, closeCallback);
+          popup.removeClass(conf.popupStatus).stop(true).clearQueue().fadeOut(conf.duration, function () {
+            conf.onClose.call(self);
+            onClose.call(self);
+          });
         }
 
         return self;

@@ -22,6 +22,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    * !!! Don't edit this !!!
    * 该函数摘自 Swiper，为了方便以后同步，请不要做任何编辑
    */
+  /* eslint-disable */
 
   function getTranslate(el) {
     var axis = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'x';
@@ -65,6 +66,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
     return curTransform || 0;
   }
+  /* eslint-enable */
 
   function getType(val) {
     return val ? Object(val).constructor.name : Object.prototype.toString.call(val).match(/\[object (.*)]/)[1];
@@ -118,6 +120,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
     }
     return target;
+  }
+
+  /**
+   * @el jQuery对象 | DOM | 选择器
+   * @event 事件类型（如 click，transitionend 等等），多个以空格分割
+   * @callback 事件回调
+   * @作用 改进 $.fn.one
+   * @Why el 子元素的 event 事件会冒泡触发 el 的 event 事件，这不是本插件期望的效果。
+   *      比如为 el 添加 click 事件，点击其子元素时也会触发 el 的 click 事件，
+   *      本插件希望只在 event target 为 el 时才执行且仅执行一次事件处理器。
+   */
+  function triggerOnce(el, event, callback) {
+    el = $(el);
+    el.off(event) // 确保只绑一次
+    .on(event, function (e) {
+      if (e.target === el[0]) {
+        // 确保回调只被执行一次
+        el.off(event);
+        callback();
+      }
+    });
   }
 
   // 将插件需要的样式写到 <style> 里 append 到 <head> 里
@@ -308,7 +331,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
    */
   Popup.addStyle(requiredSlidePopupStyle);
 
-  var transitionEnd = 'webkitTransitionEnd transitionend';
+  var transitionEndEvent = 'webkitTransitionEnd transitionend';
+
+  function setTransform(el, val, transitionDuration) {
+    el = $(el);
+    el.css({
+      webkitTransform: val,
+      transform: val,
+      transitionDuration: transitionDuration + 'ms'
+    });
+  }
 
   var SlidePopup = function (_Popup) {
     _inherits(SlidePopup, _Popup);
@@ -367,39 +399,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             mask = $(conf.mask);
 
 
-        self.closeOthersOnOpen();
-
-        function openCallback() {
-          conf.onOpen.call(self);
-          onOpen.call(self);
-        }
-
         if (!popup.hasClass(conf.popupStatus)) {
-          // getTranslate 方法是拿不到 display:none 元素的偏移量的，
-          // 因为 display:none 元素的 transform 值总是为 none
+          // display:none 元素的 transform 值总是为 none，因此 getTranslate 方法是拿不到 display:none 元素的偏移量的，
+          // 所以先把弹窗 show 出来
           popup.show();
 
-          // 按照偏移量去计算动画时长，因为弹窗并不总是从最底下冉冉升起的
+          // 根据偏移量去计算动画时长，因为弹窗并不总是从最底下冉冉升起的
           var popupTranslate = Math.abs(getTranslate(popup[0], 'y')),
               percent = popupTranslate / popup.outerHeight(),
               duration = Math.round(conf.duration * percent);
 
           mask.stop(true).clearQueue().fadeIn(duration);
           // 更新弹窗状态
-          popup.addClass(conf.popupStatus).css({
-            transform: 'translate3d(0,0,0)',
-            transitionDuration: duration + 'ms'
-          })
-          // 过渡未完成不会触发 transitionEnd 事件，因此需要移除之前绑定的事件
-          .off(transitionEnd).on(transitionEnd, function (e) {
-            // popup 子元素的 transition 也会冒泡触发 popup 的 transitionEnd 事件，
-            // 因此需要这层过滤，且必须用 on 而不能是 one 绑定事件
-            if (e.target === popup[0]) {
-              // 确保回调只被执行一次
-              popup.off(transitionEnd);
-
-              openCallback();
-            }
+          popup.addClass(conf.popupStatus);
+          setTransform(popup, 'translate3d(0,0,0)', duration);
+          triggerOnce(popup, transitionEndEvent, function () {
+            conf.onOpen.call(self);
+            onOpen.call(self);
           });
         }
 
@@ -409,16 +425,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'close',
       value: function close() {
         var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+        _get(SlidePopup.prototype.__proto__ || Object.getPrototypeOf(SlidePopup.prototype), 'close', this).call(this);
+
         var self = this,
             conf = self.conf,
             popup = $(conf.popup),
             mask = $(conf.mask);
 
-
-        function closeCallback() {
-          conf.onClose.call(self);
-          onClose.call(self);
-        }
 
         if (popup.hasClass(conf.popupStatus)) {
           var popupTranslate = Math.abs(getTranslate(popup[0], 'y')),
@@ -426,16 +440,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               duration = Math.round(conf.duration * percent);
 
           mask.stop(true).clearQueue().fadeOut(duration);
-
-          popup.removeClass(conf.popupStatus).css({
-            transform: 'translate3d(0,100%,0)',
-            transitionDuration: duration + 'ms'
-          }).off(transitionEnd).on(transitionEnd, function (e) {
-            if (e.target === popup[0]) {
-              popup.off(transitionEnd).hide();
-
-              closeCallback();
-            }
+          popup.removeClass(conf.popupStatus);
+          setTransform(popup, 'translate3d(0,100%,0)', duration);
+          triggerOnce(popup, transitionEndEvent, function () {
+            conf.onClose.call(self);
+            onClose.call(self);
           });
         }
       }

@@ -10,7 +10,7 @@
 <div class="hr"></div>
 <p>献上第二个小点心：<strong>SlidePopup</strong>。</p>
 <p><a href="https://github.com/dom-bro/es6-dessert"><strong>GitHub</strong></a></p>
-<p><a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_04_%E9%80%9A%E7%94%A8%E5%BC%B9%E7%AA%97/index.html"><strong>在线演示</strong></a></p>
+<p><a href="//dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_02_%E5%BA%95%E9%83%A8%E6%B5%AE%E7%8E%B0%E5%BC%B9%E7%AA%97/index.html"><strong>在线演示</strong></a></p>
 <p>GitHub 上欢迎大家来找茬^_^</p>
 <div class="hr"></div>
 <p>前端朋友们，今天要介绍的这款小点心牛B了。相信是个前端都应该接触过这种效果，而且是非常流行的交互。</p>
@@ -19,7 +19,7 @@
 <p class="img-description">基本使用</p>
 <p><img src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180116231908021-1954655357.gif" alt="" class="img img-border"></p>
 <p class="img-description">多个可自定义的选项</p>
-<p>来不及解释了，<a href=""><strong>立即查看示例</strong></a>。</p>
+<p>来不及解释了，<a href="//dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_02_%E5%BA%95%E9%83%A8%E6%B5%AE%E7%8E%B0%E5%BC%B9%E7%AA%97/index.html"><strong>立即查看示例</strong></a>。</p>
 <p>这种弹窗的使用场景主要出现在移动端。</p>
 <p>先定一个小目标：</p>
 
@@ -50,12 +50,14 @@ const popupA = new SlidePopup({
 <p>简单，简单是很重要的。【尽可能简单】是在设计小点心系列 API 时的第一原则。</p>
 <h1 class="head bg-blue floor">雷区</h1>
 <p>这里有一些在使用 <strong>SlidePopup</strong> 时容易导致 bug 的地方，其中的大部分都不容易碰到，但为了避免你在遇到它们时大骂“沃特法克”，请仔细阅读它们。</p>
-<h2><code>popup</code> 上禁止 <code>transform</code></h2>
+
+<h2 class="color-red"><code>popup</code> 上禁止 <code>transform</code></h2>
 <p>SlidePopup 内部通过操作 <code>transform</code> 样式制造 css3 动画。为什么选择 <code>transform</code>? transform 的 3D 变换可触发硬件加速，从而打造丝般顺滑的动画体验。这是跟着 Swiper 老哥学的^_^。实际上，如果你在 popup 上应用了 transform，SlidePopup 会报错(throw Error)，程序会直接挂掉，小点心也是有脾气的。所以你不必记住它，SlidePopup 会在控制台提示你。</p>
 <p>相信我，通过精心组织 html 结构和 css 样式是很容易做到这一点的。So，make me happy，make you easy^_^</p>
 
 <p class="block-success"><strong>最佳实践：</strong> 精心组织 html 和 css，始终不在 popup 上 transform。</p>
-<h2><code>popup</code> 样式覆盖</h2>
+
+<h2 class="color-red"><code>popup</code> 样式覆盖</h2>
 <p>为了使用起来尽可能方便，SlidePopup 将样式封装在了插件内部，否则就需要像 Swiper 那样引入一个 js 文件，再引入一个 css 文件，再小心翼翼地往 html 上添加 css 类名。</p>
 <p>由于是从【底部】浮现，不是左，不是右，不是上，而是底部。因此，SlidePopup 会给 popup 添加一些样式以确保弹窗在【底部】：</p>
 
@@ -70,7 +72,8 @@ margin-bottom: 0 !important;
 <p>这几行样式可以确保弹窗是从【底部】冉冉升起的，一般弹窗的样式是不会与这几行冲突的，如果你执意要跟这几行对着干，那么结果可能不会尽如人意。</p>
 
 <p class="block-success"><strong>最佳实践：</strong>请务必保证上面几行样式生效。</p>
-<h2>移动端 <code>cursor:pointer</code></h2>
+
+<h2 class="color-red">移动端 <code>cursor:pointer</code></h2>
 <p>这不是本插件应该注意的，而是整个移动前端开发都应该注意的。某些 iPhone 机型上如果【可点击元素】没有设置这个样式，将不会触发点击事件。所以确保你在可点击元素上设置了 <code>cursor:pointer</code>。在使用本插件时，那些打开按钮，关闭按钮，点击遮罩关闭，点击 document 空白区域关闭弹窗等等可点击的元素 SlidePopup 都没有做添加 <code>cursor:pointer</code> 处理，都需要使用者在编写样式时自行加上。</p>
 
 <p class="block-success"><strong>最佳实践：</strong>在【可点击元素】上设置 <code>cursor:pointer</code>。</p>
