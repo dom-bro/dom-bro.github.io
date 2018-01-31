@@ -1,1 +1,38 @@
-"use strict";!function(){window.navigator.userAgent.toLowerCase();function o(o){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",a=location.href;if(o){var e=o+"="+t,n=new RegExp(o+"=[^&#]*");n.test(a)?a=a.replace(n,e):(e=(/\?/.test(location.search)?"&":"?")+e,/#/.test(location.hash)?a=a.replace(location.hash,e+location.hash):a+=e)}!function(){console.log.apply(console,arguments)}(a)}o(),o("a"),o("a",1)}();
+'use strict';
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function consoleLog() {
+        console.log.apply(console, arguments);
+    }
+
+    // 无缝替换url
+    function historyReplaceState(key) {
+        var newValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+        var href = location.href;
+        if (key) {
+            var newPair = key + '=' + newValue;
+            var reg = new RegExp(key + '=[^&#]*');
+            if (reg.test(href)) {
+                href = href.replace(reg, newPair);
+            } else {
+                newPair = (/\?/.test(location.search) ? '&' : '?') + newPair;
+
+                if (/#/.test(location.hash)) {
+                    href = href.replace(location.hash, newPair + location.hash);
+                } else {
+                    href += newPair;
+                }
+            }
+        }
+        consoleLog(href);
+        // history.replaceState(null,'', href);
+    }
+
+    historyReplaceState();
+    historyReplaceState('a');
+    historyReplaceState('a', 1);
+})();

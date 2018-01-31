@@ -1,1 +1,138 @@
-"use strict";var _createClass=function(){function n(n,e){for(var o=0;o<e.length;o++){var t=e[o];t.enumerable=t.enumerable||!1,t.configurable=!0,"value"in t&&(t.writable=!0),Object.defineProperty(n,t.key,t)}}return function(e,o,t){return o&&n(e.prototype,o),t&&n(e,t),e}}();function _classCallCheck(n,e){if(!(n instanceof e))throw new TypeError("Cannot call a class as a function")}!function(){window.navigator.userAgent.toLowerCase();function n(){console.log.apply(console,arguments)}var e=function(){function n(e){_classCallCheck(this,n);var o=this;o.conf=$.extend({startTime:0,endTime:0,format:function(n){return n.toString()},onDayChange:function(){},onHourChange:function(){},onMinuteChange:function(){},onSecondChange:function(){},onFinish:function(){}},e),o.remainingTime=e.endTime-e.startTime,o.ticks=0,o.countDown()}return _createClass(n,[{key:"countDown",value:function(){var n=this,e=n.conf,o=Math.floor(n.remainingTime/1e3),t=Math.floor(o/60),i=Math.floor(t/60),a=o%60,r=t%60,u=i%24,c=Math.floor(i/24)%365,s=[];n.ticks++&&(n.s!==a&&s.push(e.onSecondChange),n.m!==r&&s.push(e.onMinuteChange),n.h!==u&&s.push(e.onHourChange),n.d!==c&&s.push(e.onDayChange)),n.remainingTime<=0?s.push(e.onFinish):setTimeout(function(){n.countDown()},1e3),n.remainingTime>=1e3?n.remainingTime-=1e3:n.remainingTime=0,$.extend(n,{s:a,m:r,h:u,d:c,seconds:e.format(a),minutes:e.format(r),hours:e.format(u),days:e.format(c)}),s.forEach(function(e){return e.call(n)})}}]),n}();new Vue({el:"#index",data:{cd:{}},created:function(){this.cd=new e({startTime:0,endTime:6e4,format:function(n){return n.toString().split("")},onSecondChange:function(){var e=this;n(e.days+": "+e.hours+": "+e.minutes+": "+e.seconds),n("秒")},onMinuteChange:function(){n("分钟")},onHourChange:function(){n("小时")},onDayChange:function(){n("天")},onFinish:function(){n("结束")}})}})}();
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function consoleLog() {
+        console.log.apply(console, arguments);
+    }
+
+    var CountDown = function () {
+        function CountDown(conf) {
+            _classCallCheck(this, CountDown);
+
+            var self = this;
+            // 默认配置
+            self.conf = $.extend({
+                startTime: 0, // 开始时间戳
+                endTime: 0, // 结束时间戳
+                format: function format(val) {
+                    return val.toString();
+                },
+                // 对 this.days,...,this.seconds 的值格式化
+                onDayChange: function onDayChange() {},
+                // 天数变化时回调
+                onHourChange: function onHourChange() {},
+                // 小时变化时回调
+                onMinuteChange: function onMinuteChange() {},
+                // 分钟变化时回调
+                onSecondChange: function onSecondChange() {},
+                // 秒数变化时回调
+                onFinish: function onFinish() {}
+            }, conf);
+            self.remainingTime = conf.endTime - conf.startTime;
+
+            self.ticks = 0;
+
+            self.countDown();
+        }
+
+        _createClass(CountDown, [{
+            key: 'countDown',
+            value: function countDown() {
+                var self = this,
+                    conf = self.conf;
+
+
+                var leftSeconds = Math.floor(self.remainingTime / 1000),
+                    leftMinutes = Math.floor(leftSeconds / 60),
+                    leftHours = Math.floor(leftMinutes / 60),
+                    leftDays = Math.floor(leftHours / 24),
+                    s = leftSeconds % 60,
+                    m = leftMinutes % 60,
+                    h = leftHours % 24,
+                    d = leftDays % 365;
+
+                var cbs = []; // 回调队列
+
+
+                if (self.ticks++) {
+                    self.s !== s && cbs.push(conf.onSecondChange);
+                    self.m !== m && cbs.push(conf.onMinuteChange);
+                    self.h !== h && cbs.push(conf.onHourChange);
+                    self.d !== d && cbs.push(conf.onDayChange);
+                }
+
+                if (self.remainingTime <= 0) {
+                    cbs.push(conf.onFinish);
+                } else {
+                    setTimeout(function () {
+                        self.countDown();
+                    }, 1000);
+                }
+
+                if (self.remainingTime >= 1000) {
+                    self.remainingTime -= 1000;
+                } else {
+                    self.remainingTime = 0;
+                }
+
+                $.extend(self, {
+                    // private
+                    s: s, m: m, h: h, d: d,
+
+                    // public
+                    seconds: conf.format(s),
+                    minutes: conf.format(m),
+                    hours: conf.format(h),
+                    days: conf.format(d)
+
+                });
+
+                cbs.forEach(function (cb) {
+                    return cb.call(self);
+                });
+            }
+        }]);
+
+        return CountDown;
+    }();
+
+    new Vue({
+        el: '#index',
+        data: {
+            cd: {}
+        },
+        created: function created() {
+            this.cd = new CountDown({
+                startTime: 0,
+                endTime: 1000 * 60,
+                format: function format(val) {
+                    return val.toString().split('');
+                },
+                onSecondChange: function onSecondChange() {
+                    var self = this;
+                    consoleLog(self.days + ': ' + self.hours + ': ' + self.minutes + ': ' + self.seconds);
+                    consoleLog('秒');
+                },
+                onMinuteChange: function onMinuteChange() {
+                    consoleLog('分钟');
+                },
+                onHourChange: function onHourChange() {
+                    consoleLog('小时');
+                },
+                onDayChange: function onDayChange() {
+                    consoleLog('天');
+                },
+                onFinish: function onFinish() {
+                    consoleLog('结束');
+                }
+            });
+        }
+    });
+})();

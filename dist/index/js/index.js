@@ -1,1 +1,26 @@
-"use strict";!function(){function t(){return Math.round(120*Math.random()+50)}$(".tile-rect").each(function(){var t=$(this);t.height(t.outerWidth()/2)}),$(".tile-square").each(function(){var t=$(this);t.height(t.outerWidth())}),$(".tile-inner").each(function(){$(this).css({backgroundColor:"rgba("+t()+", "+t()+", "+t()+", 1)"})})}();
+'use strict';
+
+(function () {
+    'use strict';
+
+    $('.tile-rect').each(function () {
+        var $this = $(this);
+        $this.height($this.outerWidth() / 2);
+    });
+
+    $('.tile-square').each(function () {
+        var $this = $(this);
+        $this.height($this.outerWidth());
+    });
+
+    function getRandom() {
+        return Math.round(Math.random() * 120 + 50);
+    }
+
+    $('.tile-inner').each(function () {
+        var $this = $(this);
+        $this.css({
+            backgroundColor: 'rgba(' + getRandom() + ', ' + getRandom() + ', ' + getRandom() + ', 1)'
+        });
+    });
+})();

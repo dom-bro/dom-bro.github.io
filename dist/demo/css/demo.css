@@ -1,1 +1,9 @@
-p{background:url(../images/a+.jpg)}a{background:url(../images/road.jpg)}
+p {
+  background: url(../images/a+.jpg);
+}
+
+a {
+  background: url(../images/road.jpg);
+}
+
+/*# sourceMappingURL=data:application/json;base64,ewoJInZlcnNpb24iOiAzLAoJImZpbGUiOiAic3JjL2RlbW8vY3NzL2RlbW8uY3NzIiwKCSJzb3VyY2VzIjogWwoJCSJzcmMvZGVtby9jc3MvZGVtby5zY3NzIiwKCQkic3JjL2RlbW8vY3NzL21vZHVsZXMvbW9kdWxlX2Euc2NzcyIKCV0sCgkibmFtZXMiOiBbXSwKCSJtYXBwaW5ncyI6ICJBQ0VBLEFBQUEsQ0FBQyxDQUFBO0VBQ0MsVUFBVSxFQUFFLHFCQUFxQjtDQUNsQzs7QURERCxBQUFBLENBQUMsQ0FBQTtFQUNDLFVBQVUsRUFBRSx1QkFBdUI7Q0FDcEMiCn0= */

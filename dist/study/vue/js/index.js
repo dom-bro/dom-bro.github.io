@@ -1,1 +1,12 @@
-"use strict";window.vm=new Vue({el:"#index",data:{msg:"hello"}});
+'use strict';
+
+(function () {
+    'use strict';
+
+    window.vm = new Vue({
+        el: '#index',
+        data: {
+            msg: 'hello'
+        }
+    });
+})();

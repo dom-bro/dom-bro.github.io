@@ -1,1 +1,29 @@
-"use strict";!function(){var e=void 0;e=new IScroll("#wrapper",{mouseWheel:!0,infiniteElements:"#scroller .row",dataset:function(t,n){$.get("/?start="+ +t+"&count="+ +n,{callback:function(n){n=JSON.parse(n),e.updateCache(t,n)}})},dataFiller:function(e,t){e.innerHTML=t},cacheSize:1e3})}();
+'use strict';
+
+(function () {
+    'use strict';
+
+    var myScroll = void 0;
+
+    function requestData(start, count) {
+        $.get('/?start=' + +start + '&count=' + +count, {
+            callback: function callback(data) {
+                data = JSON.parse(data);
+                myScroll.updateCache(start, data);
+            }
+        });
+    }
+
+    function updateContent(el, data) {
+        el.innerHTML = data;
+    }
+
+    myScroll = new IScroll('#wrapper', {
+        mouseWheel: true,
+        infiniteElements: '#scroller .row',
+        //infiniteLimit: 2000,
+        dataset: requestData,
+        dataFiller: updateContent,
+        cacheSize: 1000
+    });
+})();

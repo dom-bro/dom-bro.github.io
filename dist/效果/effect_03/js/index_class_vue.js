@@ -1,1 +1,289 @@
-"use strict";var _createClass=function(){function t(t,i){for(var n=0;n<i.length;n++){var e=i[n];e.enumerable=e.enumerable||!1,e.configurable=!0,"value"in e&&(e.writable=!0),Object.defineProperty(t,e.key,e)}}return function(i,n,e){return n&&t(i.prototype,n),e&&t(i,e),i}}();function _classCallCheck(t,i){if(!(t instanceof i))throw new TypeError("Cannot call a class as a function")}!function(){window.navigator.userAgent.toLowerCase();function t(){var t,i,n,e,a,o,r=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},c=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},s=(n=function(t,i){return""!==t?t+i.slice(0,1).toUpperCase()+i.slice(1):i},i=!1,"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(e){0==i&&void 0!=document[n(e,"hidden")]&&(t=e,i=!0)}),e=i,o=function(){return e?document[n(t,"visibilityState")]:void 0},{hidden:(a=function(){return e?document[n(t,"hidden")]:void 0})(),visibilityState:o(),onVisibilityChange:function(i){if(e&&"function"==typeof i)return document.addEventListener(t+"visibilitychange",function(t){this.hidden=a(),this.visibilityState=o(),i.call(this,t)}.bind(this),!1)}});s.onVisibilityChange(function(){"visible"===s.visibilityState&&r(),"hidden"===s.visibilityState&&c()})}var i=function(){function t(){var i=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};_classCallCheck(this,t);var n=this,e=n.conf={head:"",item:".item",main:"",active:"active",attr:"item-id",history:!0,triggerClickOnInit:!0,onClick:function(t){}};$.extend(e,i),$(e.head).length||console.error("NormalTab: cannot find "+(e.head||"tab head id")),e.main&&!$(e.main).length&&e.main&&console.error("NormalTab: cannot find "+e.main),n.id="tab_"+t.instances.length,t.instances.push(n),n.initEvent()}return _createClass(t,[{key:"initHtml",value:function(){var t=this.conf;this.initDOM(t.main),this.initDOM(t.head)}},{key:"initDOM",value:function(t){var i,n,e,a=this.conf;if(t){var o=$(t),r=t===a.main,c=o.children(a.item);r&&c.hide(),c.each(function(t){var i=$(this);!i.attr(a.attr)&&i.attr(a.attr,t)});var s=o.children("["+a.attr+"="+(i=this.id,n=new RegExp("(^|&)"+i+"=([^&]*)(&|$)"),null!=(e=window.location.search.substr(1).match(n))?decodeURIComponent(e[2]):null)+"]");if(!s.length){var l=o.children("."+a.active);s=l.length?l:c.eq(0)}a.triggerClickOnInit?s.click():this.focusOn(s,r)}}},{key:"initEvent",value:function(){var t=this,i=t.conf;i.head&&$(document).on("click",i.head+" "+i.item,function(n){i.onClick.call(this,n);var e=$(this);t.focusOn(e),i.history&&function(t){var i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",n=location.href;if(t){var e=t+"="+i,a=new RegExp(t+"=[^&#]*");a.test(n)?n=n.replace(a,e):(e=(/\?/.test(location.search)?"&":"?")+e,/#/.test(location.hash)?n=n.replace(location.hash,e+location.hash):n+=e)}history.replaceState(null,"",n)}(t.id,e.attr(i.attr)),$(i.main).length&&t.focusOn($(i.main).children("["+i.attr+"="+e.attr(i.attr)+"]"),!0)})}},{key:"focusOn",value:function(t,i){var n=this.conf;i&&t.show().siblings(n.item).hide(),t.addClass(n.active).siblings(n.item).removeClass(n.active)}}]),t}();i.instances=[],require(["jquery","vue","init_mock"],function(n,e){var a=new i({head:"#person-list",main:"#person-list-main"}),o=new i({head:"#person-list2"});new e({el:"#index",data:{server:{success:!1}},methods:{initData:function(){var t=this;n.get("/effect_03",function(i){(i="string"==typeof i?JSON.parse(i):i).success?(t.server=i,t.$nextTick(function(){a.initHtml(),o.initHtml(),function(t){for(var i=document.querySelectorAll(".unit"),n=0;n<i.length;++n)i[n].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==t&&(i[n].style.display="block",i[n].style.color="#fff",i[n].style.margin=".2rem .2rem .5rem",i[n].style.lineHeight=2,i[n].style.fontWeight=700,i[n].style.textAlign="center",i[n].style.textDecoration="none")}(!1)})):alert("数据错误！")})}},created:function(){var i=this;i.initData(),t(function(){i.initData()})}})})}();
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function getQuery(key) {
+        var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)"),
+            res = window.location.search.substr(1).match(reg);
+        return res != null ? decodeURIComponent(res[2]) : null;
+    }
+
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function historyReplaceState(key) {
+        var newValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+        var href = location.href;
+        if (key) {
+            var newPair = key + "=" + newValue;
+            var reg = new RegExp(key + '=[^&#]*');
+            if (reg.test(href)) {
+                href = href.replace(reg, newPair);
+            } else {
+                newPair = (/\?/.test(location.search) ? '&' : '?') + newPair;
+
+                if (/#/.test(location.hash)) {
+                    href = href.replace(location.hash, newPair + location.hash);
+                } else {
+                    href += newPair;
+                }
+            }
+        }
+        history.replaceState(null, '', href);
+    }
+
+    /*
+     * deps: ['jquery', 'getQuery', 'historyReplaceState']
+     *
+     * [html 必要结构]
+     * 1. tab id
+     * 2. item class
+     * 3. item-id attributes
+     *
+     * [js]
+     * 实例化只会初始化事件绑定(click), 而不会初始化 HTML (比如高亮选中项, 隐藏 tab main item 等),
+     * 须手动调用 initHTML 完成初始化(考虑到结合 vue 使用时往往需要延迟初始化HTML并且经常需要多次重复初始化, 抽出来就不会导致重复执行事件绑定);
+     */
+
+    var NormalTab = function () {
+        function NormalTab() {
+            var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            _classCallCheck(this, NormalTab);
+
+            var self = this;
+            var conf = self.conf = {
+                head: '', // require tab head id
+                item: '.item', // require tab children class
+                main: '', // optional tab main id
+                active: 'active', // optional active class
+                attr: 'item-id', // optional item identifier
+                history: true, // optional history replace state
+                triggerClickOnInit: true,
+                onClick: function onClick(e) {}
+            };
+            $.extend(conf, config);
+
+            if (!$(conf.head).length) {
+                console.error("NormalTab: cannot find " + (conf.head || 'tab head id'));
+            }
+
+            if (conf.main && !$(conf.main).length) {
+                conf.main && console.error("NormalTab: cannot find " + conf.main);
+            }
+
+            self.id = 'tab_' + NormalTab.instances.length;
+            NormalTab.instances.push(self);
+
+            self.initEvent();
+        }
+
+        _createClass(NormalTab, [{
+            key: "initHtml",
+            value: function initHtml() {
+                var self = this,
+                    conf = self.conf;
+
+                self.initDOM(conf.main);
+
+                self.initDOM(conf.head);
+            }
+        }, {
+            key: "initDOM",
+            value: function initDOM(selector) {
+                var self = this,
+                    conf = self.conf;
+
+                if (selector) {
+                    var tab = $(selector),
+                        isMain = selector === conf.main,
+                        items = tab.children(conf.item);
+
+                    isMain && items.hide();
+
+                    // 添加 item-id 属性
+                    items.each(function (index) {
+                        var item = $(this);
+                        !item.attr(conf.attr) && item.attr(conf.attr, index);
+                    });
+
+                    var activeItem = tab.children("[" + conf.attr + "=" + getQuery(self.id) + "]");
+                    // 初始化 active item
+                    if (!activeItem.length) {
+                        var temp = tab.children("." + conf.active);
+                        activeItem = temp.length ? temp : items.eq(0);
+                    }
+
+                    if (conf.triggerClickOnInit) {
+                        activeItem.click();
+                    } else {
+                        self.focusOn(activeItem, isMain);
+                    }
+                }
+            }
+        }, {
+            key: "initEvent",
+            value: function initEvent() {
+                var self = this,
+                    conf = self.conf;
+
+                if (conf.head) {
+                    $(document).on('click', conf.head + " " + conf.item, function (e) {
+                        conf.onClick.call(this, e);
+
+                        var $this = $(this);
+
+                        self.focusOn($this);
+
+                        conf.history && historyReplaceState(self.id, $this.attr(conf.attr));
+
+                        $(conf.main).length && self.focusOn($(conf.main).children("[" + conf.attr + "=" + $this.attr(conf.attr) + "]"), true);
+                    });
+                }
+            }
+        }, {
+            key: "focusOn",
+            value: function focusOn(ele, isMain) {
+                var self = this,
+                    conf = self.conf;
+
+                isMain && ele.show().siblings(conf.item).hide();
+
+                ele.addClass(conf.active).siblings(conf.item).removeClass(conf.active);
+            }
+        }]);
+
+        return NormalTab;
+    }();
+
+    NormalTab.instances = [];
+
+    require(['jquery', 'vue', 'init_mock'], function ($, Vue) {
+        var tab1 = new NormalTab({
+            head: '#person-list',
+            main: '#person-list-main'
+        }),
+            tab2 = new NormalTab({
+            head: '#person-list2'
+        });
+        new Vue({
+            el: '#index',
+            data: {
+                server: {
+                    success: false
+                }
+            },
+            methods: {
+                initData: function initData() {
+                    var vm = this;
+                    $.get('/effect_03', function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+
+                        if (res.success) {
+                            vm.server = res;
+
+                            vm.$nextTick(function () {
+                                tab1.initHtml();
+                                tab2.initHtml();
+
+                                colour(false);
+                            });
+                        } else {
+                            alert('数据错误！');
+                        }
+                    });
+                }
+            },
+            created: function created() {
+                var vm = this;
+                vm.initData();
+                // vm.initData();
+                // vm.initData();
+                // vm.initData();
+                // vm.initData();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            }
+        });
+    });
+})();

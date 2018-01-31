@@ -1,14 +1,18 @@
-<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>mobile fixed layout</title><link rel="stylesheet" href="/dist/study/iScroll/css/iscroll_test.css"></head><body class=""><div id="index">
-    <div id="status"></div>
-    <input v-model="n">
-    {{n}}
-    <div id="scroll-container" style="height: 100px;background: lightblue;overflow: hidden">
-        <div>
-            <div v-for="i in getN">{{i}}</div>
-        </div>
-    </div>
-    <div id="indicator" style="height: 100px;border: #000 1px solid">
-        <div style="background: red;"></div>
-    </div>
+<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>iscroll study</title><link rel="stylesheet" href="/dist/study/iScroll/css/iscroll.css"></head><body class=""><a href="javascript:" class="scrollTo">scrollTo</a>
+<a href="javascript:" class="scrollToElement">scrollToElement</a>
+<a href="javascript:" class="frozen">frozen</a>
+<div id="floors">
+  <div>
+    <div class="floor">0</div>
+    <div class="floor">1</div>
+    <div class="floor">2</div>
+    <div class="floor">3</div>
+    <div class="floor">4</div>
+    <div class="floor">5</div>
+    <div class="floor">6</div>
+    <div class="floor">7</div>
+    <div class="floor">8</div>
+    <div class="floor">9</div>
+  </div>
 </div>
-<script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/iScroll/iscroll-probe.js"></script><script src="/dist/study/iScroll/js/iscroll_test.js"></script></body></html>
+<script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/iScroll/iscroll-probe.js"></script><script src="/dist/study/iScroll/js/iscroll.js"></script></body></html>

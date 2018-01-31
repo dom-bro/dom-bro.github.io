@@ -1,1 +1,450 @@
-"use strict";var _createClass=function(){function t(t,n){for(var e=0;e<n.length;e++){var o=n[e];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(n,e,o){return e&&t(n.prototype,e),o&&t(n,o),n}}();function _possibleConstructorReturn(t,n){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!n||"object"!=typeof n&&"function"!=typeof n?t:n}function _inherits(t,n){if("function"!=typeof n&&null!==n)throw new TypeError("Super expression must either be null or a function, not "+typeof n);t.prototype=Object.create(n&&n.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),n&&(Object.setPrototypeOf?Object.setPrototypeOf(t,n):t.__proto__=n)}function _classCallCheck(t,n){if(!(t instanceof n))throw new TypeError("Cannot call a class as a function")}!function(){window.navigator.userAgent.toLowerCase();function t(){var t,n,e,o,i,a,s=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},c=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},l=(e=function(t,n){return""!==t?t+n.slice(0,1).toUpperCase()+n.slice(1):n},n=!1,"number"==typeof window.screenX&&["webkit","moz","ms","o",""].forEach(function(o){0==n&&void 0!=document[e(o,"hidden")]&&(t=o,n=!0)}),o=n,a=function(){return o?document[e(t,"visibilityState")]:void 0},{hidden:(i=function(){return o?document[e(t,"hidden")]:void 0})(),visibilityState:a(),onVisibilityChange:function(n){if(o&&"function"==typeof n)return document.addEventListener(t+"visibilitychange",function(t){this.hidden=i(),this.visibilityState=a(),n.call(this,t)}.bind(this),!1)}});l.onVisibilityChange(function(){"visible"===l.visibilityState&&s(),"hidden"===l.visibilityState&&c()})}var n=function(){function t(){var n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};_classCallCheck(this,t);var e=this,o=e.conf={mask:"",popup:"",openBtn:"",closeBtn:"",toggleBtn:"",duration:0,closeOnClickMask:!1,closeOthersOnOpen:!0,popupStatus:"-popup-visible-",activeToggleBtn:"-active-trigger-btn-",onOpen:function(){},onClose:function(){}};if(window.$){$.extend(o,n);var i=$(o.popup);i.length||console.error("[Popup warn]: 未找到 "+o.popup+" 元素！"),e.id="popup_"+t.instances.length,t.instances.push(e),i.hasClass("-popup-created-")||(i.addClass("-popup-created-"),e.initEvents())}else console.error("[Popup warn]: 该模块依赖 jQuery 库！")}return _createClass(t,[{key:"initEvents",value:function(){var t=this,n=t.conf;n.openBtn&&$(document).on("click",n.openBtn,function(n){n.stopPropagation(),t.event=n,t.open()}),n.closeBtn&&$(document).on("click",n.closeBtn,function(n){n.stopPropagation(),t.event=n,t.close()}),n.closeOnClickMask&&$(document).on("click",n.mask,function(n){n.stopPropagation(),t.event=n,t.close()}),n.toggleBtn&&$(document).on("click",n.toggleBtn,function(e){e.stopPropagation(),t.event=e;var o=$(this);o.hasClass(n.activeToggleBtn)?t.toggle():(t.open(),$(n.activeToggleBtn).removeClass(n.activeToggleBtn),o.addClass(n.activeToggleBtn))}),$(document).on("click",n.popup,function(n){n.stopPropagation(),t.event=n})}},{key:"closeOthersOnOpen",value:function(){var n=this;n.conf.closeOthersOnOpen&&t.instances.forEach(function(t){t!==n&&t.close()})}},{key:"open",value:function(){arguments.length>0&&void 0!==arguments[0]&&arguments[0]}},{key:"close",value:function(){arguments.length>0&&void 0!==arguments[0]&&arguments[0]}},{key:"toggle",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},e=this.conf;$(e.popup).hasClass(e.popupStatus)?this.close(n):this.open(t)}}]),t}();n.instances=[];var e=function(t){function e(t){_classCallCheck(this,e);var n=_possibleConstructorReturn(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t)),o=n,i=o.conf,a=$(i.popupId);return o.x=0,o.y=0,o.panelData={width:a.outerWidth(!0),height:a.outerHeight(!0)},n}return _inherits(e,n),_createClass(e,[{key:"init",value:function(){var t=this,n=t.conf;t.x=t.event.clientX,t.y=t.event.clientY,$(n.popupId).css({left:t.x,top:t.y,width:0,height:0})}},{key:"open",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=this,e=n.conf;n.closeOthersOnOpen();var o=$(e.popupId),i=$(e.maskId);o.hasClass(e.panelStatusClass)||(n.init(),i.fadeIn(e.animateTime),o.show().addClass(e.panelStatusClass).stop(!0).clearQueue().fadeIn(0).animate({left:($(window).width()-n.panelData.width)/2,top:($(window).height()-n.panelData.height)/2,width:n.panelData.width,height:n.panelData.height},e.animateTime),e.onOpen(),t(e))}},{key:"close",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:function(){},n=this.conf,e=$(n.popupId),o=$(n.maskId);e.hasClass(n.panelStatusClass)&&(o.fadeOut(n.animateTime),e.show().removeClass(n.panelStatusClass).stop(!0).clearQueue().animate({left:this.x,top:this.y,width:0,height:0},n.animateTime,function(){e.fadeOut(n.animateTime),t(n)}),t(n),n.onClose())}}]),e}();require(["jquery","vue","init_mock"],function(n,o){var i,a,s=function(t){var n;return"function"==typeof t&&(t={fn:t}),t=$.extend({fn:function(){},context:this,fn2:function(){},context2:this},t),function(){return t.fn?(n=t.fn.apply(t.context,arguments),t.fn=null):n=t.fn2.apply(t.context2,arguments),n}}(function(){i=new e({popupId:".panel-01",closeBtnClass:".close-panel-01",closeOthersOnOpen:!1,closePopupOnClickDocument:!1,openBtnClass:".trigger-panel-01"}),a=new e({popupId:".panel-02",triggerBtnClass:".trigger-panel-02"})});new o({el:"#index",data:{activeItem:{},server:{success:!1}},methods:{closePanel01:function(){var t=this;i.close(function(){t.initData()})},closePanel02:function(){var t=this;a.close(function(){t.initData()})},initData:function(){var t=this;n.get("/effect_02",function(n){(n="string"==typeof n?JSON.parse(n):n).success?(t.activeItem=n.contents[0],t.server=n,t.$nextTick(function(){!function(t){for(var n=document.querySelectorAll(".unit"),e=0;e<n.length;++e)n[e].style.background="rgb("+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+","+Math.floor(126*Math.random())+")",!1!==t&&(n[e].style.display="block",n[e].style.color="#fff",n[e].style.margin=".2rem .2rem .5rem",n[e].style.lineHeight=2,n[e].style.fontWeight=700,n[e].style.textAlign="center",n[e].style.textDecoration="none")}(),s()})):alert("数据错误！")})}},created:function(){var n=this;n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),n.initData(),t(function(){n.initData()})}})})}();
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function () {
+    'use strict';
+
+    var ua = window.navigator.userAgent.toLowerCase();
+    function colour(use_default_style) {
+        // 着色
+        var units = document.querySelectorAll('.unit');
+        var threshold = 126;
+        for (var i = 0; i < units.length; ++i) {
+            units[i].style.background = 'rgb(' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ',' + Math.floor(Math.random() * threshold) + ')';
+
+            // 默认样式
+            if (use_default_style !== false) {
+                units[i].style.display = 'block';
+                units[i].style.color = '#fff';
+                units[i].style.margin = '.2rem .2rem .5rem';
+                units[i].style.lineHeight = 2;
+                units[i].style.fontWeight = 700;
+                units[i].style.textAlign = 'center';
+                units[i].style.textDecoration = 'none';
+            }
+        }
+    }
+
+    function getPageVisibility() {
+        var prefixSupport,
+            keyWithPrefix = function keyWithPrefix(prefix, key) {
+            if (prefix !== "") {
+                // 首字母大写
+                return prefix + key.slice(0, 1).toUpperCase() + key.slice(1);
+            }
+            return key;
+        },
+            isPageVisibilitySupport = function () {
+            var support = false;
+            if (typeof window.screenX === "number") {
+                ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+                    if (support == false && document[keyWithPrefix(prefix, "hidden")] != undefined) {
+                        prefixSupport = prefix;
+                        support = true;
+                    }
+                });
+            }
+            return support;
+        }(),
+            isHidden = function isHidden() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "hidden")] : undefined;
+        },
+            visibilityState = function visibilityState() {
+            return isPageVisibilitySupport ? document[keyWithPrefix(prefixSupport, "visibilityState")] : undefined;
+        };
+
+        return {
+            hidden: isHidden(),
+            visibilityState: visibilityState(),
+            onVisibilityChange: function onVisibilityChange(fn) {
+                if (isPageVisibilitySupport && typeof fn === "function") {
+                    return document.addEventListener(prefixSupport + "visibilitychange", function (evt) {
+                        this.hidden = isHidden();
+                        this.visibilityState = visibilityState();
+                        fn.call(this, evt);
+                    }.bind(this), false);
+                }
+                return undefined;
+            }
+        };
+    }
+    function onPageVisibilityChange() {
+        var onPageVisible = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+        var onPageHidden = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+        var pageVisibility = getPageVisibility();
+
+        pageVisibility.onVisibilityChange(function () {
+            pageVisibility.visibilityState === 'visible' && onPageVisible();
+            pageVisibility.visibilityState === 'hidden' && onPageHidden();
+        });
+    }
+    function runOnce(conf) {
+        if (typeof conf === 'function') {
+            conf = {
+                fn: conf
+            };
+        }
+
+        conf = $.extend({
+            fn: function fn() {
+                // 第一次运行执行
+            },
+            context: this, // fn 的执行上下文
+
+            fn2: function fn2() {
+                // 之后每次运行执行
+            },
+            context2: this // fn2 的执行上下文
+        }, conf);
+
+        var result;
+        return function () {
+            if (conf.fn) {
+                result = conf.fn.apply(conf.context, arguments);
+                conf.fn = null;
+            } else {
+                result = conf.fn2.apply(conf.context2, arguments);
+            }
+
+            return result;
+        };
+    }
+
+    var Popup = function () {
+        function Popup() {
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            _classCallCheck(this, Popup);
+
+            var self = this;
+
+            var conf = self.conf = {
+                mask: '', // popup 遮罩（推荐传入 id）
+                popup: '', // popup 内容（推荐传入 id）
+                openBtn: '', // 打开弹窗按钮（推荐传入 class）
+                closeBtn: '', // 关闭弹窗按钮（推荐传入 class）
+                toggleBtn: '', // 打开/关闭按钮（推荐传入 class）
+                duration: 0, // 动画时长
+                closeOnClickMask: false, // 点击遮罩时是否关闭弹窗
+                closeOthersOnOpen: true, // 打开一个弹窗时是否关闭其它弹窗
+                popupStatus: '-popup-visible-', // 标识弹窗的状态
+                activeToggleBtn: '-active-trigger-btn-', // 多个 toggle btn 情况
+
+                // 回调会在动画结束之后调用
+                onOpen: function onOpen() {},
+                // 打开回调
+                onClose: function onClose() {}
+            };
+
+            if (!window.$) {
+                console.error('[Popup warn]: 该模块依赖 jQuery 库！');
+                return;
+            }
+
+            $.extend(conf, options);
+
+            var popup = $(conf.popup);
+
+            if (!popup.length) {
+                console.error('[Popup warn]: \u672A\u627E\u5230 ' + conf.popup + ' \u5143\u7D20\uFF01');
+            }
+
+            self.id = 'popup_' + Popup.instances.length;
+            Popup.instances.push(self);
+
+            // 兼容对同一个 DOM 重复实例化（强烈不推荐）
+            if (!popup.hasClass('-popup-created-')) {
+                popup.addClass('-popup-created-');
+                self.initEvents();
+            }
+        }
+
+        _createClass(Popup, [{
+            key: 'initEvents',
+            value: function initEvents() {
+                var self = this,
+                    conf = self.conf;
+
+
+                if (conf.openBtn) {
+                    $(document).on('click', conf.openBtn, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+                        self.open();
+                    });
+                }
+
+                if (conf.closeBtn) {
+                    $(document).on('click', conf.closeBtn, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+                        self.close();
+                    });
+                }
+
+                if (conf.closeOnClickMask) {
+                    $(document).on('click', conf.mask, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+                        self.close();
+                    });
+                }
+
+                // 此处的 toggle 第一次点击总是打开
+                if (conf.toggleBtn) {
+                    $(document).on('click', conf.toggleBtn, function (e) {
+                        e.stopPropagation();
+                        self.event = e;
+
+                        var $this = $(this);
+                        if ($this.hasClass(conf.activeToggleBtn)) {
+                            self.toggle();
+                        } else {
+                            self.open();
+                            $(conf.activeToggleBtn).removeClass(conf.activeToggleBtn);
+                            $this.addClass(conf.activeToggleBtn);
+                        }
+                    });
+                }
+
+                $(document).on('click', conf.popup, function (e) {
+                    e.stopPropagation();
+                    self.event = e;
+                });
+            }
+        }, {
+            key: 'closeOthersOnOpen',
+            value: function closeOthersOnOpen() {
+                var self = this,
+                    conf = self.conf;
+
+
+                if (conf.closeOthersOnOpen) {
+                    Popup.instances.forEach(function (instance) {
+                        if (instance !== self) {
+                            instance.close();
+                        }
+                    });
+                }
+            }
+        }, {
+            key: 'open',
+            value: function open() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+            }
+        }, {
+            key: 'close',
+            value: function close() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+            }
+        }, {
+            key: 'toggle',
+            value: function toggle() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+                var onClose = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+                var self = this,
+                    conf = self.conf;
+
+
+                var popup = $(conf.popup);
+
+                popup.hasClass(conf.popupStatus) ? self.close(onClose) : self.open(onOpen);
+            }
+        }]);
+
+        return Popup;
+    }();
+
+    Popup.instances = [];
+
+    var ShrinkPopup = function (_Popup) {
+        _inherits(ShrinkPopup, _Popup);
+
+        function ShrinkPopup(config) {
+            _classCallCheck(this, ShrinkPopup);
+
+            var _this = _possibleConstructorReturn(this, (ShrinkPopup.__proto__ || Object.getPrototypeOf(ShrinkPopup)).call(this, config));
+
+            var self = _this,
+                conf = self.conf,
+                panel = $(conf.popupId);
+
+            self.x = 0;
+            self.y = 0;
+
+            // 适用场景(必要条件)：弹窗宽高固定(即渲染之后弹窗宽高不会发生变化，因为该效果是对宽高进行操作，所以要求宽高固定)
+            self.panelData = {
+                width: panel.outerWidth(true),
+                height: panel.outerHeight(true)
+            };
+            return _this;
+        }
+
+        _createClass(ShrinkPopup, [{
+            key: 'init',
+            value: function init() {
+                var self = this,
+                    conf = self.conf;
+
+                self.x = self.event.clientX;
+                self.y = self.event.clientY;
+
+                var panel = $(conf.popupId);
+                panel.css({
+                    left: self.x,
+                    top: self.y,
+                    width: 0,
+                    height: 0
+
+                });
+            }
+        }, {
+            key: 'open',
+            value: function open() {
+                var onOpen = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                self.closeOthersOnOpen();
+
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (!panel.hasClass(conf.panelStatusClass)) {
+                    self.init();
+
+                    mask.fadeIn(conf.animateTime);
+                    panel.show().addClass(conf.panelStatusClass).stop(true).clearQueue().fadeIn(0).animate({
+                        left: ($(window).width() - self.panelData.width) / 2,
+                        top: ($(window).height() - self.panelData.height) / 2,
+                        width: self.panelData.width,
+                        height: self.panelData.height
+                    }, conf.animateTime);
+
+                    conf.onOpen();
+
+                    onOpen(conf);
+                }
+            }
+        }, {
+            key: 'close',
+            value: function close() {
+                var onClose = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+                var self = this,
+                    conf = self.conf;
+
+                var panel = $(conf.popupId),
+                    mask = $(conf.maskId);
+                if (panel.hasClass(conf.panelStatusClass)) {
+                    mask.fadeOut(conf.animateTime);
+                    panel.show().removeClass(conf.panelStatusClass).stop(true).clearQueue().animate({
+                        left: self.x,
+                        top: self.y,
+                        width: 0,
+                        height: 0
+                    }, conf.animateTime, function () {
+                        panel.fadeOut(conf.animateTime);
+
+                        onClose(conf);
+                    });
+
+                    onClose(conf);
+
+                    conf.onClose();
+                }
+            }
+        }]);
+
+        return ShrinkPopup;
+    }(Popup);
+
+    require(['jquery', 'vue', 'init_mock'], function ($, Vue) {
+        var panel_01, panel_02;
+        var initPanel = runOnce(function () {
+            panel_01 = new ShrinkPopup({
+                popupId: '.panel-01',
+                closeBtnClass: '.close-panel-01',
+                closeOthersOnOpen: false,
+                closePopupOnClickDocument: false,
+                openBtnClass: '.trigger-panel-01'
+                // animateTime: 3000,
+            });
+            panel_02 = new ShrinkPopup({
+                popupId: '.panel-02',
+                triggerBtnClass: '.trigger-panel-02'
+                // animateTime: 3000,
+            });
+        });
+
+        new Vue({
+            el: '#index',
+            data: {
+                activeItem: {},
+
+                server: {
+                    success: false
+                }
+            },
+            methods: {
+                closePanel01: function closePanel01() {
+                    var vm = this;
+
+                    panel_01.close(function () {
+                        vm.initData();
+                    });
+                },
+                closePanel02: function closePanel02() {
+                    var vm = this;
+
+                    panel_02.close(function () {
+                        vm.initData();
+                    });
+                },
+                initData: function initData() {
+                    var vm = this;
+                    $.get('/effect_02', function (res) {
+                        res = typeof res === 'string' ? JSON.parse(res) : res;
+
+                        if (res.success) {
+                            vm.activeItem = res.contents[0];
+                            vm.server = res;
+
+                            vm.$nextTick(function () {
+                                colour();
+
+                                initPanel();
+                            });
+                        } else {
+                            alert('数据错误！');
+                        }
+                    });
+                }
+            },
+            created: function created() {
+                var vm = this;
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+                vm.initData();
+
+                onPageVisibilityChange(function () {
+                    vm.initData();
+                });
+            }
+        });
+    });
+})();
