@@ -5,22 +5,18 @@
             background: #fff;
             font-size: 1rem !important;
         }
-    </style></head><body class=""><p><img style="border:none; border-radius:0" src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180112155221691-1241039299.jpg" class="img img-border"></p>
-<p>小点心，顾名思义，开箱即食，拿来即用。</p>
-<div class="hr"></div>
-<p>献上第二个小点心：<strong>SlidePopup</strong>。</p>
-<p><a href="https://github.com/dom-bro/es6-dessert"><strong>GitHub</strong></a></p>
-<p><a href="//dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_02_%E5%BA%95%E9%83%A8%E6%B5%AE%E7%8E%B0%E5%BC%B9%E7%AA%97/index.html"><strong>在线演示</strong></a></p>
-<p>GitHub 上欢迎大家来找茬^_^</p>
-<div class="hr"></div>
-<p>前端朋友们，今天要介绍的这款小点心牛B了。相信是个前端都应该接触过这种效果，而且是非常流行的交互。</p>
+    </style></head><body class=""><p>ES6小点心，顾名思义，开箱即食，拿来即用。</p>
+<p>【楼层定位】是前端日常开发中的常见需求。这个效果本身并没有什么高深的地方，不出意外的话，一般 Jser 在几十分钟之内就能搞出来一个。但如果把兼容性考虑进去，那情况就要复杂多了。尤其是移动端的兼容性，UI 表现不一致，scroll 事件触发不连续，blabla...。在经过一次实现这种需求的痛苦经历后，咱决心搞一个插件出来，不让前端的小伙伴们再被各种兼容性问题恶心到。</p>
+<p>楼层定位的主要逻辑就是在用户触摸屏幕并滑动时根据滚动位置判断当前的【焦点楼层】。说简单也简单，如果是 PC 端，直接监听 scroll 事件就能做到。但放在移动端，IOS 的 scroll 事件触发是不连续的，就会导致做出来的用户体验非常差。作为一名有追求的前端开发，岂能忍受这卡不啦唧的触摸体验。Swiper 的滑动体验挺好的，仔细研究才发现，这B不是原生滚动，而是用 css3 的一些特性实现的模拟滚动。后来找到了 iscroll.js 插件，人家专业做模拟滚动的。于是就果断采用了 iscroll.js 作为滚动模拟器，一路跌跌撞撞，总算把楼层定位写了出来。虽然不算完美，但兼容性相对完整（不承诺兼容所有机型，但大部分主流机器已通过测试），用户体验相随统一且流畅。遂分享出来，欢迎各位来找茬哈^_^</p>
 <p>闲话少叙，先上效果图：</p>
-<p><img src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180116231803162-1161369494.gif" alt="" class="img img-border"></p>
-<p class="img-description">基本使用</p>
-<p><img src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180116231908021-1954655357.gif" alt="" class="img img-border"></p>
-<p class="img-description">多个可自定义的选项</p>
-<p>来不及解释了，<a href="//dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_02_%E5%BA%95%E9%83%A8%E6%B5%AE%E7%8E%B0%E5%BC%B9%E7%AA%97/index.html"><strong>立即查看示例</strong></a>。</p>
-<p>这种弹窗的使用场景主要出现在移动端。</p>
+<p><img src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180131185725421-139821698.gif" alt="" class="img img-border"></p>
+<p class="img-description">简单示例</p>
+<p><img src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180131185823750-1234192602.gif" alt="" class="img img-border"></p>
+<p class="img-description">双向联动</p>
+<p><img src="http://images2017.cnblogs.com/blog/882926/201801/882926-20180131185838000-1785648403.gif" alt="" class="img img-border"></p>
+<p class="img-description">复杂示例</p>
+<p>来不及解释了，<a href="//dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_00_%E6%A5%BC%E5%B1%82%E5%AE%9A%E4%BD%8D%E6%95%88%E6%9E%9C/index.html"><strong>立即查看示例</strong></a>。</p>
+<p>这种效果的主要使用场景主要出现在移动端。</p>
 <p>先定一个小目标：</p>
 
 <ul class="well-success list">
@@ -28,110 +24,36 @@
 <li>兼容性，兼容主流浏览器，但并非所有（比如 IE 低版本）；</li>
 <li>移动优先，主要为移动端做更多的考虑；</li>
 </ul>
-<p>为了以后不必再为写这种效果烦心，特此写了【底部浮现弹窗】小插件。</p>
+<div class="hr"></div>
+<p>献上第 3 个小点心：<strong>Floor</strong>。</p>
+<p><a href="https://github.com/dom-bro/es6-dessert"><strong>GitHub</strong></a></p>
+<p><a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_00_%E6%A5%BC%E5%B1%82%E5%AE%9A%E4%BD%8D%E6%95%88%E6%9E%9C/index.html"><strong>在线演示</strong></a></p>
+<p>觉得有用 GitHub 点个 star 哟^_^</p>
+<div class="hr"></div>
+<h3>依赖 iscroll</h3>
+<p>依赖一个 jQuery 已经足够令我伤心了，每增加一个依赖，插件的易用性和受欢迎程度都会大大折扣。但是没办法，该依赖还得依赖。如果自己写一个蹩脚的 jQuery 出来，不知道会捣腾出什么隐晦的 bug 出来。之所以选择 iscroll，是因为移动端原生的滚动事件并不尽如人意，如果只服务 PC 端，只需要绑定 scroll 事件就行了。然而到了移动端，情况变得棘手起来。移动端的区域滚动，某些IOS手机上最后的惯性移动触发不了 scroll 事件，而且安卓和 IOS 的区域滚动表现相当不一致。iscroll 正是以解决这些兼容性和不一致为目标，为大家带来丝滑般一致的滚动体验。考虑到本插件的目标——同时支持 PC 和移动端，易用性和体积只能让位于兼容性了o(╥﹏╥)o</p>
+<p>如果你对 iscroll.js 一无所知，那就太好了，因为 Floor 已将它封装的足够简单。当然，如果你是个 iscroll.js 砖家，这将给你提供更多的可定制性。如果你对 iscroll.js 感兴趣，那么资源都在下面咯。</p>
+<p><a href="http://iscrolljs.com/">IScroll 官网</a></p>
+<p><a href="http://wiki.jikexueyuan.com/project/iscroll-5/">IScroll API 中文版</a></p>
 <h1 class="head bg-blue floor">使用</h1>
-<p>和 <a href="//dom-bro.github.io/效果/effect_04_通用弹窗/index.html">通用弹窗(NormalPopup)</a> 几乎相同的API，因为他们继承自同一个父类，这正是面向对象的巨大魅力。</p>
-
-<p class="bq bq-error"><strong>注意事项：遮罩和主体分离</strong><br>
-不同于 <a href="//dom-bro.github.io/效果/effect_04_通用弹窗/index.html">通用弹窗(NormalPopup)</a>，使用 SlidePopup 时最好弹窗的遮罩和主体是分离的（相信你可以通过组织 html 结构和 css 样式轻松做到这点），因为需要对遮罩和主体执行不同的动画，遮罩是做渐现效果，而主体是做上滑效果，如果遮罩和主体缠在一块，结果你懂的。</p>
-
-<p class="block-success"><strong>最佳实践：</strong> 请矢志不渝地做好遮罩和主体分离^_^</p>
-<p>下面是 SlidePopup 最简单的使用：</p>
+<p>和前几个小点心相同的 API 风格，简单，尽可能简单。</p>
+<h3>基本使用</h3>
+<p>下面是 Floor 最简单的使用：</p>
 
 ```js 
-const popupA = new SlidePopup({
-    popup: '#popup-A',
-    openBtn: '.open-popup-A',
-    closeBtn: '.close-popup-A',
+const floorA = new Floor({
+    container: '#floor-A',
 })
  
 ```
 
 <p>简单，简单是很重要的。【尽可能简单】是在设计小点心系列 API 时的第一原则。</p>
-<h1 class="head bg-blue floor">雷区</h1>
-<p>这里有一些在使用 <strong>SlidePopup</strong> 时容易导致 bug 的地方，其中的大部分都不容易碰到，但为了避免你在遇到它们时大骂“沃特法克”，请仔细阅读它们。</p>
-
-<h2 class="color-red"><code>popup</code> 上禁止 <code>transform</code></h2>
-<p>SlidePopup 内部通过操作 <code>transform</code> 样式制造 css3 动画。为什么选择 <code>transform</code>? transform 的 3D 变换可触发硬件加速，从而打造丝般顺滑的动画体验。这是跟着 Swiper 老哥学的^_^。实际上，如果你在 popup 上应用了 transform，SlidePopup 会报错(throw Error)，程序会直接挂掉，小点心也是有脾气的。所以你不必记住它，SlidePopup 会在控制台提示你。</p>
-<p>相信我，通过精心组织 html 结构和 css 样式是很容易做到这一点的。So，make me happy，make you easy^_^</p>
-
-<p class="block-success"><strong>最佳实践：</strong> 精心组织 html 和 css，始终不在 popup 上 transform。</p>
-
-<h2 class="color-red"><code>popup</code> 样式覆盖</h2>
-<p>为了使用起来尽可能方便，SlidePopup 将样式封装在了插件内部，否则就需要像 Swiper 那样引入一个 js 文件，再引入一个 css 文件，再小心翼翼地往 html 上添加 css 类名。</p>
-<p>由于是从【底部】浮现，不是左，不是右，不是上，而是底部。因此，SlidePopup 会给 popup 添加一些样式以确保弹窗在【底部】：</p>
-
-```css 
-position: fixed !important;
-top: auto !important;
-bottom: 0 !important;
-margin-bottom: 0 !important;
- 
-```
-
-<p>这几行样式可以确保弹窗是从【底部】冉冉升起的，一般弹窗的样式是不会与这几行冲突的，如果你执意要跟这几行对着干，那么结果可能不会尽如人意。</p>
-
-<p class="block-success"><strong>最佳实践：</strong>请务必保证上面几行样式生效。</p>
-
-<h2 class="color-red">移动端 <code>cursor:pointer</code></h2>
-<p>这不是本插件应该注意的，而是整个移动前端开发都应该注意的。某些 iPhone 机型上如果【可点击元素】没有设置这个样式，将不会触发点击事件。所以确保你在可点击元素上设置了 <code>cursor:pointer</code>。在使用本插件时，那些打开按钮，关闭按钮，点击遮罩关闭，点击 document 空白区域关闭弹窗等等可点击的元素 SlidePopup 都没有做添加 <code>cursor:pointer</code> 处理，都需要使用者在编写样式时自行加上。</p>
-
-<p class="block-success"><strong>最佳实践：</strong>在【可点击元素】上设置 <code>cursor:pointer</code>。</p>
-<h1 class="head bg-blue floor">文件列表</h1>
-<table class="table">
-<thead>
-<tr><th>小点心</th>
-<th>UMD(Development)</th>
-<th>UMD(Production)</th>
-<th>ES Module</th>
-</tr></thead>
-<tbody>
-<tr><td>Full</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/es6Dessert.js">
-    es6Dessert.js
-  </a>
-  (17.35kb)
-</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/es6Dessert.min.js">
-    es6Dessert.min.js
-  </a>
-  (8.11kb)
-</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/es6Dessert.esm.js">
-    es6Dessert.esm.js
-  </a>
-  (11.66kb)
-</td></tr><tr><td>通用弹窗</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/NormalPopup.js">
-    NormalPopup.js
-  </a>
-  (10.23kb)
-</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/NormalPopup.min.js">
-    NormalPopup.min.js
-  </a>
-  (4.83kb)
-</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/NormalPopup.esm.js">
-    NormalPopup.esm.js
-  </a>
-  (6.56kb)
-</td></tr><tr><td>底部浮现弹窗</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/SlidePopup.js">
-    SlidePopup.js
-  </a>
-  (15.35kb)
-</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/SlidePopup.min.js">
-    SlidePopup.min.js
-  </a>
-  (7.14kb)
-</td><td>
-  <a href="https://unpkg.com/es6-dessert/dist/SlidePopup.esm.js">
-    SlidePopup.esm.js
-  </a>
-  (10.29kb)
-</td></tr>
-</tbody>
-</table>
+<h3>onFloorChange</h3>
+<p><code>onFloorChange</code> 是本小点心唯一的回调，也是本插件最关键的功能。<code>onFloorChange</code> 的触发时机是仅在【焦点楼层】发生变化时。</p>
+<h3>scrollTo</h3>
+<p>将楼层滚动到指定的位置。</p>
+<p>由于 scrollTo 是根据 container 和 wrapper 的 offset 去计算位置，margin 不计算在内，border 和 padding 都计算在内，其实有一个最保险的方法就是不要给 container 和 wrapper 设置 margin，border 和 paddding，你就完全不用去理会这些细节，程序也不会出现怪异的行为。否则的话，最后的程序表现可能不会跟你预想的一样，你就得去研究 scrollTo 的实现方式，何必呢！</p>
+<p>其他小点心：</p>
+<p><a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_04_%E9%80%9A%E7%94%A8%E5%BC%B9%E7%AA%97/index.html">通用弹窗</a></p>
+<p><a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_02_%E5%BA%95%E9%83%A8%E6%B5%AE%E7%8E%B0%E5%BC%B9%E7%AA%97/index.html">底部浮现弹窗</a></p>
 <script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/dist/cnblogs/js/demo.js"></script></body></html>

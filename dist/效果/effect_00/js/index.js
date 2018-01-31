@@ -2924,7 +2924,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
     $parent.addClass('active').siblings().removeClass('active');
 
-    floorB.scrollTo(floors.eq($parent.index()));
+    exampleB.scrollTo(floors.eq($parent.index()));
   });
 
   var floorB = new Floor({
