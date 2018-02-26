@@ -1,0 +1,1 @@
+!function(){"use strict";function o(o,t){var n={};return o.forEach(function(o){var a=t(o);n[a]||(n[a]=[]),n[a].push(o)}),n}console.log(o([{a:"top"},{a:"bottom"}],function(o){return o.a})),console.log(o([{a:"top"},{a:"bottom"},{a:"bottom",v:1}],function(o){return o.a})),console.log(o([{b:{a:"top"}},{b:{a:"bottom"}},{b:{a:"bottom",v:1}}],function(o){return o.b.a}))}();

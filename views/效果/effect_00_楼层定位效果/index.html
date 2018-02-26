@@ -1,0 +1,382 @@
+<!doctype html><html><head><meta name="renderer" content="webkit"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="date=no"><meta name="format-detection" content="address=no"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>楼层定位效果</title><link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="/lib/highlight/9.12.0/vs.css"><link rel="stylesheet" href="/dist/index/css/github_pages.css"><link rel="stylesheet" href="/dist/效果/effect_00/css/index.css"></head><body class=""><div style="display:none"><script src="https://s19.cnzz.com/z_stat.php?id=1272831761&amp;web_id=1272831761"></script></div><div class="body-wrapper"><div class="nav navbar-default header"><div class="container" style="overflow:hidden"><div class="navbar-header"><a href="/index" class="navbar-brand">DOM哥</a><button class="navbar-toggle" data-toggle="collapse" data-target="#bs-nav"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="bs-nav" class="collapse navbar-collapse"><ul class="nav navbar-nav db-nav"><li class="active"><a href="/index">前端</a></li><li><a href="/views/blog/index">博客</a></li><li><a href="/views/about_me/index">About me</a></li></ul></div></div></div><div class="container"><div class="article clearfix"><ol class="breadcrumb">
+  <li><a href="javascript:">交互效果</a></li>
+  <li class="active">楼层定位</li>
+</ol>
+
+<div class="jumbotron-wrapper clearfix">
+  <div class="panel panel-info pull-right qr-code">
+    <div class="panel-heading text-center">手机扫一扫</div>
+    <div class="panel-body">
+      <img class="qr-img">
+    </div>
+  </div>
+  <div class="jumbotron">
+    <h1>Floor</h1>
+    <p>楼层定位</p>
+    <div id="starGitHub" href="//github.com/dom-bro/es6-dessert"></div>
+  </div>
+</div>
+
+<h2 class="page-header" style="margin-top: 1rem">示例</h2>
+<div class="clearfix">
+  <div class="floor-example">
+    <div class="panel panel-info">
+      <div class="panel-heading">第<span id="example-A-num" style="padding: 0 20px;font-size: 2.4rem;font-weight: bold;">-</span>楼</div>
+      <div id="example-A" class="panel-body floor-container" style="padding: 0">
+        <div>
+          <div class="floor-item">0</div>
+          <div class="floor-item">1</div>
+          <div class="floor-item">2</div>
+          <div class="floor-item">3</div>
+          <div class="floor-item">4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="floor-example">
+    <ul id="example-B-tab" class="nav nav-pills">
+      <li><a href="javascript:" class="example-B-tab-item">tab_0</a></li>
+      <li><a href="javascript:" class="example-B-tab-item">tab_1</a></li>
+      <li><a href="javascript:" class="example-B-tab-item">tab_2</a></li>
+      <li><a href="javascript:" class="example-B-tab-item">tab_3</a></li>
+      <li><a href="javascript:" class="example-B-tab-item">tab_4</a></li>
+    </ul>
+    <div id="example-B" class="floor-container">
+      <div>
+        <div class="floor-item">0</div>
+        <div class="floor-item">1</div>
+        <div class="floor-item">2</div>
+        <div class="floor-item">3</div>
+        <div class="floor-item">4</div>
+      </div>
+    </div>
+  </div>
+  <div class="floor-example" style="clear:both">
+    <div id="example-C-tab">
+      <div class="tab-wrapper">
+        <a href="javascript:" class="example-C-tab-item">tab_0</a>
+        <a href="javascript:" class="example-C-tab-item">tab_1</a>
+        <a href="javascript:" class="example-C-tab-item">tab_2</a>
+        <a href="javascript:" class="example-C-tab-item">tab_3</a>
+        <a href="javascript:" class="example-C-tab-item">tab_4</a>
+        <a href="javascript:" class="example-C-tab-item">tab_5</a>
+        <a href="javascript:" class="example-C-tab-item">tab_6</a>
+        <a href="javascript:" class="example-C-tab-item">tab_7</a>
+        <a href="javascript:" class="example-C-tab-item">tab_8</a>
+        <a href="javascript:" class="example-C-tab-item">tab_9</a>
+        <a href="javascript:" class="example-C-tab-item">tab_10</a>
+        <a href="javascript:" class="example-C-tab-item">tab_11</a>
+        <a href="javascript:" class="example-C-tab-item">tab_12</a>
+        <a href="javascript:" class="example-C-tab-item">tab_13</a>
+        <a href="javascript:" class="example-C-tab-item">tab_14</a>
+      </div>
+    </div>
+    <div id="example-C" class="floor-container" style="clear: both">
+      <div>
+        <div class="floor-item">0</div>
+        <div class="floor-item">1</div>
+        <div class="floor-item">2</div>
+        <div class="floor-item">3</div>
+        <div class="floor-item">4</div>
+        <div class="floor-item">5</div>
+        <div class="floor-item">6</div>
+        <div class="floor-item">7</div>
+        <div class="floor-item">8</div>
+        <div class="floor-item">9</div>
+        <div class="floor-item">10</div>
+        <div class="floor-item">11</div>
+        <div class="floor-item">12</div>
+        <div class="floor-item">13</div>
+        <div class="floor-item">14</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="page-header" style="margin-top: 1rem">使用</h2>
+
+<h3>基本示例</h3>
+
+<div>
+  <p>和前几个小点心相同的 API 风格，简单，尽可能简单。</p>
+
+  <div class="db-example">
+    <div class="panel panel-info">
+      <div class="panel-heading">第<span id="floor-A-num" style="padding: 0 20px;font-size: 2.4rem;font-weight: bold;">-</span>楼</div>
+      <div id="floor-A" class="panel-body floor-container" style="padding: 0">
+        <div>
+          <div class="floor-item">0</div>
+          <div class="floor-item">1</div>
+          <div class="floor-item">2</div>
+          <div class="floor-item">3</div>
+          <div class="floor-item">4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="db-sourcecode">
+<pre><code class="javascript">const floorA = new Floor({
+container: '#floor-A',
+baseline: 0.2, // 基准线，作为判断 active floor 的依据，
+baselineDebug: true, // 是否显示基准线
+onFloorChange(){
+  $('#floor-A-num').html(this.activeIndex)
+}
+})
+</code></pre>
+  </div>
+
+  <p>不同于<a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_04_%E9%80%9A%E7%94%A8%E5%BC%B9%E7%AA%97/index.html">通用弹窗</a>和<a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_02_%E5%BA%95%E9%83%A8%E6%B5%AE%E7%8E%B0%E5%BC%B9%E7%AA%97/index.html">底部浮现弹窗</a>，楼层定位对 DOM 结构和 CSS 样式有了更多的要求。没办法，这个效果涉及到滚动，需要改变原生滚动的行为，而且需要考虑到各个平台系统的兼容性。因此一定的 DOM 结构和 CSS 样式要求是不可避免的。</p>
+
+  <p class="text-info"><strong>期望的 DOM 结构：</strong></p>
+<pre><code class="html" style="background: none">&lt;div id="your-floors-container">
+&lt;div id="your-floors-wrapper">
+  &lt;div class="your-floor-item">
+        .
+        .
+        .
+  &lt;div class="your-floor-item">
+&lt;/div>
+&lt;/div>
+</code></pre>
+  <p>如果你用过 <a href="http://www.swiper.com.cn/">Swiper.js</a>，对这种结构一定不会陌生，没错，这是产生滚动的必须条件。请使用这种结构，否则可能会导致莫名其妙的 bug。</p>
+
+  <p class="text-info"><strong>期望的 CSS 样式：</strong></p>
+<pre><code class="css" style="background: none">#your-floors-container{
+position: relative;
+overflow: hidden;
+}
+</code></pre>
+  <p>这就是所需要的全部东西。注意哟，overflow 的属性值是 <code>hidden</code> 而不是 <code>auto</code> 或其他，因为这里使用的是模拟滚动，而不是原生滚动。也就是在用户滑动的时候通过操控元素的 transform 和 transition 去移动它，使其看起来像滚动一样。之所以这么麻烦滴去模拟，是因为原生滚动在各个平台（安卓和 IOS 以及 PC 端各种浏览器）表现不一致且很难控制，模拟滚动可以提供给开发者更精细更完善的控制权以及更一致的 UI 表现。</p>
+
+  <div class="bq bq-info">
+    <h4 class="bq-head">基于 iscroll.js 实现</h4>
+    <div>需要提前声明的是，这个效果在内部使用了 <a href="https://github.com/cubiq/iscroll/">iscroll.js</a> 来辅助实现。但并不期望你对 iscroll 有什么了解，因为本插件已将其封装的足够简单。</div>
+  </div>
+</div>
+
+<h3>onFloorChange</h3>
+
+<div>
+  <p><code>onFloorChange</code> 是本小点心唯一的回调，也是本插件最关键的功能。<code>onFloorChange</code> 的触发时机是仅在【焦点楼层】发生变化时。</p>
+
+  <div class="db-example">
+    <ul id="floor-B-tab" class="nav nav-pills">
+      <li><a href="javascript:" class="floor-B-tab-item">tab_0</a></li>
+      <li><a href="javascript:" class="floor-B-tab-item">tab_1</a></li>
+      <li><a href="javascript:" class="floor-B-tab-item">tab_2</a></li>
+      <li><a href="javascript:" class="floor-B-tab-item">tab_3</a></li>
+      <li><a href="javascript:" class="floor-B-tab-item">tab_4</a></li>
+    </ul>
+    <div id="floor-B" class="floor-container">
+      <div>
+        <div class="floor-item">0</div>
+        <div class="floor-item">1</div>
+        <div class="floor-item">2</div>
+        <div class="floor-item">3</div>
+        <div class="floor-item">4</div>
+      </div>
+    </div>
+  </div>
+  <div class="db-sourcecode">
+<pre><code class="javascript">const floorB = new Floor({
+container: '#floor-B',
+baselineDebug: true,
+onFloorChange(){
+  $('#floor-B-tab').children()
+    .eq(this.activeIndex)
+    .addClass('active')
+    .siblings()
+    .removeClass('active')
+}
+})
+</code></pre>
+  </div>
+  <p><code>onFloorChange</code> 方法里的 <code>this</code> 指向实例本身，一个非常有用的属性就是 <code>activeIndex</code>，它始终指向当前的楼层序号，即几楼是【焦点楼层】。</p>
+</div>
+
+<h3>更复杂的示例</h3>
+
+<div>
+  <p>下面是一个很常见的需求场景，点击 tab 项定位到具体楼层，滑动楼层定位到 tab 项，实现联动。</p>
+  <div class="db-example">
+    <div id="floor-C-tab">
+      <div class="tab-wrapper">
+        <a href="javascript:" class="floor-C-tab-item">tab_0</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_1</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_2</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_3</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_4</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_5</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_6</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_7</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_8</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_9</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_10</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_11</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_12</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_13</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_14</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_15</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_16</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_17</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_18</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_19</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_20</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_21</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_22</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_23</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_24</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_25</a>
+        <a href="javascript:" class="floor-C-tab-item">tab_26</a>
+      </div>
+    </div>
+    <div id="floor-C" class="floor-container" style="clear: both">
+      <div>
+        <div class="floor-item">0</div>
+        <div class="floor-item">1</div>
+        <div class="floor-item">2</div>
+        <div class="floor-item">3</div>
+        <div class="floor-item">4</div>
+        <div class="floor-item">5</div>
+        <div class="floor-item">6</div>
+        <div class="floor-item">7</div>
+        <div class="floor-item">8</div>
+        <div class="floor-item">9</div>
+        <div class="floor-item">10</div>
+        <div class="floor-item">11</div>
+        <div class="floor-item">12</div>
+        <div class="floor-item">13</div>
+        <div class="floor-item">14</div>
+        <div class="floor-item">15</div>
+        <div class="floor-item">16</div>
+        <div class="floor-item">17</div>
+        <div class="floor-item">18</div>
+        <div class="floor-item">19</div>
+        <div class="floor-item">20</div>
+        <div class="floor-item">21</div>
+        <div class="floor-item">22</div>
+        <div class="floor-item">23</div>
+        <div class="floor-item">24</div>
+        <div class="floor-item">25</div>
+        <div class="floor-item">26</div>
+      </div>
+    </div>
+  </div>
+  <div class="db-sourcecode">
+<pre><code class="javascript">const floorCTab = new IScroll('#floor-C-tab', {
+scrollX: true,
+bounce: false,
+click: true,
+})
+
+const floorC = new Floor({
+container: '#floor-C',
+baselineDebug: true,
+onFloorChange(){
+  let activeTab = $('.floor-C-tab-item').eq(this.activeIndex)
+
+  floorCTab.scrollToElement(activeTab[0], 1000, true)
+
+  activeTab.addClass('active')
+    .siblings()
+    .removeClass('active')
+}
+})
+</code></pre>
+  </div>
+
+  <p>这个效果的实现看上去有些复杂了，上面的 tab 是一个 <code>IScroll</code> 实例，下面的主体内容区域则是一个 <code>Floor</code> 实例。为了保证灵活性，服务于尽可能多的场景，留给使用者足够多的可定制空间，该插件并没有提供现成的效果，而是仅仅暴露几个简单的 api，让开发者尽情发挥，不受束缚。</p>
+</div>
+
+<h2 class="page-header" style="margin-top: 1rem">雷区</h2>
+<p>这里有一些在使用时容易导致 bug 的地方，其中的大部分应该都不容易碰到，但为了避免你在遇到它们时大骂“沃特法克”，请仔细阅读它们。</p>
+
+<h3 class="text-danger">在 DOM 加载完毕之后实例化</h3>
+
+<p>由于基于 iscroll.js，而 iscroll 需要拿到容器的精确尺寸并且会缓存起来。如果 DOM 未加载完毕就实例化，很可能会导致行为异常。</p>
+<p>在与 MVVM 框架混合使用时尤其注意这一点，例如当结合 Vue 使用时，请在 Vue 挂载到 DOM 之后再进行实例化，你可以在<code>mounted</code>生命周期里去<code>new Floor()</code>^_^</p>
+
+<h3 class="text-danger">容器位置或尺寸发生变化后调用<code>refresh</code></h3>
+
+<p>依然是 iscroll.js 需要的，这事真不赖我。iscroll 会在实例化时缓存容器位置和尺寸信息，当发生变化后，这些缓存的数值就过期了。因此必须手动调用 <code>refresh</code> 方法告诉 iscroll 重新计算。</p>
+<h2 class="page-header">API</h2>
+<p>和其他小点心保持了统一的 api 风格，因为我们都是小点心家族咯^_^</p>
+
+<h3 class="api-title">new Floor(options)</h3>
+<div>
+    <p>用于实例化一个【楼层定位】并返回该实例的引用。</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>options</strong>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-success">
+                <div class="pull-left"><span class="color-red">container</span>：</div>
+                <div style="overflow: hidden">必选，楼层容器，即楼层的可视窗口，可传入id，class等css选择器，强烈推荐传入id，因为这很符合面向对象哲学^_^；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">baseline：</div>
+              <div style="overflow: hidden">可选，基准线，也就是滑到哪才算是切换了楼层，这个值是相对于楼层容器（也就是传入 container 元素）高度的百分比，默认是 <code>0.5</code>，即滑过容器一半就算是切换了楼层。如果设置成 <code>0.2</code>，那就是换到距离容器顶部 20% 高度时即算是切换了楼层。因此这个选项的取值区间最好是 [0, 1]；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">baselineDebug：</div>
+                <div style="overflow: hidden">可选，是否展示基准线，即是否显示前面几个示例中的那条虚线。默认是不显示的，你可以将其设为 <code>true</code> 将这条线显示出来，这应该仅做调试用；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">itemClass：</div>
+              <div style="overflow: hidden">可选，有时你可能并不想 wrapper 中的每个子元素都作为一个楼层，这就是 <code>itemClass</code> 选项的作用，你可以传入一个 CSS 选择器，Floor 将只把筛选出来的元素作为楼层。<span class="text-warning">默认会将 wrapper 下的所有子元素都作为楼层来处理</span>；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">iscroll：</div>
+              <div style="overflow: hidden">可选，正如前面所说的，Floor 为了兼容性和用户体验，选择了基于 <a href="https://github.com/cubiq/iscroll/">iscroll.js</a> 来实现，因此这个选项用于控制 <code>IScroll</code>。如果你对 iscroll.js 一无所知，那就太好了，完全忽略这个选项吧。如果你是个 iscroll.js 专家，想自定义 IScroll 的行为，那就把自定义项都写在这里面，实例化 IScroll 时的所有选项都可以写在这里面；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">onFloorChange：</div>
+                <div style="overflow: hidden">可选，楼层切换回调，这个是本插件的最核心功能。调用时机是在用户滑动楼层并且导致楼层发生切换时，可根据上面的示例免费体验一下；</div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<h3 class="api-title">floor.scrollTo()</h3>
+<div>
+  <p>将楼层滚动到指定位置。该方法支持传入不同的参数实现不同的行为。</p>
+  <p><code>scrollTo</code> 支持很多种不同的传参方式，但大体使用范式如下：</p>
+<pre><code class="javascript" style="background: none">floor.scrollTo(y, [opts])</code></pre>
+  <p style="margin-bottom: 6px"><strong class="text-success">y</strong></p>
+  <ul class="order-list">
+    <li>传入一个数值如 <code>100</code>，表示滚动至 n 个像素；</li>
+    <li>传入 <code>'+100'</code> 或 <code>'-50'</code> 表示相对于现在的位置再偏移 n 个像素；</li>
+    <li>传入一个 css 选择器（可以是任何 jQuery 支持的选择器如<code>.floor:last</code>或<code>.floor:nth-child(3)</code>等）或者 dom 元素或者 jQuery 对象，表示直接【滚动到指定元素】位置，这通常是最有用的。</li>
+  </ul>
+
+  <p style="margin-bottom: 6px"><strong class="text-success">opts</strong></p>
+  <p>opts 可以是一个或多个参数，你可以像下面这样使用：</p>
+  <ul class="order-list">
+    <li><code>floor.scrollTo(y, [time], [easing])</code>，time 表示动画时间，单位毫秒(ms)，默认 <code>0</code>。easing 表示缓冲函数，可以是以下值之一：quadratic | circular | back | bounce | elastic。</li>
+    <li><code>floor.scrollTo(y, {time: 100, easing: 'elastic', offsetY: true})</code>，time 和 easing 同上，offsetY 用于在【滚动到指定元素】后再偏移 n 个像素，或者可以直接传 <code>true</code>，这样就会滚动到指定元素居容器正中位置，这是非常实用的。</li>
+  </ul>
+</div>
+
+<h3 class="api-title">floor.refresh()</h3>
+
+<p>IScroll 需要知道 container 和 wrapper 实际尺寸，并且在初始化时对其做了缓存。因此如果 IScroll 内的元素数量或位置大小发生了变化，你就需要告诉它重新计算，这是很蠢的。但是没办法，凑活着用吧，谁让咱依赖他呢。所以如果 container 位置或尺寸发生了变化，请手动调用 refresh 刷新一下，make iscroll happy^_^</p>
+
+<h3 class="api-title">floor.on(event, callback)</h3>
+<p>有时你可能需要在 scroll 或 scrollEnd 事件上自定义监听函数，你可以使用这个方法去绑定事件。支持的事件有：beforeScrollStart | scrollCancel | scrollStart | scroll | scrollEnd 等。</p>
+</div></div><footer class="footer"><div class="container"><div class="row"><div class="col-sm-6"><div class="title">关于本站</div><div>Copyright ©2017-2018 <a href="/views/about_me/index">DOM哥</a></div><div>Powered by <a href="https://pages.github.com/">GitHub Pages</a></div></div><div class="col-sm-6"><div class="title col-xs-12">前端资源</div><div class="col-xs-6" style="padding: 0"><a href="http://www.runoob.com/">菜鸟教程</a></div><div class="col-xs-6" style="padding: 0"><a href="https://github.com/">GitHub</a></div></div></div></div></footer><script>
+document.querySelector('.body-wrapper').style.paddingBottom = document.querySelector('.footer').offsetHeight + 20 + 'px'
+</script></div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="/lib/highlight/9.12.0/highlight.pack.js"></script><script src="/lib/iScroll/iscroll-probe.js"></script><script src="/dist/效果/effect_00/js/index.js"></script><script>
+    if(window.hljs){
+      // 代码高亮 highlight.js
+      window.hljs.initHighlightingOnLoad()
+      $('.db-sourcecode').show()
+    }
+
+    // 二维码图片
+    $('.qr-img').attr('src', 'http://qr.liantu.com/api.php?text=' + window.location.href)
+
+    var starGitHub = $('#starGitHub')
+    starGitHub.append('<a href="' + starGitHub.attr('href') + '" target="_blank" class="btn btn-success" style="margin: 0;line-height: 32px" ><svg style="float:left;margin-right: .5rem" width="32" height="32" viewBox="0 0 16 16" fill="white"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg> Star me on GitHub</a>')
+  </script></body></html>

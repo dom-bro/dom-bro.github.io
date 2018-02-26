@@ -1,0 +1,384 @@
+<!doctype html><html><head><meta name="renderer" content="webkit"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="date=no"><meta name="format-detection" content="address=no"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>底部浮现弹窗</title><link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="/lib/highlight/9.12.0/vs.css"><link rel="stylesheet" href="/dist/index/css/github_pages.css"><link rel="stylesheet" href="/dist/效果/effect_04/css/index.css"></head><body class=""><div style="display:none"><script src="https://s19.cnzz.com/z_stat.php?id=1272831761&amp;web_id=1272831761"></script></div><div class="body-wrapper"><div class="nav navbar-default header"><div class="container" style="overflow:hidden"><div class="navbar-header"><a href="/index" class="navbar-brand">DOM哥</a><button class="navbar-toggle" data-toggle="collapse" data-target="#bs-nav"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="bs-nav" class="collapse navbar-collapse"><ul class="nav navbar-nav db-nav"><li class="active"><a href="/index">前端</a></li><li><a href="/views/blog/index">博客</a></li><li><a href="/views/about_me/index">About me</a></li></ul></div></div></div><div class="container"><div class="article clearfix"><div id="index">
+    <ol class="breadcrumb">
+        <li><a href="javascript:">交互效果</a></li>
+        <li class="active">底部浮现弹窗</li>
+    </ol>
+
+    <div class="jumbotron-wrapper clearfix">
+        <div class="panel panel-info pull-right qr-code">
+            <div class="panel-heading text-center">手机扫一扫</div>
+            <div class="panel-body">
+                <img class="qr-img">
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h1>SlidePopup</h1>
+            <p>底部浮现弹窗</p>
+            <div id="starGitHub" href="//github.com/dom-bro/es6-dessert"></div>
+        </div>
+    </div>
+
+    <h2 class="page-header" style="margin-top: 1rem">示例</h2>
+    <div class="well">
+        <div class="btn btn-danger open-popup-A">A | 遮罩和主体未分离</div>
+        <div class="btn btn-primary open-popup-B">B | 遮罩与主体分离</div>
+
+        <div class="btn btn-success open-popup-C">C | 特殊弹窗样式</div>
+
+        <div class="btn btn-info open-popup-D">D | 无遮罩</div>
+
+        <div class="btn btn-warning toggle-popup-E">E | Toggle One</div>
+
+        <div class="btn btn-success open-popup-F">F | 点击遮罩关闭</div>
+
+        <div class="btn btn-primary open-popup-G">G | 打开时不关闭其他弹窗</div>
+
+        <div class="btn btn-warning open-popup-H">H | 过渡时长</div>
+
+        <div class="btn btn-info open-popup-K">K | onOpen | onClose</div>
+
+        <div class="alert alert-danger">
+            <div class="btn btn-default toggle-popup-E" v-for="i in 4">E{{i}} | Toggle One</div>
+        </div>
+
+        <div class="alert alert-success">
+            <div class="btn btn-default toggle-popup-M" v-for="i in 4" @click="activeIndex = i-1">{{M[i-1]}} | Toggle Group</div>
+        </div>
+    </div>
+
+    <h2 class="page-header" style="margin-top: 1rem">使用</h2>
+
+    <h3>基本示例</h3>
+    <div>
+        <p>
+            和 <a href="//dom-bro.github.io/效果/effect_04_通用弹窗/index.html">通用弹窗(NormalPopup)</a> 几乎相同的API，因为他们继承自同一个父类，这正是面向对象的巨大魅力。
+        </p>
+
+        <div class="db-example">
+            <div class="btn btn-lg btn-danger open-popup-A">A | 遮罩和主体未分离</div>
+            <div class="btn btn-lg btn-primary open-popup-B">B | 遮罩与主体分离</div>
+        </div>
+        <div class="db-sourcecode">
+<pre><code class="javascript">const popupB = new SlidePopup({
+mask: '#popup-B-mask',
+popup: '#popup-B',
+openBtn: '.open-popup-B',
+closeBtn: '.close-popup-B',
+})
+</code></pre>
+        </div>
+
+        <div class="bq bq-error">
+            <h4 class="bq-head">注意事项：遮罩和主体分离</h4>
+            <p>不同于 <a href="//dom-bro.github.io/效果/effect_04_通用弹窗/index.html">通用弹窗(NormalPopup)</a>，使用 SlidePopup 时最好弹窗的遮罩和主体是分离的（相信你可以通过组织 html 结构和 css 样式轻松做到这点），因为需要对遮罩和主体执行不同的动画，遮罩是做渐现效果，而主体是做上滑效果，如果遮罩和主体缠在一块，结果你懂的。</p>
+        </div>
+
+        <div class="alert alert-success"><strong>最佳实践：</strong>请矢志不渝地做好遮罩和主体分离^_^</div>
+    </div>
+
+    <h3>使用回调</h3>
+    <div>
+        <p>可以在实例化时传入打开或关闭回调函数，回调将在弹窗完全打开或关闭后（即在打开或关闭动画结束之后）被调用。</p>
+
+        <div class="db-example">
+            <div class="btn btn-info btn-lg open-popup-K">K | onOpen | onClose</div>
+        </div>
+        <div class="db-sourcecode">
+<pre><code class="javascript">const popupK = new SlidePopup({
+popup: '#popup-K',
+openBtn: '.open-popup-K',
+closeBtn: '.close-popup-K',
+onOpen(){
+    alert('opened K')
+},
+onClose(){
+    alert('closed K')
+}
+})
+</code></pre>
+        </div>
+    </div>
+
+    <h3>点击遮罩关闭</h3>
+    <div>
+        <p>可以在实例化时设置点击遮罩关闭（这是一个非常实用的选项），此时需要提供一个额外的 <code>mask</code> 选项，而且要求遮罩(<code>mask</code>)和主体(<code>popup</code>)必须是分离的。</p>
+
+        <div class="db-example">
+            <div class="btn btn-lg btn-success open-popup-F">F | 点击遮罩关闭</div>
+        </div>
+        <div class="db-sourcecode">
+<pre><code class="javascript">const popupF = new SlidePopup({
+mask: '#popup-F-mask',
+popup: '#popup-F',
+openBtn: '.open-popup-F',
+closeOnClickMask: true,
+})
+</code></pre>
+        </div>
+
+        <div class="alert alert-warning"><strong>提醒：</strong>如果是你是在移动端使用，别忘了在你的 <code>mask</code> 元素上加上 <code>cursor: pointer</code>，否则在某些 iPhone 机型上可能触发不了点击事件哦，到时候别怪我没提醒你哟！</div>
+    </div>
+
+    <h3>过渡动画时长</h3>
+    <div>
+        <p>可以在实例化时传入可选的动画时长，默认是<code>300</code>毫秒。</p>
+
+        <div class="db-example">
+            <div class="btn btn-lg btn-warning open-popup-H">H | 过渡时长</div>
+        </div>
+        <div class="db-sourcecode">
+<pre><code class="javascript">const popupH = new SlidePopup({
+popup: '#popup-H',
+openBtn: '.open-popup-H',
+closeBtn: '.close-popup-H',
+duration: 2000,
+})
+</code></pre>
+        </div>
+    </div>
+
+    <h3>Toggle Popup</h3>
+    <div>
+        <p>这是一个比较实用的特性，你可以传入一个 <code>toggleBtn</code>，使得点击时如果弹窗是打开状态就关闭，关闭状态时就打开。但是事情并不是那么简单，请仔细察看以下两种情景的不同。</p>
+
+        <p><span class="text-danger">情景一：Toggle One。</span>这是最简单的情况。弹窗打开时关闭，弹窗关闭时打开。所有 Toggle btn 就像一个一样。</p>
+        <div class="db-example">
+            <div class="btn btn-lg btn-default toggle-popup-E"
+                 style="margin: 1rem"
+                 v-for="i in 4"
+            >E{{i}} | Toggle One</div>
+
+        </div>
+        <div class="db-sourcecode">
+<pre><code class="javascript">const popupE = new SlidePopup({
+popup: '#popup-E',
+})
+$(document).on('click', '.toggle-popup-E', () => {
+popupE.toggle()
+})
+</code></pre>
+        </div>
+
+        <p><span class="text-danger">情景二：Toggle Group。</span>如果是一个 Toggle Btn的情况，它的行为和 Toggle One 一模一样。如果存在多个Toggle Btn，这个差异就很明显了。简单说就是，存在一个【焦点Btn】（即最近的一次点击），当点击一个 Toggle Btn 时，如果该 Btn 不是【焦点Btn】，则该 Btn 变成【焦点Btn】并打开弹窗（如果弹窗已打开则无动作）。如果该 Btn 是【焦点Btn】，则弹窗打开时关闭，弹窗关闭时打开。</p>
+        <p>所以如果在第一次点击 Toggle Btn 时，总是试图打开弹窗。</p>
+        <div class="db-example">
+            <div class="btn btn-lg btn-default toggle-popup-M"
+                 style="margin: 1rem"
+                 v-for="i in 4"
+                 @click="activeIndex = i-1"
+            >{{M[i-1]}} | Toggle Group</div>
+        </div>
+        <div class="db-sourcecode">
+<pre><code class="javascript">const popupM = new SlidePopup({
+popup: '#popup-M',
+toggleBtn: '.toggle-popup-M'
+})
+</code></pre>
+        </div>
+
+        <p class="text-success"><code>toggleBtn</code>选项处理的是情景二，因此请谨慎地使用它。</p>
+        <div class="bq bq-info">
+            <div class="bq-head">小贴士</div>
+            <p>此功能主要用于在【切换焦点】时动态更新弹窗内容（就像示例中那样），例如点击一组商品中的某个时，在弹窗中显示其详细信息。</p>
+            <div>如果需要实现【情景一】中的交互，SlidePopup 并没有提供相应的选项。你可以通过调用 <code>popup.toggle()</code> 方法轻松实现，就像上面那几行 jQuery 示例代码一样。</div>
+        </div>
+
+    </div>
+
+    <h3>点击 document 空白区域时关闭</h3>
+    <div>
+        <p>这是一个常见的需求，但 SlidePopup 并没有提供选项帮你实现。因为它太过简单，让使用者记忆一个 api 要比直接简单实现它花销更大，这违反了 KISS 原则。</p>
+        <div class="db-example">
+            <div class="btn btn-lg btn-primary open-popup-N">N | closeOnClickDocument</div>
+        </div>
+        <div class="db-sourcecode">
+<pre><code class="javascript">const popupN = new SlidePopup({
+popup: '#popup-N',
+openBtn: '.open-popup-N',
+})
+$(document).on('click', ()=>{
+popupN.close()
+})
+</code></pre>
+        </div>
+
+        <div class="alert alert-warning"><strong>提醒：</strong>如果是你是在移动端使用，别忘了在 <code>html</code> 或 <code>body</code> 元素上加上 <code>cursor: pointer</code>，否则在某些 iPhone 机型上可能触发不了点击事件哦，到时候别怪我没提醒你哟，总之一句话，记得在【可点击元素】上加上 <code>cursor: pointer</code>！</div>
+    </div>
+
+    <h2 class="page-header" style="margin-top: 1rem">雷区</h2>
+    <p>这里有一些在使用时容易导致 bug 的地方，其中的大部分应该都不容易碰到，但为了避免你在遇到它们时大骂“沃特法克”，请仔细阅读它们。</p>
+
+    <h3 class="text-danger"><code>popup</code> 上禁止 <code>transform</code></h3>
+    <div>
+        <p>SlidePopup 内部通过操作 <code>transform</code> 样式制造 css3 动画。为什么选择 <code>transform</code>? transform 的 3D 变换可触发硬件加速，从而打造丝般顺滑的动画体验。这是跟着 Swiper 老哥学的^_^。实际上，如果你在 popup 上应用了 transform，SlidePopup 会报错(throw Error)，程序会直接挂掉，小点心也是有脾气的。所以你不必记住它，SlidePopup 会在控制台提示你。</p>
+        <p>相信我，通过精心组织 html 结构和 css 样式是很容易做到这一点的。So，make me happy，make you easy^_^</p>
+
+        <p class="alert alert-success"><strong>最佳实践：</strong>精心组织 html 和 css，始终不在 popup 上 transform。</p>
+    </div>
+
+    <h3 class="text-danger"><code>popup</code> 样式覆盖</h3>
+    <div>
+        <p>为了使用起来尽可能方便，SlidePopup 将样式封装在了插件内部，否则就需要像 Swiper 那样引入一个 js 文件，再引入一个 css 文件，再小心翼翼地往 html 上添加 css 类名。</p>
+        <p>由于是从【底部】浮现，不是左，不是右，不是上，而是底部。因此，SlidePopup 会给 popup 添加一些样式以确保弹窗在【底部】：</p>
+<pre><code class="css" style="background: transparent">position: fixed !important;
+top: auto !important;
+bottom: 0 !important;
+margin-bottom: 0 !important;
+</code></pre>
+        <p>这几行样式可以确保弹窗是从【底部】冉冉升起的，一般弹窗的样式是不会与这几行冲突的，如果你执意要跟这几行对着干，那么结果可能不会尽如人意。</p>
+        <p class="alert alert-success"><strong>最佳实践：</strong>请务必保证上面几行样式生效。</p>
+    </div>
+
+    <h3 class="text-danger">移动端 <code>cursor:pointer</code></h3>
+    <div>
+        <p>这不是本插件应该注意的，而是整个移动前端开发都应该注意的。某些 iPhone 机型上如果【可点击元素】没有设置这个样式，将不会触发点击事件。所以确保你在可点击元素上设置了 <code>cursor:pointer</code>。在使用本插件时，那些打开按钮，关闭按钮，点击遮罩关闭，点击 document 空白区域关闭弹窗等等可点击的元素 SlidePopup 都没有做添加 <code>cursor:pointer</code> 处理，都需要使用者在编写样式时自行加上。</p>
+        <p class="alert alert-success"><strong>最佳实践：</strong>在【可点击元素】上设置 <code>cursor:pointer</code>。</p>
+    </div>
+
+    <div id="popup-A" class="popup" style="display: none">
+        <div class="popup-inner">
+            <div class="popup-content">A</div>
+            <div class="foot-btn">
+                <div class="btn btn-primary close-popup-A">关闭弹窗 A</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup-B-mask" class="popup" style="display: none"></div>
+    <!-- 由于需要对 popup 进行 transform 操作，因此请确保传入的 popup 元素上没有 transform 样式 -->
+    <div id="popup-B" class="slide-popup-inner" style="display: none">
+        <div class="popup-content">B</div>
+        <div class="foot-btn">
+            <div class="btn btn-info close-popup-B">关闭弹窗 B</div>
+        </div>
+    </div>
+
+    <div id="popup-C-mask" class="popup" style="display: none"></div>
+    <div id="popup-C" style="z-index: 10;display: none">
+        <div class="slide-popup-inner slide-popup-C">
+            <div class="popup-content">C</div>
+            <div class="foot-btn">
+                <div class="btn btn-success close-popup-C">关闭弹窗 C</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup-D" class="slide-popup-inner" style="display: none">
+        <div class="popup-content">D</div>
+        <div class="foot-btn">
+            <div class="btn btn-info close-popup-D">关闭弹窗 D</div>
+        </div>
+    </div>
+
+    <div id="popup-E" class="slide-popup-inner" style="display: none;height: 20%">
+        <div class="popup-content">E</div>
+    </div>
+
+    <div id="popup-F-mask" class="popup" style="display: none;cursor: pointer"></div>
+    <div id="popup-F" class="slide-popup-inner" style="z-index: 10;display: none;left: 10%;right: 10%;height: 30%;width: auto">
+        <div class="popup-content">F</div>
+    </div>
+
+    <div id="popup-G" class="slide-popup-inner" style="display: none; height: 16%;background: lightcoral">
+        <div class="text-center">
+            <div class="btn btn-primary close-popup-G">关闭弹窗 G</div>
+        </div>
+    </div>
+
+    <div id="popup-H" class="slide-popup-inner" style="display: none">
+        <div class="popup-content">H<span style="font-size: 2.4rem">(2000ms)</span></div>
+        <div class="foot-btn">
+            <div class="btn btn-warning close-popup-H">关闭弹窗 H</div>
+        </div>
+    </div>
+
+    <div id="popup-K" class="slide-popup-inner" style="display: none">
+        <div class="popup-content">K</div>
+        <div class="foot-btn">
+            <div class="btn btn-info close-popup-K">关闭弹窗 K</div>
+        </div>
+    </div>
+
+    <div id="popup-M" class="slide-popup-inner" style="display: none;height: 20%">
+        <div class="popup-content">{{M[activeIndex]}}</div>
+    </div>
+
+    <div id="popup-N" class="slide-popup-inner" style="display: none;height: 20%">
+        <div class="popup-content">N</div>
+    </div>
+</div>
+<h2 class="page-header">API</h2>
+<p>由于继承了同一个父类，SlidePopup 和 <a href="//dom-bro.github.io/效果/effect_04_通用弹窗/index.html">NormalPopup</a> 有着几乎完全相同的 API。</p>
+
+<h3 class="api-title">new SlidePopup(options)</h3>
+<div>
+    <p>用于实例化一个【底部浮现弹窗】并返回该实例的引用。</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>options</strong>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-success">
+                <div class="pull-left"><span class="color-red">popup</span>：</div>
+                <div style="overflow: hidden">必选，弹窗DOM，可传入id，class等css选择器，强烈推荐传入id，这符合面向对象哲学^_^；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">mask：</div>
+                <div style="overflow: hidden">可选，弹窗背景遮罩，如果需要点击遮罩关闭弹窗（closeOnClickMask）功能，则必须传入此项，因为需要在上面绑定点击事件；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">openBtn：</div>
+                <div style="overflow: hidden">可选，点击打开弹窗的css选择器，其实就是绑了个click事件；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">closeBtn：</div>
+                <div style="overflow: hidden">可选，点击关闭弹窗的css选择器；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">toggleBtn：</div>
+                <div style="overflow: hidden">可选，打开/关闭弹窗的css选择器，慎用，并非一眼看上去那么简单，详见上面的【Toggle Popup】部分；</div>
+            </li>
+            <li class="list-group-item">
+                <div class="pull-left">duration：</div>
+                <div style="overflow: hidden">可选，动画时长，单位是毫秒，默认值为<code>300</code>；</div>
+            </li>
+            <li class="list-group-item">
+                closeOnClickMask：可选，点击遮罩关闭弹窗，默认为<code>false</code>，注意启用此项需提供上面的<code>mask</code>选项；
+            </li>
+            <li class="list-group-item">
+                closeOthersOnOpen：可选，当存在多个弹窗时，打开弹窗时是否关闭其它已打开弹窗，默认为<code>true</code>（即会先将已打开弹窗关闭）；
+            </li>
+        </ul>
+    </div>
+</div>
+
+<h3 class="api-title">popup.open(callback)</h3>
+<div>
+    <p>实例的打开弹窗方法。可以传入一个可选的回调函数，回调将在弹窗完全打开后执行。</p>
+</div>
+
+<h3 class="api-title">popup.close(callback)</h3>
+<div>
+    <p>实例的关闭弹窗方法。可以传入一个可选的回调函数，回调将在弹窗完全关闭后执行。</p>
+</div>
+
+<h3 class="api-title">popup.toggle(onOpen, onClose)</h3>
+<div>
+    <p>实例的打开/关闭弹窗方法。可以传入一个可选的打开回调函数和一个可选的关闭回调函数，回调将在弹窗完全打开或关闭后执行。注意上面的 <code>toggleBtn</code> 选项并非简单地调用 <code>popup.toggle()</code>，而是针对特定场景做了稍复杂的封装，详见上面的【Toggle Popup】部分；</p>
+</div>
+</div></div><footer class="footer"><div class="container"><div class="row"><div class="col-sm-6"><div class="title">关于本站</div><div>Copyright ©2017-2018 <a href="/views/about_me/index">DOM哥</a></div><div>Powered by <a href="https://pages.github.com/">GitHub Pages</a></div></div><div class="col-sm-6"><div class="title col-xs-12">前端资源</div><div class="col-xs-6" style="padding: 0"><a href="http://www.runoob.com/">菜鸟教程</a></div><div class="col-xs-6" style="padding: 0"><a href="https://github.com/">GitHub</a></div></div></div></div></footer><script>
+document.querySelector('.body-wrapper').style.paddingBottom = document.querySelector('.footer').offsetHeight + 20 + 'px'
+</script></div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="/lib/highlight/9.12.0/highlight.pack.js"></script><script src="/dist/效果/effect_02/js/index.js"></script><script>
+    if(window.hljs){
+      // 代码高亮 highlight.js
+      window.hljs.initHighlightingOnLoad()
+      $('.db-sourcecode').show()
+    }
+
+    // 二维码图片
+    $('.qr-img').attr('src', 'http://qr.liantu.com/api.php?text=' + window.location.href)
+
+    var starGitHub = $('#starGitHub')
+    starGitHub.append('<a href="' + starGitHub.attr('href') + '" target="_blank" class="btn btn-success" style="margin: 0;line-height: 32px" ><svg style="float:left;margin-right: .5rem" width="32" height="32" viewBox="0 0 16 16" fill="white"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg> Star me on GitHub</a>')
+  </script></body></html>

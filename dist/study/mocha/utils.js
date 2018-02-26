@@ -1,0 +1,1 @@
+var javascript=function(t){"use strict";return t.delay=function(t){setTimeout(function(){t()},1e3)},t}({});

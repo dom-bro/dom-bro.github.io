@@ -1,0 +1,1 @@
+!function(){"use strict";window.a=function(){console.log(document.querySelector(".getBoundingClientRect").getBoundingClientRect())}}();

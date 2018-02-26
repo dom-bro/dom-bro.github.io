@@ -1,0 +1,1 @@
+!function(){"use strict";require("fs").unlink("ss"),console.log("finish")}();

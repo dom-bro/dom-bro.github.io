@@ -1,0 +1,1 @@
+!function(){"use strict";var e=new(require("events"));e.on("a",function(){console.log("event a")}),e.emit("a")}();

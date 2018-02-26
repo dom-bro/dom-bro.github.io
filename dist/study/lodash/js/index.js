@@ -1,0 +1,1 @@
+!function(){"use strict";var t=Date.now();var n=_.throttle(function(){console.log(Date.now()-t)},1e3),e=0,o=setInterval(function(){e++>40&&clearInterval(o),n()},100)}();

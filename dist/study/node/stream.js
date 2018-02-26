@@ -1,0 +1,1 @@
+!function(){"use strict";var o=require("fs").createReadStream("stream.js");o.on("data",function(o){console.log(o.toString()),console.log("-------------------")}),o.on("end",function(o){console.log("end")})}();

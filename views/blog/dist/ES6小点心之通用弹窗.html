@@ -1,0 +1,96 @@
+<!doctype html><html><head><meta name="renderer" content="webkit"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="date=no"><meta name="format-detection" content="address=no"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>ES6小点心之通用弹窗</title><link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="/lib/highlight/9.12.0/vs.css"><link rel="stylesheet" href="/dist/index/css/github_pages.css"><link rel="stylesheet" href="/dist/blog/css/index.css"></head><body class=""><div style="display:none"><script src="https://s19.cnzz.com/z_stat.php?id=1272831761&amp;web_id=1272831761"></script></div><div class="body-wrapper"><div class="nav navbar-default header"><div class="container" style="overflow:hidden"><div class="navbar-header"><a href="/index" class="navbar-brand">DOM哥</a><button class="navbar-toggle" data-toggle="collapse" data-target="#bs-nav"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="bs-nav" class="collapse navbar-collapse"><ul class="nav navbar-nav db-nav"><li><a href="/index">前端</a></li><li class="active"><a href="/views/blog/index">博客</a></li><li><a href="/views/about_me/index">About me</a></li></ul></div></div></div><div class="container"><div class="article clearfix"><div class="page-header"><div class="article-title">ES6小点心之通用弹窗</div></div><p><img src="/dist/blog/images/cookie.jpg" alt="" class="banner"></p>
+<p>小点心，顾名思义，开箱即食，拿来即用。</p>
+<p>前端业务逻辑主要分为【交互效果】和【数据展示】两方面。数据展示可使用 MVVM 框架来实现。前端的交互效果常用的也就那么几种，比如弹窗，楼层定位，倒计时，下拉刷新，上拉加载更多等等。这些交互效果完全可以提出来做成通用的模块，以后不必再劳心费神去想怎么实现。就像 Swiper 封装了一个类来专门做轮播图一样，本系列的目的是通过封装一系列类来实现弹窗，楼层定位，倒计时等交互功能。</p>
+<p>弹窗就无需多说了，几乎所有存在交互的页面都会用到，一个页面上甚至会有 N 多个弹窗。弹弹弹，弹出鱼尾纹。</p>
+<p>弹窗的逻辑其实很简单，就是打开和关闭。如果这还不够，那就再加个回调。如果从面向对象的角度去看，把弹窗看成一个类想必是极好的，与之绑定的DOM块是它的属性，打开和关闭是它的方法，而且这样可以实现弹窗样式和逻辑的分离。</p>
+<p>由于需要操作DOM，果断选择了王者级库——jQuery。</p>
+<p>先定一个小目标：</p>
+
+
+<ul class="well-success well-list">
+<li>易用性，如果自己都觉得难用，那就没有分享的必要了￣□￣｜｜；</li>
+<li>兼容性，兼容主流浏览器，但并非所有（比如 IE 低版本）；</li>
+<li>移动优先，主要为移动端做更多的考虑；</li>
+</ul>
+<p>Swiper 在这方面已经树立了典范。因此本系列均效仿 Swiper 的 API 风格，力求 Keep It Simple and Stupid。只需要相对宽松有序的 DOM 结构和一致的实例化风格，That's it，多一点不人性化的东西算俄输。</p>
+<div class="hr"></div>
+
+<p>然后就有了第一个小点心：<strong>NormalPopup</strong>。</p>
+<p><a href="https://github.com/dom-bro/es6-dessert"><strong>GitHub</strong></a></p>
+<p><a href="https://dom-bro.github.io/%E6%95%88%E6%9E%9C/effect_04_%E9%80%9A%E7%94%A8%E5%BC%B9%E7%AA%97/index.html"><strong>在线演示</strong></a></p>
+<div class="hr"></div>
+
+<h3 id="-">基本示例</h3>
+<p>本示例包含了最基本的使用，只需传入弹窗 DOM 的选择器和要作为打开/关闭弹窗的选择器。</p>
+<pre><code class="lang-js">const popupA = new NormalPopup({
+    popup: '#popup-A',
+    openBtn: '.open-popup-A',
+    closeBtn: '.close-popup-A',
+})
+</code></pre>
+<h3 id="-">使用回调</h3>
+<p>可以在实例化时传入打开或关闭回调函数，回调将在弹窗完全打开或关闭后（即在打开或关闭动画结束之后）被调用。</p>
+<pre><code class="lang-js">const popupB = new NormalPopup({
+    popup: '#popup-B',
+    openBtn: '.open-popup-B',
+    closeBtn: '.close-popup-B',
+    onOpen(){
+        alert('open B')
+    },
+    onClose(){
+        alert('close B')
+    },
+})
+</code></pre>
+<h3 id="-">点击遮罩关闭</h3>
+<p>可以在实例化时设置点击遮罩关闭，但需要提供一个额外的 <code>mask</code> 选项，也就是需要弹窗的遮罩和弹窗的内容相分离。</p>
+<pre><code class="lang-js">const popupC = new NormalPopup({
+    mask: '#popup-C-mask',
+    popup: '#popup-C',
+    openBtn: '.open-popup-C',
+    closeOnClickMask: true,
+})
+</code></pre>
+<h3 id="-">过渡动画时长</h3>
+<p>可以在实例化时传入可选的动画时长，默认是 0 毫秒。</p>
+<pre><code class="lang-js">const popupD = new NormalPopup({
+    popup: '#popup-D',
+    openBtn: '.open-popup-D',
+    closeBtn: '.close-popup-D',
+    duration: 600,
+})
+</code></pre>
+<h3 id="with-jquery">with jQuery</h3>
+<p>每个 NormalPopup 实例都有一个 <code>open</code> 方法和一个 <code>close</code> 方法，并且可在调用时传入一个回调。请注意，在API方法中传入的回调将排在实例化传入的回调之后被调用。</p>
+<pre><code class="lang-js">$(document).on('click', '.clickBtnA', function(){
+    popupA.open(function(){
+        alert('open A with jQuery')
+    })
+})
+</code></pre>
+<h3 id="with-vue">with Vue</h3>
+<p>可以在任何时候实例化 NormalPopup 而不必非要等到 Vue 挂载到 DOM 之后。</p>
+<pre><code class="lang-js">...
+methods: {
+    openPopupC(){
+        popupC.open(function(){
+            alert('open C with Vue')
+        })
+    },
+}
+...
+</code></pre></div></div><footer class="footer"><div class="container"><div class="row"><div class="col-sm-6"><div class="title">关于本站</div><div>Copyright ©2017-2018 <a href="/views/about_me/index">DOM哥</a></div><div>Powered by <a href="https://pages.github.com/">GitHub Pages</a></div></div><div class="col-sm-6"><div class="title col-xs-12">前端资源</div><div class="col-xs-6" style="padding: 0"><a href="http://www.runoob.com/">菜鸟教程</a></div><div class="col-xs-6" style="padding: 0"><a href="https://github.com/">GitHub</a></div></div></div></div></footer><script>
+document.querySelector('.body-wrapper').style.paddingBottom = document.querySelector('.footer').offsetHeight + 20 + 'px'
+</script></div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="/lib/highlight/9.12.0/highlight.pack.js"></script><script>
+    if(window.hljs){
+      // 代码高亮 highlight.js
+      window.hljs.initHighlightingOnLoad()
+      $('.db-sourcecode').show()
+    }
+
+    // 二维码图片
+    $('.qr-img').attr('src', 'http://qr.liantu.com/api.php?text=' + window.location.href)
+
+    var starGitHub = $('#starGitHub')
+    starGitHub.append('<a href="' + starGitHub.attr('href') + '" target="_blank" class="btn btn-success" style="margin: 0;line-height: 32px" ><svg style="float:left;margin-right: .5rem" width="32" height="32" viewBox="0 0 16 16" fill="white"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg> Star me on GitHub</a>')
+  </script></body></html>

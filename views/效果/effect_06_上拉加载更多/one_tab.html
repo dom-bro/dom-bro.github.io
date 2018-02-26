@@ -1,0 +1,7 @@
+<!doctype html><html><head><meta name="renderer" content="webkit"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="date=no"><meta name="format-detection" content="address=no"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>上拉加载更多之一个tab</title><link rel="stylesheet" href="/dist/效果/effect_06/css/one_tab.css"></head><body class=""><div id="index" style="display: none" v-show="server.success">
+    <div id="drop-load" style="height: 10rem;overflow: auto">
+        <div>
+            <div v-for="item in server.description">{{item}}</div>
+        </div>
+    </div>
+</div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/jquery-dropload/jquery.dropload.js"></script><script src="/dist/效果/effect_06/js/one_tab.js"></script></body></html>
