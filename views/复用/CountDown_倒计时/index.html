@@ -1,4 +1,60 @@
-<!doctype html><html><head><meta name="renderer" content="webkit"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="date=no"><meta name="format-detection" content="address=no"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>倒计时</title></head><body class=""><div id="index">
-    <!--<h1>{{cd.days}} : {{cd.hours}} : {{cd.minutes}} : {{cd.seconds + '-' + cd.seconds.constructor.name}}</h1>-->
-    <h1>{{cd.seconds + '-' + cd.seconds.constructor.name}}</h1>
-</div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/dist/复用/CountDown/js/index.js"></script></body></html>
+<!doctype html><html><head><meta name="renderer" content="webkit"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="date=no"><meta name="format-detection" content="address=no"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>倒计时</title><link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"><link rel="stylesheet" href="/dist/index/css/github_pages.css"><link rel="stylesheet" href="/dist/复用/CountDown/css/index.css"></head><body class=""><div style="display:none"><script src="https://s19.cnzz.com/z_stat.php?id=1272831761&amp;web_id=1272831761"></script></div><div class="body-wrapper"><div class="nav navbar-default header"><div class="container" style="overflow:hidden"><div class="navbar-header"><a href="/index" class="navbar-brand">DOM哥</a><button class="navbar-toggle" data-toggle="collapse" data-target="#bs-nav"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button></div><div id="bs-nav" class="collapse navbar-collapse"><ul class="nav navbar-nav db-nav"><li class="active"><a href="/index">前端</a></li><li><a href="/views/blog/index">博客</a></li><li><a href="/views/about_me/index">About me</a></li></ul></div></div></div><div id="index">
+    <div class="container">
+        <p>1 分钟倒计时：
+            <template v-if="cd_0">{{cd_0.s + cd_0.m*60}}</template> 秒
+        </p>
+        
+        <p>3 天倒计时：
+            <template v-if="cd_3">
+                <span class="split">
+                    <span>{{cd_3.days[0]}}</span><span>{{cd_3.days[1]}}</span>
+                    天
+                    <span>{{cd_3.hours[0]}}</span><span>{{cd_3.hours[1]}}</span>
+                    小时
+                    <span>{{cd_3.minutes[0]}}</span><span>{{cd_3.minutes[1]}}</span>
+                    分钟
+                    <span>{{cd_3.seconds[0]}}</span><span>{{cd_3.seconds[1]}}</span>
+                    秒
+                </div>
+            </template>
+        </p>
+
+        <p>今年还有：
+            <template v-if="cd_1">
+                {{cd_1.days}}
+                天
+                {{cd_1.hours}}
+                小时
+                {{cd_1.minutes}}
+                分钟
+                {{cd_1.seconds}}
+                秒
+            </template>
+        </p>
+
+        <p>今天还有：
+            <template v-if="cd_2">
+                {{cd_2.hours}}
+                小时
+                {{cd_2.minutes}}
+                分钟
+                {{cd_2.seconds}}
+                秒
+            </template>
+        </p>
+    </div>
+</div><footer class="footer"><div class="container"><div class="row"><div class="col-sm-6"><div class="title">关于本站</div><div>Copyright ©2017-2018 <a href="/views/about_me/index">DOM哥</a></div><div>Powered by <a href="https://pages.github.com/">GitHub Pages</a></div></div><div class="col-sm-6"><div class="title col-xs-12">前端资源</div><div class="col-xs-6" style="padding: 0"><a href="http://www.runoob.com/">菜鸟教程</a></div><div class="col-xs-6" style="padding: 0"><a href="https://github.com/">GitHub</a></div></div></div></div></footer><script>
+document.querySelector('.body-wrapper').style.paddingBottom = document.querySelector('.footer').offsetHeight + 20 + 'px'
+</script></div><script src="/lib/jquery/jquery-3.2.1.js"></script><script src="/lib/vue/vue.js"></script><script src="/lib/bootstrap/js/bootstrap.js"></script><script src="/dist/复用/CountDown/js/index.js"></script><script>
+    if(window.hljs){
+      // 代码高亮 highlight.js
+      window.hljs.initHighlightingOnLoad()
+      $('.db-sourcecode').show()
+    }
+
+    // 二维码图片
+    $('.qr-img').attr('src', 'http://qr.liantu.com/api.php?text=' + window.location.href)
+
+    var starGitHub = $('#starGitHub')
+    starGitHub.append('<a href="' + starGitHub.attr('href') + '" target="_blank" class="btn btn-success" style="margin: 0;line-height: 32px" ><svg style="float:left;margin-right: .5rem" width="32" height="32" viewBox="0 0 16 16" fill="white"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg> Star me on GitHub</a>')
+  </script></body></html>

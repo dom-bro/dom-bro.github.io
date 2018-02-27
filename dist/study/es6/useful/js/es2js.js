@@ -1,0 +1,1 @@
+!function(){"use strict";console.log(Array.from({length:2}))}();
