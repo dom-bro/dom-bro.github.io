@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="现在市面上的很多机型 DPR 都是 2，也因此UI设计师为移动端所做的设计图通常是 2 倍图。为什么这样做呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端屏幕适配">
+<meta property="og:url" content="https://dom-bro.github.io/2018/03/03/2017/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D/index.html">
+<meta property="og:site_name" content="Dom Bro">
+<meta property="og:description" content="现在市面上的很多机型 DPR 都是 2，也因此UI设计师为移动端所做的设计图通常是 2 倍图。为什么这样做呢？">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/20230212_142955-contain.png">
+<meta property="article:published_time" content="2018-03-03T08:43:18.542Z">
+<meta property="article:modified_time" content="2023-02-12T06:31:01.142Z">
+<meta property="article:author" content="Dom Bro">
+<meta property="article:tag" content="DomBro">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/20230212_142955-contain.png">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2018/03/03/2017/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2018/03/03/2017/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D/","path":"2018/03/03/2017/移动端屏幕适配/","title":"移动端屏幕适配"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>移动端屏幕适配 | Dom Bro</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<div class="slot-head"></div>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Dom Bro</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header"></div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF-H5-%E9%A1%B5%E9%9D%A2%E4%B8%8D%E5%8F%AF%E9%81%97%E5%BF%98%E7%9A%84-meta-%E6%A0%87%E7%AD%BE-viewport"><span class="nav-number">1.</span> <span class="nav-text">移动端 H5 页面不可遗忘的 meta 标签 viewport</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Dom Bro</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+  <div>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+        crossorigin="anonymous"></script>
+    <!-- 纵向自适应 -->
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-9410111523844245"
+        data-ad-slot="7363652957"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/20230212_142955-contain.png" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2018/03/03/2017/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Dom Bro">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dom Bro">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="移动端屏幕适配 | Dom Bro">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          移动端屏幕适配
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-03 16:43:18" itemprop="dateCreated datePublished" datetime="2018-03-03T16:43:18+08:00">2018-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-12 14:31:01" itemprop="dateModified" datetime="2023-02-12T14:31:01+08:00">2023-02-12</time>
+    </span>
+
+  
+    <span id="/2018/03/03/2017/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D/" class="post-meta-item leancloud_visitors" data-flag-title="移动端屏幕适配" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="移动端-H5-页面不可遗忘的-meta-标签-viewport"><a href="#移动端-H5-页面不可遗忘的-meta-标签-viewport" class="headerlink" title="移动端 H5 页面不可遗忘的 meta 标签 viewport"></a>移动端 H5 页面不可遗忘的 meta 标签 viewport</h3><pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, user-scalable=no&quot; /&gt;
+</code></pre>
+<p>这行代码的作用是设置视口的宽度（其实就是页面的宽度）等于设备宽度，页面不缩放并且也不允许用户进行缩放。</p>
+<p>把一个普通的PC端页面（未加入上面 meta 标签的）直接放在手机端访问是可以展示完全的，但是页面明显经过缩放。可以用 <code>alert(document.body.clientHeight)</code> 获取一下页面宽度，你会发现，大部分页面的宽度都是980px。再用<code>alert(window.innerWidth)</code>获取一下设备宽度，很明显，手机端自动将980px的页面缩放到了<code>window.innerWidth</code>的宽度才得以完全展示。但这不是我们想要的效果，我们想要的是未经缩放，以最佳样式展现的Web页面。每一个移动端页面都应该首先加入上面这行 meta 标签，这样才能确保页面得到了最佳的展现形式。</p>
+<br>
+### CSS 屏幕适配之媒体查询(media query)
+
+<p>PC 端常用的CSS测量单位是 px，而移动端常用的却是 rem。这样做的原因仍然是为了适配多种屏幕尺寸。怎么适配呢？首先需要弄清楚rem单位，<span style="color: #e00">rem是相对于DOM根元素(也就是<html>)的字体大小的度量单位</span>。比如说我们设置了  <code>html&#123; font-size: 16px &#125;</code>，然后给具体的DOM设置 <code>p&#123; font-size: 2rem; height: 4rem; &#125;</code>，其实就相当于设置了 <code>p&#123; font-size: 2*16px; height: 4*16px; &#125;</code>，也就是 <code>1rem = 1*(html的fontSize)</code>，<code>2.5rem=2.5*(html的fontSize)</code>。这样就很清楚了，我们只需要控制不同屏幕尺寸下 html 的 fontSize，页面上所有使用 rem 度量的DOM的尺寸都会相应改变。比如以下适配代码：</p>
+<pre><code>html&#123;font-size: 18px&#125;
+@media only screen and (min-width:360px)&#123;html&#123;font-size: 20px!important&#125;&#125;
+@media only screen and (min-width:375px)&#123;html&#123;font-size: 21px!important&#125;&#125;
+@media only screen and (min-width:400px)&#123;html&#123;font-size: 22px!important&#125;&#125;
+@media only screen and (min-width:414px)&#123;html&#123;font-size: 23px!important&#125;&#125;
+@media only screen and (min-width:480px)&#123;html&#123;font-size: 24px!important&#125;&#125;
+@media only screen and (min-width:540px)&#123;html&#123;font-size: 26px!important&#125;&#125;
+@media only screen and (min-width:640px)&#123;html&#123;font-size: 28px!important&#125;&#125;
+@media only screen and (min-width:768px)&#123;html&#123;font-size: 32px!important&#125;&#125;
+@media only screen and (min-width:960px)&#123;html&#123;font-size: 36px!important&#125;&#125;
+@media only screen and (min-width:1024px)&#123;html&#123;font-size: 46px!important&#125;&#125;
+</code></pre>
+<p>上面一块代码的意思就是:</p>
+<ol>
+<li>屏幕尺寸小于360px时，html 的 fontSize 就是18px；</li>
+<li>当屏幕尺寸位于区间 [360px, 375px] 时，html 的 fontSize 就是 20px；</li>
+<li>当屏幕尺寸位于区间 [375px, 400px] 时，html 的 fontSize 就是 21px；</li>
+<li>以此类推，如果屏幕尺寸大于 1024px 的话，html 的 fontSize 都是46px。</li>
+</ol>
+<p>上面CSS媒体查询是一个区间一个区间地进行适配的，当然也可以使用 JS 进行更精细的适配，但归根结底无非都是通过改变viewport的scale值和根节点html的fontSize值进行整体调整的。</p>
+<br>
+### 设计师出 2 倍视觉稿，前端还原成 1 倍页面，是在瞎折腾？
+
+<p>这样做当然是有原因的，在解释这个问题之前，先介绍一些像素小知识。</p>
+<ul>
+<li><p><strong>物理像素（也叫设备像素）</strong></p>
+<p>物理像素是显示器上最小的显示单元，电脑、电视、手机、平板这些电子设备的屏幕都是由一个个物理像素点组成的，连点成线，线再成面。在系统的调度下，<span style="color:#e00">每一个物理像素可以且仅可以显示单独的颜色值和亮度值</span>。</p>
+<p>比如 iPhone5 的屏幕有 640x1136 个物理像素，注意到了吗，物理像素的总量其实就是所谓的分辨率。分辨率越高，物理像素点就越多，屏幕上能表现的颜色值就越多，画面就越细腻。</p>
+</li>
+<li><p><strong>设备独立像素（也叫CSS像素，逻辑像素）</strong></p>
+<p>设备独立像素的学术解释就是计算机坐标系统中的一个点，这个点代表一个可以由程序使用并控制的虚拟像素，然后由底层系统的程序转换为物理像素。怪不得都不喜欢去看这些学术性的解释，真的是佶屈聱牙，抽象难懂。</p>
+<p>其实在我看来，设备独立像素就是UI设计师设计工具(如Photoshop)中的像素，而UI设计师通常就在电脑上进行设计作业的，所以设备独立像素其实就是电脑屏幕上的物理像素。<span style="color:#e00">每一个设备独立像素可以表示一个或多个颜色值和亮度值</span>。</p>
+<p>iPhone5 屏幕的设备独立像素数量是 320x568，为什么这么说呢，因为在普通电脑屏幕上，1 个设备独立像素是对应着 1 个物理像素的，你把 iPhone5 的屏幕贴在电脑屏幕上，那一块和iPhone5屏幕等大的电脑屏幕区域物理像素数量是多少，没错正好是320x568。嘿嘿，明白了吧，设备独立像素是设计师和前端工程师进行作业时的测量单位。</p>
+</li>
+<li><p><strong>设备像素比（Device Pixel Ratio）</strong><br>DPR 的计算公式如下：<br>设备像素比 &#x3D; 设备像素&#x2F;设备独立像素     &#x2F;&#x2F; 在某一方向上，x方向或y方向<br>DPR 的意义就是用来表示设备会分配多少个物理像素来展示1个设备独立像素，一般是DPRxDPR个。比如由公式可计算出 iPhone5 的 DPR 为 2，那么 iPhone5 就会分配 2x2&#x3D;4 个物理像素来展示1个设备独立像素。</p>
+</li>
+</ul>
+<p>其实现在市面上的很多机型 DPR 都是 2，也因此UI设计师为移动端所做的设计图通常是 2 倍图。为什么这样做呢，拿iPhone5来说吧，如果设计图尺寸是320x568也就是等于设备的逻辑像素数量，当然是可以的，但这样就浪费了硬件优势了，因为设计图上的1个CSS像素映射到手机屏幕上，手机屏幕会分配4个物理像素来展示它，很显然，4个物理像素的颜色值和亮度值都一样。而如果设计成2倍图，那就是等于设备的物理像素数量了，设计师可以尽情发挥，设计更细腻的画面，手机屏幕也可以充分发挥出高分辨率的优势。设计成2倍图会出现一个问题，比如本来一张图片是希望它在手机上呈现为 100x100（CSS像素）的尺寸，结果设计师把它设计成200x200（CSS像素）的，如果直接放在手机上，也会呈现 200x200（CSS像素）的，而不是100x100（CSS像素），就会显得非常大，这时候就轮到前端工程师隆重登场了，前端在还原设计图时所有尺寸都应该<strong>减半</strong>，也就是还原成1倍页面。比如设计图上的200x200（CSS像素）的尺寸，在页面上对应地写成100x100（CSS像素），这样它在页面上就会占据100x100个CSS像素了，手机系统会分配100x100x4个物理像素去展示这100x100个CSS像素，这样就可以充分展现设计图中的色彩信息了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E6%91%A7%E6%9E%AF%E6%8B%89%E6%9C%BD%EF%BC%8C%E8%AF%B4%E8%AF%B4ES6%E7%9A%84%E4%B8%89%E6%8A%8A%E7%81%AB/" rel="next" title="摧枯拉朽，说说ES6的三把火">
+                  摧枯拉朽，说说ES6的三把火 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dom Bro</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div><div class="slot-footer"></div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<div class="slot-body-end"></div>
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>
