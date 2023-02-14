@@ -43,8 +43,8 @@ function fetchWithTimeout (request) {
 }
 
 self.addEventListener('fetch', e => {
-  if (!e.request.url.startsWith(e.request.referrer) || e.request.method === 'POST') return
-  // console.log('>>>>>>>> fetch', e.request.url, e)
+  console.log('>>>>>>>> fetch', e.request.url, e, location)
+  if (!e.request.url.startsWith(location.origin) || e.request.method === 'POST') return
   e.respondWith(
     caches.open(DB_NAME).then(storage => storage.match(e.request, {
       ignoreSearch: e.request.destination === 'image',
