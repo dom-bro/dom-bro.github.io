@@ -53,9 +53,18 @@
 
 
 
-
-<script type="module" crossorigin src="http://localhost:4001/spa-dist/main.js"></script>
-
+<script>
+  window.DomBroConfig = {"is_home":false,"is_post":true,"is_page":false}
+  console.log(window.DomBroConfig)
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    console.log('documentElement', className)
+    document.documentElement.classList.add('root-' + className)
+  }
+</script>
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -93,7 +102,27 @@
 
 
 
-<div class="slot-header"></div>
+<div class="slot-header">
+  <div>Original</div>
+  <div>Translation</div>
+  <div>Tools</div>
+  <div>About</div>
+
+  <div class="left-position" style="left: 0;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+        crossorigin="anonymous"></script>
+    <!-- 纵向自适应 -->
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-9410111523844245"
+        data-ad-slot="7363652957"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+</div>
 
 </header>
         
@@ -123,20 +152,6 @@
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="slot-sidebar">
-  <div>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
-        crossorigin="anonymous"></script>
-    <!-- 纵向自适应 -->
-    <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-9410111523844245"
-        data-ad-slot="7363652957"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
 </div>
 
         </div>
@@ -442,7 +457,8 @@
     </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
-  </div><div class="slot-footer"></div>
+  </div><div class="slot-footer">
+</div>
 
 
     </div>
@@ -473,7 +489,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<div class="slot-body-end"></div>
 <script>
 if (location.protocol === 'https:' && navigator.serviceWorker) {
   let v
