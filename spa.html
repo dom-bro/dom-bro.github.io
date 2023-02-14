@@ -51,7 +51,7 @@
 
 
 <script>
-  window.DomBroConfig = {"is_home":false,"is_post":false,"is_page":true}
+  window.DomBroConfig = {"is_home":false,"is_post":false,"is_page":true,"env":{"env":"production"}}
   console.log(window.DomBroConfig)
   let className
   if (DomBroConfig.is_home) className = 'home'
@@ -62,8 +62,7 @@
     document.documentElement.classList.add('root-' + className)
   }
 </script>
-  <script type="module" crossorigin src="http://localhost:4001/spa-dist/main.js"></script>
-  
+  <script type="module" crossorigin src="/spa-dist/main.js"></script>
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
