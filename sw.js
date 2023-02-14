@@ -13,7 +13,7 @@ function fetchWithTimeout (request) {
   let response
   return Promise.race([
     timeoutPromise(timeout),
-    fetch(request).then(res => {
+    fetch(request).then(async res => {
       response = res
       if (res.status) {
         const newHeaders = new Headers(res.headers)
@@ -26,9 +26,8 @@ function fetchWithTimeout (request) {
           headers: newHeaders
         })
       }
-      caches.open(DB_NAME).then(storage => {
-        storage.put(request, response.clone())
-      })
+      const storage = await caches.open(DB_NAME)
+      storage.put(request, response.clone())
       // console.log('========', request.url, response)
       return response
     }).catch(error => {
@@ -59,6 +58,7 @@ self.addEventListener('fetch', e => {
 
 self.addEventListener('install', e => {
   console.log('sw install', e, self)
+  caches.delete(DB_NAME)
   self.skipWaiting()
 })
 
