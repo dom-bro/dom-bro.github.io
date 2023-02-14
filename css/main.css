@@ -2390,6 +2390,7 @@ ul.breadcrumb li:last-child {
 }
 body {
   line-height: 1.75;
+  min-width: 1280px;
 }
 .headband {
   display: none;
@@ -2438,7 +2439,6 @@ body {
 .main > .column .header .slot-header .active {
   color: #fff;
   background: rgba(255,255,255,0.2);
-  pointer-events: none;
 }
 .main > .column .header .left-position,
 .main > .column .header .right-position {
