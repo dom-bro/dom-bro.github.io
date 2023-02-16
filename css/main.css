@@ -2421,6 +2421,9 @@ body {
   height: var(--header-height);
   line-height: var(--header-height);
 }
+.main > .column .header .site-brand-container {
+  background: transparent;
+}
 .main > .column .header .site-brand-container .site-meta {
   padding: 0;
 }
@@ -2454,8 +2457,8 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--theme-color);
   z-index: -1;
+  background: var(--theme-color);
 }
 .main > .column .sidebar {
   position: absolute;
