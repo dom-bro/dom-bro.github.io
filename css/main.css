@@ -2388,9 +2388,10 @@ ul.breadcrumb li:last-child {
   --side-padding: 240px;
   --gap-width: 12px;
 }
-body {
+html body {
   line-height: 1.75;
   min-width: 1280px;
+  background: var(--body-bg-color);
 }
 .headband {
   display: none;
@@ -2411,6 +2412,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
+  box-sizing: content-box;
   margin: 0 calc(var(--side-padding) * -1);
   padding: 0 var(--side-padding);
 }
@@ -2712,4 +2714,7 @@ body {
 }
 .footer .footer-inner {
   padding-left: 0;
+}
+.root-page.spa .post-header {
+  display: none;
 }
