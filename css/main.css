@@ -2392,6 +2392,7 @@ html body {
   line-height: 1.75;
   min-width: 1280px;
   background: var(--body-bg-color);
+  background: #f00;
 }
 .headband {
   display: none;

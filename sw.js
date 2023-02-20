@@ -1,4 +1,4 @@
-const DB_NAME = 'GitHubPagesServiceWorker'
+const DB_NAME = 'DomBroSiteServiceWorker'
 
 function fetchWithTimeout (request) {
   let timeout = 5 * 1000
@@ -43,13 +43,13 @@ function fetchWithTimeout (request) {
 }
 
 self.addEventListener('fetch', e => {
-  // console.log('>>>>>>>> fetch', e.request.url, e, location)
+  console.log('>>>>>>>> fetch', e.request.url)
   if (!e.request.url.startsWith(location.origin) || e.request.method === 'POST') return
   e.respondWith(
     caches.open(DB_NAME).then(storage => storage.match(e.request, {
       ignoreSearch: e.request.destination === 'image',
     }).then(cachedResponse => {
-      // console.log('<<<<<<<<<< fetch respondWith', e.request.url, cachedResponse)
+      console.log('<<<<<<<<<< fetch respondWith', e.request.url, cachedResponse)
       const fetchLatest = fetchWithTimeout(e.request)
       return cachedResponse || fetchLatest
     }))
