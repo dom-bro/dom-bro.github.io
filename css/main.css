@@ -2429,10 +2429,16 @@ html body {
   display: flex;
 }
 .main > .column .header .slot-header .item {
-  padding: 0 20px;
+  padding: 0 30px;
   color: #eee;
   cursor: pointer;
   border: none;
+  display: flex;
+  align-items: center;
+}
+.main > .column .header .slot-header .item img {
+  width: 20px;
+  margin-right: 6px;
 }
 .main > .column .header .slot-header .active {
   color: #fff;
