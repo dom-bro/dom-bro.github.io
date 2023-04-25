@@ -1,0 +1,1 @@
+import{_ as e,o,c as t}from"../main.js";const n={data(){return{chromeExtensions:[{name:"Vimium",github:"https://github.com/brookhong/Surfingkeys"}],buildTools:[{name:"vite"},{name:"webpack"},{name:"gulp"},{name:"rollup"}]}},methods:{},computed:{},created(){}};function a(r,c,s,m,u,i){return o(),t("div",null,"前端技能树")}const d=e(n,[["render",a]]);export{d as default};

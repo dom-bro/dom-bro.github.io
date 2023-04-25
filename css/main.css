@@ -2376,7 +2376,7 @@ ul.breadcrumb li:last-child {
 }
 :root {
   --theme-hover: #1162e8;
-  --header-height: 60px;
+  --header-height: 50px;
   --headband-height: 100px;
   --side-padding: 240px;
   --gap-width: 12px;
@@ -2385,6 +2385,14 @@ html body {
   line-height: 1.75;
   min-width: 1280px;
   background: var(--body-bg-color);
+}
+.wide-layout .main .main-inner {
+  margin: 0 calc(-1 * var(--side-padding));
+  width: auto;
+}
+.spa-container {
+  border: none;
+  width: 100%;
 }
 .headband {
   display: none;
