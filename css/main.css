@@ -2448,12 +2448,16 @@ html body {
   align-items: center;
 }
 .main > .column .header .slot-header .item img {
-  width: 20px;
+  height: 18px;
   margin-right: 6px;
 }
 .main > .column .header .slot-header .active {
   color: #fff;
   background: rgba(255,255,255,0.2);
+}
+.main > .column .header .slot-header .todo {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 .main > .column .header .left-position,
 .main > .column .header .right-position {
