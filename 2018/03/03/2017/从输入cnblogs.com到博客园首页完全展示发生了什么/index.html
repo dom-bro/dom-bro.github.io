@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="之前面试时候经常被问及这个问题，支支吾吾回答没有底气，仔细研究了一下，发现里面学问还真不少。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从输入cnblogs.com到博客园首页完全展示发生了什么">
+<meta property="og:url" content="https://dom-bro.github.io/2018/03/03/2017/%E4%BB%8E%E8%BE%93%E5%85%A5cnblogs.com%E5%88%B0%E5%8D%9A%E5%AE%A2%E5%9B%AD%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%85%A8%E5%B1%95%E7%A4%BA%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="DOM哥">
+<meta property="og:description" content="之前面试时候经常被问及这个问题，支支吾吾回答没有底气，仔细研究了一下，发现里面学问还真不少。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/network-principle.jpg">
+<meta property="article:published_time" content="2018-03-03T08:43:18.545Z">
+<meta property="article:modified_time" content="2023-02-12T09:05:05.999Z">
+<meta property="article:author" content="DOM哥">
+<meta property="article:tag" content="前端，vue，DOM哥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/network-principle.jpg">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2018/03/03/2017/%E4%BB%8E%E8%BE%93%E5%85%A5cnblogs.com%E5%88%B0%E5%8D%9A%E5%AE%A2%E5%9B%AD%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%85%A8%E5%B1%95%E7%A4%BA%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2018/03/03/2017/%E4%BB%8E%E8%BE%93%E5%85%A5cnblogs.com%E5%88%B0%E5%8D%9A%E5%AE%A2%E5%9B%AD%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%85%A8%E5%B1%95%E7%A4%BA%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/","path":"2018/03/03/2017/从输入cnblogs.com到博客园首页完全展示发生了什么/","title":"从输入cnblogs.com到博客园首页完全展示发生了什么"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从输入cnblogs.com到博客园首页完全展示发生了什么 | DOM哥</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.2.15/dist/antd.min.css">
+<script>
+  window.DomBroConfig = {"packageJSON":{"name":"hexo-site","version":"0.0.75","private":true,"scripts":{"build":"hexo clean && npm run spa:build && NODE_ENV=production hexo generate","clean":"hexo clean","d":"NODE_ENV=production hexo deploy","deploy":"npm version patch && hexo clean && npm run spa:build && npm run d","server":"hexo clean && hexo server --config _config.yml,_config.localhost.yml","spa":"vite --port 4001 --force --host","spa:build":"NODE_ENV=production vite build --emptyOutDir","pre":"serve public"},"hexo":{"version":"6.3.0"},"dependencies":{"@ant-design/icons-vue":"^6.1.0","@octokit/request":"^10.0.7","@vitejs/plugin-vue":"^4.0.0","ant-design-vue":"^3.2.19","hexo":"^6.3.0","hexo-deployer-git":"^4.0.0","hexo-generator-archive":"^2.0.0","hexo-generator-category":"^2.0.0","hexo-generator-index":"^3.0.0","hexo-generator-tag":"^2.0.0","hexo-renderer-ejs":"^2.0.0","hexo-renderer-marked":"^6.0.0","hexo-renderer-stylus":"^2.1.0","hexo-server":"^3.0.0","hexo-theme-landscape":"^0.0.3","hexo-theme-next":"^8.14.2","less":"^4.1.3","moment":"^2.29.4","moment-precise-range-plugin":"^1.3.0","unplugin-vue-components":"^0.23.0","vite":"^4.1.1","vue":"^3.2.47","vue-router":"^4.1.6"},"devDependencies":{"rollup-obfuscator":"^3.0.1","vite-plugin-commonjs":"^0.10.4"}},"layout":false,"page":{"title":"从输入cnblogs.com到博客园首页完全展示发生了什么","photos":["/images/2023/network-principle.jpg"],"excerpt":"之前面试时候经常被问及这个问题，支支吾吾回答没有底气，仔细研究了一下，发现里面学问还真不少。","_content":"<OTHER BIG>","source":"_posts/2017/从输入cnblogs.com到博客园首页完全展示发生了什么.md","raw":"<OTHER BIG>","slug":"2017/从输入cnblogs.com到博客园首页完全展示发生了什么","published":true,"date":{"_i":"2018-03-03T08:43:18.545Z","_pf":"<DEEP>","_locale":"<DEEP>","_d":"2018-03-03T08:43:18.545Z","_z":null,"add":"<FUNCTION DEEP>","calendar":"<FUNCTION DEEP>","clone":"<FUNCTION DEEP>","diff":"<FUNCTION DEEP>","endOf":"<FUNCTION DEEP>","format":"<FUNCTION DEEP>","from":"<FUNCTION DEEP>","fromNow":"<FUNCTION DEEP>","to":"<FUNCTION DEEP>","toNow":"<FUNCTION DEEP>","get":"<FUNCTION DEEP>","invalidAt":"<FUNCTION DEEP>","isAfter":"<FUNCTION DEEP>","isBefore":"<FUNCTION DEEP>","isBetween":"<FUNCTION DEEP>","isSame":"<FUNCTION DEEP>","isSameOrAfter":"<FUNCTION DEEP>","isSameOrBefore":"<FUNCTION DEEP>","isValid":"<FUNCTION DEEP>","lang":"<FUNCTION DEEP>","locale":"<FUNCTION DEEP>","localeData":"<FUNCTION DEEP>","max":"<FUNCTION DEEP>","min":"<FUNCTION DEEP>","parsingFlags":"<FUNCTION DEEP>","set":"<FUNCTION DEEP>","startOf":"<FUNCTION DEEP>","subtract":"<FUNCTION DEEP>","toArray":"<FUNCTION DEEP>","toObject":"<FUNCTION DEEP>","toDate":"<FUNCTION DEEP>","toISOString":"<FUNCTION DEEP>","inspect":"<FUNCTION DEEP>","toJSON":"<FUNCTION DEEP>","toString":"<FUNCTION DEEP>","unix":"<FUNCTION DEEP>","valueOf":"<FUNCTION DEEP>","creationData":"<FUNCTION DEEP>","eraName":"<FUNCTION DEEP>","eraNarrow":"<FUNCTION DEEP>","eraAbbr":"<FUNCTION DEEP>","eraYear":"<FUNCTION DEEP>","year":"<FUNCTION DEEP>","isLeapYear":"<FUNCTION DEEP>","weekYear":"<FUNCTION DEEP>","isoWeekYear":"<FUNCTION DEEP>","quarters":"<FUNCTION DEEP>","month":"<FUNCTION DEEP>","daysInMonth":"<FUNCTION DEEP>","weeks":"<FUNCTION DEEP>","isoWeeks":"<FUNCTION DEEP>","weeksInYear":"<FUNCTION DEEP>","weeksInWeekYear":"<FUNCTION DEEP>","isoWeeksInYear":"<FUNCTION DEEP>","isoWeeksInISOWeekYear":"<FUNCTION DEEP>","date":"<FUNCTION DEEP>","days":"<FUNCTION DEEP>","weekday":"<FUNCTION DEEP>","isoWeekday":"<FUNCTION DEEP>","dayOfYear":"<FUNCTION DEEP>","hours":"<FUNCTION DEEP>","minutes":"<FUNCTION DEEP>","seconds":"<FUNCTION DEEP>","milliseconds":"<FUNCTION DEEP>","utcOffset":"<FUNCTION DEEP>","utc":"<FUNCTION DEEP>","local":"<FUNCTION DEEP>","parseZone":"<FUNCTION DEEP>","hasAlignedHourOffset":"<FUNCTION DEEP>","isDST":"<FUNCTION DEEP>","isLocal":"<FUNCTION DEEP>","isUtcOffset":"<FUNCTION DEEP>","isUtc":"<FUNCTION DEEP>","zoneAbbr":"<FUNCTION DEEP>","zoneName":"<FUNCTION DEEP>","dates":"<FUNCTION DEEP>","months":"<FUNCTION DEEP>","years":"<FUNCTION DEEP>","zone":"<FUNCTION DEEP>","isDSTShifted":"<FUNCTION DEEP>","tz":"<FUNCTION DEEP>","preciseDiff":"<FUNCTION DEEP>"},"updated":{"_i":"2023-02-12T09:05:05.999Z","_pf":"<DEEP>","_d":"2023-02-12T09:05:05.999Z"},"layout":"post","link":"","_id":"cmiocm5mq000l3nz01530fqe8","content":"<OTHER BIG>","site":{"data":"<DEEP>"},"path":"2018/03/03/2017/从输入cnblogs.com到博客园首页完全展示发生了什么/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":{"data":[],"length":0,"_model":"<DEEP>","_schema":"<DEEP>","size":"<FUNCTION DEEP>","each":"<FUNCTION DEEP>","random":"<FUNCTION DEEP>"},"categories":{"data":[],"_model":"<DEEP>","_schema":"<DEEP>"},"prev":{"title":"Fiddler使用总结","photos":["/images/2023/fiddler-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/Fiddler使用总结.md","raw":"<OTHER BIG>","slug":"2017/Fiddler使用总结","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mp000j3nz0c8nl9buy","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/Fiddler使用总结/","permalink":"https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/Fiddler使用总结.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/Fiddler使用总结/","tags":"<DEEP>","categories":"<DEEP>","prev":"<DEEP>","next":"<DEEP>","_model":"<DEEP>","_schema":"<DEEP>","setTags":"<FUNCTION DEEP>","setCategories":"<FUNCTION DEEP>"},"next":{"title":"前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上","photos":["/images/2023/gulp-vs-webpack.webp"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上.md","raw":"<OTHER BIG>","slug":"2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5ms000q3nz05bqrde9p","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>"},"lang":"en","canonical_path":"2018/03/03/2017/从输入cnblogs.com到博客园首页完全展示发生了什么/index.html","toc":{"max_depth":6},"reward_settings":{},"quicklink":{"timeout":3000}},"url":"<OTHER BIG>","config":{"title":"DOM哥","url":"https://dom-bro.github.io","root":"/","permalink":":year/:month/:day/:title/","pretty_urls":{},"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":"spa/**/*","new_post_name":":title.md","external_link":{"field":"site"},"highlight":{"exclude_languages":[],"first_line_number":"always1"},"prismjs":{},"default_category":"uncategorized","date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","updated_option":"mtime","per_page":10,"pagination_dir":"page","theme":"next","server":{"port":4000,"ip":"<OTHER ERROR>"},"deploy":{"type":"git","repo":"git@github.com:dom-bro/dom-bro.github.io.git"},"keywords":"前端，vue，DOM哥","index_generator":{"order_by":"-date"},"google_adsense":{"js":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js","client":"ca-pub-9410111523844245"},"theme_config":{"cache":"<DEEP>","custom_file_path":"<DEEP>","scheme":"Gemini","favicon":"<DEEP>","creative_commons":"<DEEP>","open_graph":"<DEEP>","menu_settings":"<DEEP>","sidebar":"<DEEP>","avatar":"<DEEP>","social_icons":"<DEEP>","links_settings":"<DEEP>","toc":"<DEEP>","footer":"<DEEP>","post_meta":"<DEEP>","symbols_count_time":"<DEEP>","reward_settings":"<DEEP>","related_posts":"<DEEP>","post_edit":"<DEEP>","post_navigation":"left","tagcloud":"<DEEP>","calendar":"<DEEP>","text_align":"<DEEP>","theme_color":"<DEEP>","body_scrollbar":"<DEEP>","codeblock":"<DEEP>","back2top":"<DEEP>","reading_progress":"<DEEP>","bookmark":"<DEEP>","github_banner":"<DEEP>","font":"<DEEP>","note":"<DEEP>","tabs":"<DEEP>","pdf":"<DEEP>","mermaid":"<DEEP>","math":"<DEEP>","quicklink":"<DEEP>","motion":"<DEEP>","pace":"<DEEP>","canvas_ribbon":"<DEEP>","comments":"<DEEP>","disqus":"<DEEP>","disqusjs":"<DEEP>","changyan":"<DEEP>","gitalk":"<DEEP>","utterances":"<DEEP>","google_analytics":"<DEEP>","matomo":"<DEEP>","umami":"<DEEP>","plausible":"<DEEP>","leancloud_visitors":"<DEEP>","firestore":"<DEEP>","busuanzi_count":"<DEEP>","algolia_search":"<DEEP>","local_search":"<DEEP>","chat":"<DEEP>","chatra":"<DEEP>","tidio":"<DEEP>","gitter":"<DEEP>","vendors":"<DEEP>","css":"css","js":"js","images":"images"},"category_generator":{},"archive_generator":{},"tag_generator":{},"marked":{"external_link":"<DEEP>"}},"theme":{"cache":{},"custom_file_path":{"head":"theme_next_custom_files/head.njk","header":"theme_next_custom_files/header.njk","sidebar":"theme_next_custom_files/sidebar.njk","postMeta":"theme_next_custom_files/post-meta.njk","postBodyEnd":"theme_next_custom_files/post-body-end.swig","footer":"theme_next_custom_files/footer.njk","bodyEnd":"theme_next_custom_files/body-end.njk","variable":"theme_next_custom_files/variables.styl","mixin":"theme_next_custom_files/mixins.styl","style":"theme_next_custom_files/styles.styl"},"favicon":{"small":"/favicon.png"},"creative_commons":{"license":"by-nc-sa","size":"small"},"open_graph":{},"menu_settings":{},"sidebar":{"padding":18,"offset":12},"avatar":{},"social_icons":{},"links_settings":{"icon":"fa fa-globe","layout":"block"},"toc":{},"footer":{"icon":"<DEEP>","beian":"<DEEP>","since":2023,"sinceDate":20230214},"post_meta":{"updated_at":"<DEEP>"},"symbols_count_time":{},"reward_settings":{},"related_posts":{"icon":"fa fa-signs-post"},"post_edit":{"url":"https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/"},"tagcloud":{"max":30,"amount":200,"orderby":"name","order":1},"calendar":{"calendar_id":"<required>","orderBy":"startTime","offsetMax":72,"offsetMin":4,"maxResults":250},"text_align":{"desktop":"justify"},"theme_color":{"light":"#222"},"body_scrollbar":{},"codeblock":{"theme":"<DEEP>","prism":"<DEEP>","copy_button":"<DEEP>"},"back2top":{},"reading_progress":{"position":"top","color":"#37c6c0","height":"3px"},"bookmark":{"save":"auto"},"github_banner":{"permalink":"https://github.com/yourname"},"font":{"global":"<DEEP>","title":"<DEEP>","headings":"<DEEP>","posts":"<DEEP>","codes":"<DEEP>"},"note":{"style":"simple"},"tabs":{"transition":"<DEEP>"},"pdf":{"height":"500px"},"mermaid":{"theme":"<DEEP>"},"math":{"mathjax":"<DEEP>","katex":"<DEEP>"},"quicklink":{},"motion":{"transition":"<DEEP>"},"pace":{"color":"blue","theme":"minimal"},"canvas_ribbon":{"size":300,"alpha":0.6,"zIndex":-1},"comments":{"style":"tabs"},"disqus":{},"disqusjs":{},"changyan":{},"gitalk":{"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},"utterances":{"repo":"user-name/repo-name","issue_term":"pathname","theme":"github-light"},"google_analytics":{"tracking_id":"G-ZCWSWQ4PSD"},"matomo":{},"umami":{},"plausible":{},"leancloud_visitors":{"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky"},"firestore":{"collection":"articles"},"busuanzi_count":{"total_visitors_icon":"fa fa-user","total_views_icon":"fa fa-eye"},"algolia_search":{"hits":"<DEEP>"},"local_search":{},"chat":{"icon":"fa fa-comment"},"chatra":{},"tidio":{},"gitter":{},"vendors":{"internal":"local","plugins":"cdnjs","anime":"<DEEP>","fontawesome":"<DEEP>","prism":"<DEEP>","prism_autoloader":"<DEEP>","prism_line_numbers":"<DEEP>","mathjax":"<DEEP>","katex":"<DEEP>","copy_tex_js":"<DEEP>","pjax":"<DEEP>","jquery":"<DEEP>","fancybox_js":"<DEEP>","fancybox_css":"<DEEP>","mediumzoom":"<DEEP>","lazyload":"<DEEP>","pangu":"<DEEP>","quicklink":"<DEEP>","disqusjs_js":"<DEEP>","disqusjs_css":"<DEEP>","gitalk_js":"<DEEP>","gitalk_css":"<DEEP>","firebase_app":"<DEEP>","firebase_firestore":"<DEEP>","algolia_search":"<DEEP>","instant_search":"<DEEP>","local_search":"<DEEP>","pdfobject":"<DEEP>","mermaid":"<DEEP>","animate_css":"<DEEP>","pace_js":"<DEEP>","pace_css":"<DEEP>","canvas_ribbon":"<DEEP>","creative_commons":"<DEEP>"},"injects":{"variable":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/variables.styl"],"mixin":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/mixins.styl"],"style":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/styles.styl"],"head":["<DEEP>"],"header":["<DEEP>"],"sidebar":["<DEEP>"],"postMeta":["<DEEP>"],"postBodyEnd":["<DEEP>"],"footer":["<DEEP>"],"bodyEnd":["<DEEP>"],"comment":[]},"highlight":{"light":"<DEEP>","dark":"<DEEP>"},"prism":{"light":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism.css","dark":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism-dark.css","number":"<OTHER BIG>"},"menu_map":{},"main_menu":[]},"env":{"args":{"_":[]},"env":"production","version":"6.3.0","cmd":"deploy"},"view_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/hexo-theme-next/layout/","site":{"posts":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"]},"pages":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"],"length":9,"_model":"<DEEP>","_schema":"<DEEP>"},"categories":{"data":["<DEEP>"]},"tags":{"data":[]},"data":{}},"__":"","_p":"","next_version":"8.14.2","languages":["en"],"ccURL":"https://creativecommons.org/licenses/by-nc-sa/4.0/","filename":"<OTHER BIG>","date":"2025-12-02","date_xml":"2025-12-02T09:01:10.149Z","time":"17:01:10","full_date":"2025-12-02 17:01:10","relative_date":"a few seconds ago","time_tag":"<time datetime=\"2025-12-02T09:01:10.150Z\">2025-12-02</time>","moment":"2025-12-02T09:01:10.150Z","search_form":"<FUNCTION BIG>","strip_html":"","trim":"<FUNCTION ERROR>","titlecase":"<FUNCTION ERROR>","word_wrap":"<FUNCTION ERROR>","truncate":"<FUNCTION ERROR>","escape_html":"<FUNCTION ERROR>","fragment_cache":"<FUNCTION ERROR>","gravatar":"<FUNCTION ERROR>","is_current":false,"is_home":false,"is_home_first_page":false,"is_post":true,"is_page":false,"is_archive":false,"is_year":false,"is_month":false,"is_category":false,"is_tag":false,"list_archives":"<FUNCTION BIG>","list_categories":"<FUNCTION BIG>","list_tags":"","list_posts":"<FUNCTION BIG>","meta_generator":"<meta name=\"generator\" content=\"Hexo 6.3.0\">","open_graph":"<FUNCTION BIG>","number_format":"<FUNCTION ERROR>","paginator":"","partial":"<FUNCTION ERROR>","markdown":"<FUNCTION ERROR>","render":"<FUNCTION ERROR>","css":"\n","js":"\n","link_to":"<FUNCTION ERROR>","mail_to":"<a href=\"mailto:undefined\">","image_tag":"<img src=\"/\">","favicon_tag":"<link rel=\"shortcut icon\" href=\"/\">","feed_tag":"","tagcloud":"","tag_cloud":"","toc":"","relative_url":"","url_for":"/","full_url_for":"https://dom-bro.github.io/","inspect":"undefined","log":"<FUNCTION ERROR>","sinceDays":"2年9个月零18天","next_config":"<FUNCTION BIG>","next_config_unique":"<FUNCTION BIG>","next_font":"","next_url":"<FUNCTION ERROR>","next_inject":"<FUNCTION ERROR>","next_js":"<FUNCTION ERROR>","next_vendors":"<FUNCTION ERROR>","next_data":"<FUNCTION HTML>","next_pre":"","post_gallery":"","post_edit":"","gitalk_md5":"6666cd76f96956469e7be39d750cc7d9","i18n_path":"<FUNCTION BIG>","language_name":"English","next_menu":"<FUNCTION ERROR>","next_paginator":"","js_vendors":["anime"]}
+  console.log(window.DomBroConfig)
+  if (window.DomBroConfig.page.title) document.title = window.DomBroConfig.page.title
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    document.documentElement.classList.add('root-' + className)
+  }
+  if (DomBroConfig.packageJSON.version !== localStorage.getItem('version')) {
+    caches.keys().then(res => res.forEach(key => caches.delete(key)))
+    localStorage.setItem('version', DomBroConfig.packageJSON.version)
+  }
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+     crossorigin="anonymous"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">DOM哥</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header">
+  <a class="item active" href="/">Blog</a>
+
+  <a class="item " href="/vue#/vue">
+    <img src="/spa/images/awesome/vue.svg"/>
+    Vue
+  </a>
+  <a class="item " href="/react#/react">
+    <img src="/spa/images/awesome/react.svg"/>
+    React
+  </a>
+  <a class="item " href="/fe#/fe">
+    <img src="/spa/images/awesome/nodejs-icon.svg"/>
+    前端
+  </a>
+  <a class="item todo " href="/ai#/ai" onclick="alert('这个 Hub 正在研制，B站关注我，更新后收到通知');return false;">
+    <img src="/spa/images/logo/ChatGPT.png"/>
+    AI
+  </a>
+  <a class="item " href="/outside#/outside">
+    <img src="/spa/images/outside/usa.png"/>
+    墙外
+  </a>
+
+  <a class="item " href="/tools#/">工具</a>
+  <a class="item " href="/about#/about">About</a>
+</div>
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DNS-%E8%A7%A3%E6%9E%90%E6%88%90-IP-%E5%9C%B0%E5%9D%80"><span class="nav-number">1.</span> <span class="nav-text">DNS 解析成 IP 地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E9%80%81-http-%E8%AF%B7%E6%B1%82"><span class="nav-number">2.</span> <span class="nav-text">发送 http 请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP-%E4%BC%A0%E8%BE%93%E6%8A%A5%E6%96%87"><span class="nav-number">3.</span> <span class="nav-text">TCP 传输报文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E6%89%93%E5%8C%85%EF%BC%8C%E5%90%88%E5%B9%B6%E8%AF%B7%E6%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">资源打包，合并请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E6%8B%86%E5%88%86%EF%BC%8C%E8%B5%84%E6%BA%90%E5%88%86%E6%95%A3%E5%AD%98%E5%82%A8"><span class="nav-number">3.2.</span> <span class="nav-text">域名拆分，资源分散存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connection-keep-alive%EF%BC%8C%E5%A4%8D%E7%94%A8%E5%B7%B2%E5%BB%BA%E7%AB%8B%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.3.</span> <span class="nav-text">Connection: keep-alive，复用已建立的连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E7%BC%93%E5%AD%98"><span class="nav-number">3.4.</span> <span class="nav-text">控制缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD%EF%BC%8C%E6%87%92%E5%8A%A0%E8%BD%BD%EF%BC%8C%E6%8C%89%E9%9C%80%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.5.</span> <span class="nav-text">延迟加载，懒加载，按需加载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP-%E5%AF%BB%E5%9D%80"><span class="nav-number">4.</span> <span class="nav-text">IP 寻址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7"><span class="nav-number">5.</span> <span class="nav-text">封装成帧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E4%BC%A0%E8%BE%93"><span class="nav-number">6.</span> <span class="nav-text">物理传输</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E4%B8%BB%E6%B5%81%E7%A8%8B"><span class="nav-number">7.</span> <span class="nav-text">页面渲染主流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dom%E6%A0%91%E5%92%8Crender%E6%A0%91%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">8.</span> <span class="nav-text">dom树和render树的关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%83%E5%B1%80render%E6%A0%91%EF%BC%88layout%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">布局render树（layout）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%98%E5%88%B6%EF%BC%88paint%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">绘制（paint）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DOM哥</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/network-principle.jpg" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2018/03/03/2017/%E4%BB%8E%E8%BE%93%E5%85%A5cnblogs.com%E5%88%B0%E5%8D%9A%E5%AE%A2%E5%9B%AD%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%85%A8%E5%B1%95%E7%A4%BA%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DOM哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从输入cnblogs.com到博客园首页完全展示发生了什么 | DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从输入cnblogs.com到博客园首页完全展示发生了什么
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-03 16:43:18" itemprop="dateCreated datePublished" datetime="2018-03-03T16:43:18+08:00">2018-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-12 17:05:05" itemprop="dateModified" datetime="2023-02-12T17:05:05+08:00">2023-02-12</time>
+    </span>
+
+  
+    <span id="/2018/03/03/2017/%E4%BB%8E%E8%BE%93%E5%85%A5cnblogs.com%E5%88%B0%E5%8D%9A%E5%AE%A2%E5%9B%AD%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%85%A8%E5%B1%95%E7%A4%BA%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/" class="post-meta-item leancloud_visitors" data-flag-title="从输入cnblogs.com到博客园首页完全展示发生了什么" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div id="catalog"></div>
+
+<p>之前面试时候经常被问及这个问题，支支吾吾回答没有底气，仔细研究了一下，发现里面学问还真不少。</p>
+<p>从输入 cnblogs.com 到博客园首页完全展现这个过程可以大致分为<area is="color-red"> <strong>网络通信</strong> 和<area is="color-red"> <strong>页面渲染</strong> 两个步骤。</p>
+<p>网络通信走的五层因特网协议栈（OSI标准是七层模型，但实际实现通常是五层）。画了一张图：</p>
+<img src="/images/2023/20230212_165947.jpg"/>
+
+<h1 id="DNS-解析成-IP-地址"><a href="#DNS-解析成-IP-地址" class="headerlink" title="DNS 解析成 IP 地址"></a>DNS 解析成 IP 地址</h1><p>DNS属于应用层协议。客户端会先检查本地是否有对应的 ip 地址，如果有就返回，否则就会请求上级 DNS 服务器，知道找到或到根节点。这一过程可能会非常耗时，使用 dns-prefetch 可使浏览器在空闲时提前将这些域名转化为 ip 地址，真正请求资源时就避免了这个过程的时间。例如京东首页的处理：</p>
+<img src="/images/2023/20230212_170102.jpg"/>
+
+<h1 id="发送-http-请求"><a href="#发送-http-请求" class="headerlink" title="发送 http 请求"></a>发送 http 请求</h1><p>HTTP也是应用层协议。HTTP（HyperText Transport Protocol）定义了一个基于请求&#x2F;响应模式的、无状态的、应用层的协议，用于从万维网服务器传输超文本到本地浏览器。绝大多数的Web开发，都是构建在HTTP协议之上的Web应用。客户端组织并发送 http 请求报文，包含 method、url、host、cookie 等信息，下面是访问博客园首页时 http 请求报文的样子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET https://www.cnblogs.com/ HTTP/1.1</span><br><span class="line">Host: www.cnblogs.com</span><br><span class="line">Connection: keep-alive</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Cookie: __gads=ID=b62b1e22b7de2e02:T=1493954370:S=ALNI_MYRebVRavER2PJmwdeFwpl33ACNoQ;</span><br><span class="line">If-Modified-Since: Mon, 27 Nov 2017 12:21:04 GMT</span><br></pre></td></tr></table></figure>
+
+<p>请求头里的每个字段都有各自的作用，具体含义可查阅 http 协议相关文章。</p>
+<h1 id="TCP-传输报文"><a href="#TCP-传输报文" class="headerlink" title="TCP 传输报文"></a>TCP 传输报文</h1><p>TCP 将 http 长报文划分为短报文，通过“三次握手”与服务器建立连接，进行可靠传输。“三次握手”建立连接的过程和打电话极像：</p>
+<area is="bq">
+
+<p>客户端：喂，我要和 Server 通话<br>服务端：你好，我是 Server，你是 Client 吗<br>客户端：没错，我是 Client</p>
+<p>连接建立成功，接下来就可以正式传送数据了。</p>
+<p>数据传完之后断开tcp连接还要通过“四次挥手”，大概意思如下：</p>
+<area is="bq">
+
+<p>客户端：Server 小宝贝，我话说完了，你挂电话吧<br>服务端：我不挂，我不挂，你先挂，你不挂我也不挂<br>—————- Client 一阵无语 ————–<br>服务端：你挂了吗<br>客户端：行，那我先挂了</p>
+<p>至此完成了一次完整的资源请求响应。</p>
+<p>需要注意的是，浏览器对同一域名下并发的tcp连接数是有限制的，2个到10个不等。为了解决这个资源加载瓶颈，有几种流行的优化方案：</p>
+<h2 id="资源打包，合并请求"><a href="#资源打包，合并请求" class="headerlink" title="资源打包，合并请求"></a>资源打包，合并请求</h2><p>比如页面样式全部打包在一个 css 文件内，页面逻辑全部打包在一个 js 文件内，图片拼合成雪碧图，这样可有效减少页面的资源请求数量。webpack 是时下最流行的模块打包工具之一，它可以将页面内所有资源（包括js，css，图片，字体等等）都打包进一个 js 文件，不明觉厉。</p>
+<h2 id="域名拆分，资源分散存储"><a href="#域名拆分，资源分散存储" class="headerlink" title="域名拆分，资源分散存储"></a>域名拆分，资源分散存储</h2><p>当浏览器向服务器请求一个静态资源时，会先发送该域名下的 cookies，服务器对于这些 cookie 根本不会做任何处理，因此它们只是在毫无意义的消耗带宽，所以应该确保对于静态内容的请求是无 cookie 的请求（也就是所谓的 cookie-free）。将站点的 js、css、图片等静态文件放在一个专门的域名下访问，由于该域名与主站域名不同，所以浏览器就不会把主域名下的 cookies 传给该域，从而减少网络开销，特别是细碎静态文件特别多的情况下效果显著。</p>
+<p>另一方面，由于浏览器是基于域名的并发连接数限制，而不是页面。因此将资源部署在不同的域名下可以使页面的总并发连接数得到线性提升。</p>
+<h2 id="Connection-keep-alive，复用已建立的连接"><a href="#Connection-keep-alive，复用已建立的连接" class="headerlink" title="Connection: keep-alive，复用已建立的连接"></a>Connection: keep-alive，复用已建立的连接</h2><p>在 http 早期，每个 http 请求都要打开一个 tcp 连接，请求完就关闭这个连接，导致每个请求都要来一遍“三次握手”和“四次挥手”，从而磨磨唧唧多出来大量无谓的等待时间。就好比出去吃饭，等饭等半个小时，端上来十分钟吃完了，结账排队又等了半个小时，要是刚进来就吃现成的吃完就跑那多爽啊。keep-alive 干的就是这件事，当第一个请求数据传输完毕之后，服务器说“客户端你不要关闭这个连接，直接换下个请求，我不想再握你的破手了”。这样下个请求就直接传输数据而不用先走“三次握手”的流程了。这好比你又去吃饭，吃你最喜欢的红烧肉，饭店在今天第一个客人点红烧肉的时候就炒了一大锅红烧肉，你点餐的时候直接吃现成的就行了，吃完直接跑，哈哈美滋滋。</p>
+<h2 id="控制缓存"><a href="#控制缓存" class="headerlink" title="控制缓存"></a>控制缓存</h2><p>将静态资源强制缓存在客户端，通过添加文件指纹等方式使客户端只请求发生了变更的资源，可有效降低静态资源请求数量。具体可参看<a target="_blank" rel="noopener" href="http://www.cnblogs.com/iovec/p/7676210.html">前端静态资源缓存控制策略</a>。</p>
+<h2 id="延迟加载，懒加载，按需加载"><a href="#延迟加载，懒加载，按需加载" class="headerlink" title="延迟加载，懒加载，按需加载"></a>延迟加载，懒加载，按需加载</h2><p>很多页面浏览量虽然很大，但其实很大比例用户扫完第一屏就直接跳走了，第一屏以下的内容用户根本就不感兴趣。 对于超大流量的网站，这个问题尤其重要。这时可根据用户的行为进行按需加载，用户用到了就去加载，用不到就不去加载。</p>
+<p>以上都是从减少建立tcp连接数量的角度去优化页面性能，之后会分享更多前端性能优化方面的实用方法。</p>
+<h1 id="IP-寻址"><a href="#IP-寻址" class="headerlink" title="IP 寻址"></a>IP 寻址</h1><p>Internet Protocol 是定义网络之间彼此互联规则的协议，主要解决逻辑寻址和网络通用数据传输格式两个问题。</p>
+<p>所有连接到因特网上的设备都会被分配一个唯一的 IP 地址，就像网购时填写的收货地址一样。由于一个网络设备的 IP 地址可以更换，但是 MAC 硬件地址（就像身份证号）一般是固定不变的，所以首先使用 ARP 协议来找到目标主机的 MAC 硬件地址。当通信的双方不在同一个局域网时，需要多次中转（路由器）才能找到最终的目标，在中转的过程中还需要通过下一个中转站的 MAC 地址来搜索下一个中转目标。</p>
+<p>传输层传来的 TCP 报文会在这一层被 IP 封装成网络通用传输格式——IP数据包，IP 数据包是真正在网络间进行传输的数据基本单元。</p>
+<p>通过逻辑寻址定位到前面应用层 DNS 解析出来的 IP 地址的主机网络位置，然后把数据以 IP 数据包的格式发送到那去。</p>
+<h1 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h1><p>数据链路层负责将 IP 数据包封装成适合在物理网络上传输的帧格式并传输。设计数据链路层的主要目的就是在原始的、有差错的物理传输线路的基础上，采取差错检测、差错控制与流量控制等方法，将有差错的物理线路改进成逻辑上无差错的数据链路，向网络层提供高质量的服务。当采用复用技术时，一条物理链路上可以有多条数据链路。</p>
+<h1 id="物理传输"><a href="#物理传输" class="headerlink" title="物理传输"></a>物理传输</h1><p>上面这么多层其实都是在为不同的目的对要传输的数据进行封装处理，而物理层则是通过各种传输介质（双绞线，电磁波，光纤等）以信号的形式将上面各层封装好的数据物理传送过去。</p>
+<p>至此一个 http 请求漂洋过海终于到达了服务器，接下来就是从物理层到应用层向上传递，将封装的数据一层层剥开，服务器在应用层拿到最原始的请求信息后快速处理完，然后就开始向客户端发送响应信息。这次是以服务器为起点，客户端为终点再走一遍五层协议栈。</p>
+<p>服务器的响应消息跋山涉水终于到达了浏览器，接下来就是页面渲染（更具体可参看<a target="_blank" rel="noopener" href="https://kb.cnblogs.com/page/129756/">浏览器内部工作原理</a>）。</p>
+<div class="hr"></div>
+
+<p>页面的渲染工作主要由浏览器的渲染引擎来完成（这里以Chrome为例）。</p>
+<h1 id="页面渲染主流程"><a href="#页面渲染主流程" class="headerlink" title="页面渲染主流程"></a>页面渲染主流程</h1><p>下面是渲染引擎在取得内容后的基本流程：</p>
+<p>解析html构建dom树 -&gt; 解析css构建render树 -&gt; 布局render树 -&gt; 绘制render树</p>
+<p>渲染引擎首先开始解析html，并将标签转化为dom树中的dom节点。接着，它解析外部css文件及style标签中的样式信息，这些样式信息以及html标签中的可见性指令将被用来构建另一棵树——render树。render树构建好了之后，将会执行布局过程，该过程将确定render树每个节点在屏幕上的确切坐标。最后是绘制render树，即遍历render树的每个节点并将它们绘制到屏幕上。</p>
+<p>偷了一张图片（Chrome和Safari所用内核webkit页面渲染主流程）：</p>
+<img src="/images/2023/20230212_170137.jpg"/>
+
+<p>为了更好的用户体验，渲染引擎将会尽可能早地将内容绘制在屏幕上，而不会等到所有的html都解析完成后再去构建、布局和绘制render树，它是解析完一部分内容就绘制一部分内容，同时可能还在通过网络下载其余内容（图片，脚本，样式表等）。比如说，浏览器在代码中发现一个 img 标签引用了一张图片，于是就向服务器发出图片请求，此时浏览器不会等到图片下载完，而是会继续解析渲染后面的代码，等到服务器返回图片文件，由于图片占用了一定面积，影响了后面段落的布局，浏览器就会回过头来重新渲染这部分代码。</p>
+<h1 id="dom树和render树的关系"><a href="#dom树和render树的关系" class="headerlink" title="dom树和render树的关系"></a>dom树和render树的关系</h1><p>render树节点和dom树节点相对应，但这种对应关系不是一对一的，不可见的dom元素不会被插入render树，例如head元素、script元素等。另外，display属性为none的元素也不会在渲染树中出现（visibility属性为hidden的元素将出现在渲染树中，这是因为visibility属性为hidden的元素虽然不可见但保留了元素的占位）。</p>
+<p>又偷了一张图：</p>
+<img src="/images/2023/20230212_170227.jpg"/>
+
+<h1 id="布局render树（layout）"><a href="#布局render树（layout）" class="headerlink" title="布局render树（layout）"></a>布局render树（layout）</h1><p>当渲染对象被创建并添加到render树后，它们并没有位置和大小，计算这些值的过程称为layout（布局）。</p>
+<p>布局的坐标系统相对于根渲染对象（它对应文档的html标签，可用 <code>document.documentElement</code> 拿到），使用top和left坐标。根渲染对象的位置是 (0,0)，它的大小是viewport即浏览器窗口的可见部分。布局是一个递归的过程，由根渲染对象开始，然后递归地通过一些或所有的层级节点，为每个需要几何信息的渲染对象进行计算。</p>
+<p>为了不因为每个小变化都全部重新布局，浏览器使用一个 dirty bit（页面重写标志位）系统，一个渲染对象发生了变化或是被添加了，就标记它及它的children为dirty——需要layout。</p>
+<p>当layout在整棵渲染树触发时，称为全局layout，这可能在下面这些情况下发生：</p>
+<area is="well-warn">
+
+<ul>
+<li>一个全局的样式改变影响所有的渲染对象，比如字号的改变。</li>
+<li>窗口resize。</li>
+</ul>
+<p>layout也可以是增量的，这样只有标志为dirty的渲染对象会重新布局（也将导致一些额外的布局）。增量layout会在渲染对象dirty时异步触发，例如，当网络接收到新的内容并添加到dom树后，新的渲染对象会添加到render树中。</p>
+<h1 id="绘制（paint）"><a href="#绘制（paint）" class="headerlink" title="绘制（paint）"></a>绘制（paint）</h1><p>绘制阶段，遍历render树并调用渲染对象的paint方法将它们的内容显示在屏幕上。和布局一样，绘制也可以是全局的（绘制完整的树）或增量的。在增量的绘制过程中，一些渲染对象以不影响整棵树的方式改变，改变的渲染对象使其在屏幕上的矩形区域失效(invalidate)，这将导致操作系统将其看作dirty区域，并产生一个paint事件，操作系统很巧妙的处理这个过程，并将多个区域合并为一个。</p>
+<p>浏览器总是试着以最小的动作响应一个变化，所以一个元素颜色的变化将只导致该元素的重绘，元素位置的变化将导致元素的布局和重绘，添加一个dom节点，也会导致这个元素的布局和重绘。一些主要的变化，比如增加html元素的字号，将会导致缓存失效，从而引起整个render树的布局和重绘。</p>
+<p>等到绘制完毕，页面就完全地展现在我们面前了。</p>
+<p>看似再简单不过的操作，背后支撑的技术链已经复杂到不可想象。上面只是粗浅的轮廓，其中的每一步深挖进去都是一门大学问。不过咱们前端了解一下就行了，没必要较这个劲，不然就舍本逐末了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B9%8B%E4%BA%89%E2%80%94%E2%80%94Webpack%20vs%20Gulp%20%E8%B0%81%E4%BC%9A%E8%A2%AB%E6%8B%8D%E6%AD%BB%E5%9C%A8%E6%B2%99%E6%BB%A9%E4%B8%8A/" rel="prev" title="前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上">
+                  <i class="fa fa-chevron-left"></i> 前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" rel="next" title="Fiddler使用总结">
+                  Fiddler使用总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DOM哥</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><div class="copyright-custom">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span>小站已勉强运行2年9个月零18天</span> <span>最近更新于 2025-12-02 17:01:09</span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>

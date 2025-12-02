@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="记得刚遇见css的时候，咱像是见了美人儿一样，简直是爱不释手啊，简简单单写几行算不上代码的代码，就能做出这么漂亮的东西，这也成了咱前端之路的最初动力。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端CSS的工程化——掌握Sass这四大特性就够了">
+<meta property="og:url" content="https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AFCSS%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E2%80%94%E2%80%94%E6%8E%8C%E6%8F%A1Sass%E8%BF%99%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%E5%B0%B1%E5%A4%9F%E4%BA%86/index.html">
+<meta property="og:site_name" content="DOM哥">
+<meta property="og:description" content="记得刚遇见css的时候，咱像是见了美人儿一样，简直是爱不释手啊，简简单单写几行算不上代码的代码，就能做出这么漂亮的东西，这也成了咱前端之路的最初动力。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/sass-contain.svg">
+<meta property="article:published_time" content="2018-03-03T08:43:18.544Z">
+<meta property="article:modified_time" content="2023-02-10T04:30:21.749Z">
+<meta property="article:author" content="DOM哥">
+<meta property="article:tag" content="前端，vue，DOM哥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/sass-contain.svg">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AFCSS%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E2%80%94%E2%80%94%E6%8E%8C%E6%8F%A1Sass%E8%BF%99%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%E5%B0%B1%E5%A4%9F%E4%BA%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AFCSS%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E2%80%94%E2%80%94%E6%8E%8C%E6%8F%A1Sass%E8%BF%99%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%E5%B0%B1%E5%A4%9F%E4%BA%86/","path":"2018/03/03/2017/前端CSS的工程化——掌握Sass这四大特性就够了/","title":"前端CSS的工程化——掌握Sass这四大特性就够了"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>前端CSS的工程化——掌握Sass这四大特性就够了 | DOM哥</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.2.15/dist/antd.min.css">
+<script>
+  window.DomBroConfig = {"packageJSON":{"name":"hexo-site","version":"0.0.75","private":true,"scripts":{"build":"hexo clean && npm run spa:build && NODE_ENV=production hexo generate","clean":"hexo clean","d":"NODE_ENV=production hexo deploy","deploy":"npm version patch && hexo clean && npm run spa:build && npm run d","server":"hexo clean && hexo server --config _config.yml,_config.localhost.yml","spa":"vite --port 4001 --force --host","spa:build":"NODE_ENV=production vite build --emptyOutDir","pre":"serve public"},"hexo":{"version":"6.3.0"},"dependencies":{"@ant-design/icons-vue":"^6.1.0","@octokit/request":"^10.0.7","@vitejs/plugin-vue":"^4.0.0","ant-design-vue":"^3.2.19","hexo":"^6.3.0","hexo-deployer-git":"^4.0.0","hexo-generator-archive":"^2.0.0","hexo-generator-category":"^2.0.0","hexo-generator-index":"^3.0.0","hexo-generator-tag":"^2.0.0","hexo-renderer-ejs":"^2.0.0","hexo-renderer-marked":"^6.0.0","hexo-renderer-stylus":"^2.1.0","hexo-server":"^3.0.0","hexo-theme-landscape":"^0.0.3","hexo-theme-next":"^8.14.2","less":"^4.1.3","moment":"^2.29.4","moment-precise-range-plugin":"^1.3.0","unplugin-vue-components":"^0.23.0","vite":"^4.1.1","vue":"^3.2.47","vue-router":"^4.1.6"},"devDependencies":{"rollup-obfuscator":"^3.0.1","vite-plugin-commonjs":"^0.10.4"}},"layout":false,"page":{"title":"前端CSS的工程化——掌握Sass这四大特性就够了","photos":["/images/2023/sass-contain.svg"],"excerpt":"记得刚遇见css的时候，咱像是见了美人儿一样，简直是爱不释手啊，简简单单写几行算不上代码的代码，就能做出这么漂亮的东西，这也成了咱前端之路的最初动力。","_content":"<OTHER BIG>","source":"_posts/2017/前端CSS的工程化——掌握Sass这四大特性就够了.md","raw":"<OTHER BIG>","slug":"2017/前端CSS的工程化——掌握Sass这四大特性就够了","published":true,"date":{"_i":"2018-03-03T08:43:18.544Z","_pf":"<DEEP>","_locale":"<DEEP>","_d":"2018-03-03T08:43:18.544Z","_z":null,"add":"<FUNCTION DEEP>","calendar":"<FUNCTION DEEP>","clone":"<FUNCTION DEEP>","diff":"<FUNCTION DEEP>","endOf":"<FUNCTION DEEP>","format":"<FUNCTION DEEP>","from":"<FUNCTION DEEP>","fromNow":"<FUNCTION DEEP>","to":"<FUNCTION DEEP>","toNow":"<FUNCTION DEEP>","get":"<FUNCTION DEEP>","invalidAt":"<FUNCTION DEEP>","isAfter":"<FUNCTION DEEP>","isBefore":"<FUNCTION DEEP>","isBetween":"<FUNCTION DEEP>","isSame":"<FUNCTION DEEP>","isSameOrAfter":"<FUNCTION DEEP>","isSameOrBefore":"<FUNCTION DEEP>","isValid":"<FUNCTION DEEP>","lang":"<FUNCTION DEEP>","locale":"<FUNCTION DEEP>","localeData":"<FUNCTION DEEP>","max":"<FUNCTION DEEP>","min":"<FUNCTION DEEP>","parsingFlags":"<FUNCTION DEEP>","set":"<FUNCTION DEEP>","startOf":"<FUNCTION DEEP>","subtract":"<FUNCTION DEEP>","toArray":"<FUNCTION DEEP>","toObject":"<FUNCTION DEEP>","toDate":"<FUNCTION DEEP>","toISOString":"<FUNCTION DEEP>","inspect":"<FUNCTION DEEP>","toJSON":"<FUNCTION DEEP>","toString":"<FUNCTION DEEP>","unix":"<FUNCTION DEEP>","valueOf":"<FUNCTION DEEP>","creationData":"<FUNCTION DEEP>","eraName":"<FUNCTION DEEP>","eraNarrow":"<FUNCTION DEEP>","eraAbbr":"<FUNCTION DEEP>","eraYear":"<FUNCTION DEEP>","year":"<FUNCTION DEEP>","isLeapYear":"<FUNCTION DEEP>","weekYear":"<FUNCTION DEEP>","isoWeekYear":"<FUNCTION DEEP>","quarters":"<FUNCTION DEEP>","month":"<FUNCTION DEEP>","daysInMonth":"<FUNCTION DEEP>","weeks":"<FUNCTION DEEP>","isoWeeks":"<FUNCTION DEEP>","weeksInYear":"<FUNCTION DEEP>","weeksInWeekYear":"<FUNCTION DEEP>","isoWeeksInYear":"<FUNCTION DEEP>","isoWeeksInISOWeekYear":"<FUNCTION DEEP>","date":"<FUNCTION DEEP>","days":"<FUNCTION DEEP>","weekday":"<FUNCTION DEEP>","isoWeekday":"<FUNCTION DEEP>","dayOfYear":"<FUNCTION DEEP>","hours":"<FUNCTION DEEP>","minutes":"<FUNCTION DEEP>","seconds":"<FUNCTION DEEP>","milliseconds":"<FUNCTION DEEP>","utcOffset":"<FUNCTION DEEP>","utc":"<FUNCTION DEEP>","local":"<FUNCTION DEEP>","parseZone":"<FUNCTION DEEP>","hasAlignedHourOffset":"<FUNCTION DEEP>","isDST":"<FUNCTION DEEP>","isLocal":"<FUNCTION DEEP>","isUtcOffset":"<FUNCTION DEEP>","isUtc":"<FUNCTION DEEP>","zoneAbbr":"<FUNCTION DEEP>","zoneName":"<FUNCTION DEEP>","dates":"<FUNCTION DEEP>","months":"<FUNCTION DEEP>","years":"<FUNCTION DEEP>","zone":"<FUNCTION DEEP>","isDSTShifted":"<FUNCTION DEEP>","tz":"<FUNCTION DEEP>","preciseDiff":"<FUNCTION DEEP>"},"updated":{"_i":"2023-02-10T04:30:21.749Z","_pf":"<DEEP>","_d":"2023-02-10T04:30:21.749Z"},"layout":"post","link":"","_id":"cmiocm5ms000p3nz0bsc64g8g","content":"<OTHER BIG>","site":{"data":"<DEEP>"},"path":"2018/03/03/2017/前端CSS的工程化——掌握Sass这四大特性就够了/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":{"data":[],"length":0,"_model":"<DEEP>","_schema":"<DEEP>","size":"<FUNCTION DEEP>","each":"<FUNCTION DEEP>","random":"<FUNCTION DEEP>"},"categories":{"data":[],"_model":"<DEEP>","_schema":"<DEEP>"},"prev":{"title":"前后端分手大师——MVVM模式","photos":["/images/2023/mvvm-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/前后端分手大师——MVVM模式.md","raw":"<OTHER BIG>","slug":"2017/前后端分手大师——MVVM模式","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mr000o3nz07w6wgiam","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/前后端分手大师——MVVM模式/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/前后端分手大师——MVVM模式.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/前后端分手大师——MVVM模式/","tags":"<DEEP>","categories":"<DEEP>","prev":"<DEEP>","next":"<DEEP>","_model":"<DEEP>","_schema":"<DEEP>","setTags":"<FUNCTION DEEP>","setCategories":"<FUNCTION DEEP>"},"next":{"title":"json与jsonp区别浅析（json才是目的，jsonp只是手段）","photos":["/images/2023/json-contain.png"],"excerpt":"一言以蔽之，json返回的是一串数据；而jsonp返回的是脚本代码（包含一个函数调用）；","_content":"<OTHER BIG>","source":"_posts/2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）.md","raw":"<OTHER BIG>","slug":"2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mr000m3nz0a6aoguew","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>"},"lang":"en","canonical_path":"2018/03/03/2017/前端CSS的工程化——掌握Sass这四大特性就够了/index.html","toc":{"max_depth":6},"reward_settings":{},"quicklink":{"timeout":3000}},"url":"<OTHER BIG>","config":{"title":"DOM哥","url":"https://dom-bro.github.io","root":"/","permalink":":year/:month/:day/:title/","pretty_urls":{},"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":"spa/**/*","new_post_name":":title.md","external_link":{"field":"site"},"highlight":{"exclude_languages":[],"first_line_number":"always1"},"prismjs":{},"default_category":"uncategorized","date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","updated_option":"mtime","per_page":10,"pagination_dir":"page","theme":"next","server":{"port":4000,"ip":"<OTHER ERROR>"},"deploy":{"type":"git","repo":"git@github.com:dom-bro/dom-bro.github.io.git"},"keywords":"前端，vue，DOM哥","index_generator":{"order_by":"-date"},"google_adsense":{"js":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js","client":"ca-pub-9410111523844245"},"theme_config":{"cache":"<DEEP>","custom_file_path":"<DEEP>","scheme":"Gemini","favicon":"<DEEP>","creative_commons":"<DEEP>","open_graph":"<DEEP>","menu_settings":"<DEEP>","sidebar":"<DEEP>","avatar":"<DEEP>","social_icons":"<DEEP>","links_settings":"<DEEP>","toc":"<DEEP>","footer":"<DEEP>","post_meta":"<DEEP>","symbols_count_time":"<DEEP>","reward_settings":"<DEEP>","related_posts":"<DEEP>","post_edit":"<DEEP>","post_navigation":"left","tagcloud":"<DEEP>","calendar":"<DEEP>","text_align":"<DEEP>","theme_color":"<DEEP>","body_scrollbar":"<DEEP>","codeblock":"<DEEP>","back2top":"<DEEP>","reading_progress":"<DEEP>","bookmark":"<DEEP>","github_banner":"<DEEP>","font":"<DEEP>","note":"<DEEP>","tabs":"<DEEP>","pdf":"<DEEP>","mermaid":"<DEEP>","math":"<DEEP>","quicklink":"<DEEP>","motion":"<DEEP>","pace":"<DEEP>","canvas_ribbon":"<DEEP>","comments":"<DEEP>","disqus":"<DEEP>","disqusjs":"<DEEP>","changyan":"<DEEP>","gitalk":"<DEEP>","utterances":"<DEEP>","google_analytics":"<DEEP>","matomo":"<DEEP>","umami":"<DEEP>","plausible":"<DEEP>","leancloud_visitors":"<DEEP>","firestore":"<DEEP>","busuanzi_count":"<DEEP>","algolia_search":"<DEEP>","local_search":"<DEEP>","chat":"<DEEP>","chatra":"<DEEP>","tidio":"<DEEP>","gitter":"<DEEP>","vendors":"<DEEP>","css":"css","js":"js","images":"images"},"category_generator":{},"archive_generator":{},"tag_generator":{},"marked":{"external_link":"<DEEP>"}},"theme":{"cache":{},"custom_file_path":{"head":"theme_next_custom_files/head.njk","header":"theme_next_custom_files/header.njk","sidebar":"theme_next_custom_files/sidebar.njk","postMeta":"theme_next_custom_files/post-meta.njk","postBodyEnd":"theme_next_custom_files/post-body-end.swig","footer":"theme_next_custom_files/footer.njk","bodyEnd":"theme_next_custom_files/body-end.njk","variable":"theme_next_custom_files/variables.styl","mixin":"theme_next_custom_files/mixins.styl","style":"theme_next_custom_files/styles.styl"},"favicon":{"small":"/favicon.png"},"creative_commons":{"license":"by-nc-sa","size":"small"},"open_graph":{},"menu_settings":{},"sidebar":{"padding":18,"offset":12},"avatar":{},"social_icons":{},"links_settings":{"icon":"fa fa-globe","layout":"block"},"toc":{},"footer":{"icon":"<DEEP>","beian":"<DEEP>","since":2023,"sinceDate":20230214},"post_meta":{"updated_at":"<DEEP>"},"symbols_count_time":{},"reward_settings":{},"related_posts":{"icon":"fa fa-signs-post"},"post_edit":{"url":"https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/"},"tagcloud":{"max":30,"amount":200,"orderby":"name","order":1},"calendar":{"calendar_id":"<required>","orderBy":"startTime","offsetMax":72,"offsetMin":4,"maxResults":250},"text_align":{"desktop":"justify"},"theme_color":{"light":"#222"},"body_scrollbar":{},"codeblock":{"theme":"<DEEP>","prism":"<DEEP>","copy_button":"<DEEP>"},"back2top":{},"reading_progress":{"position":"top","color":"#37c6c0","height":"3px"},"bookmark":{"save":"auto"},"github_banner":{"permalink":"https://github.com/yourname"},"font":{"global":"<DEEP>","title":"<DEEP>","headings":"<DEEP>","posts":"<DEEP>","codes":"<DEEP>"},"note":{"style":"simple"},"tabs":{"transition":"<DEEP>"},"pdf":{"height":"500px"},"mermaid":{"theme":"<DEEP>"},"math":{"mathjax":"<DEEP>","katex":"<DEEP>"},"quicklink":{},"motion":{"transition":"<DEEP>"},"pace":{"color":"blue","theme":"minimal"},"canvas_ribbon":{"size":300,"alpha":0.6,"zIndex":-1},"comments":{"style":"tabs"},"disqus":{},"disqusjs":{},"changyan":{},"gitalk":{"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},"utterances":{"repo":"user-name/repo-name","issue_term":"pathname","theme":"github-light"},"google_analytics":{"tracking_id":"G-ZCWSWQ4PSD"},"matomo":{},"umami":{},"plausible":{},"leancloud_visitors":{"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky"},"firestore":{"collection":"articles"},"busuanzi_count":{"total_visitors_icon":"fa fa-user","total_views_icon":"fa fa-eye"},"algolia_search":{"hits":"<DEEP>"},"local_search":{},"chat":{"icon":"fa fa-comment"},"chatra":{},"tidio":{},"gitter":{},"vendors":{"internal":"local","plugins":"cdnjs","anime":"<DEEP>","fontawesome":"<DEEP>","prism":"<DEEP>","prism_autoloader":"<DEEP>","prism_line_numbers":"<DEEP>","mathjax":"<DEEP>","katex":"<DEEP>","copy_tex_js":"<DEEP>","pjax":"<DEEP>","jquery":"<DEEP>","fancybox_js":"<DEEP>","fancybox_css":"<DEEP>","mediumzoom":"<DEEP>","lazyload":"<DEEP>","pangu":"<DEEP>","quicklink":"<DEEP>","disqusjs_js":"<DEEP>","disqusjs_css":"<DEEP>","gitalk_js":"<DEEP>","gitalk_css":"<DEEP>","firebase_app":"<DEEP>","firebase_firestore":"<DEEP>","algolia_search":"<DEEP>","instant_search":"<DEEP>","local_search":"<DEEP>","pdfobject":"<DEEP>","mermaid":"<DEEP>","animate_css":"<DEEP>","pace_js":"<DEEP>","pace_css":"<DEEP>","canvas_ribbon":"<DEEP>","creative_commons":"<DEEP>"},"injects":{"variable":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/variables.styl"],"mixin":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/mixins.styl"],"style":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/styles.styl"],"head":["<DEEP>"],"header":["<DEEP>"],"sidebar":["<DEEP>"],"postMeta":["<DEEP>"],"postBodyEnd":["<DEEP>"],"footer":["<DEEP>"],"bodyEnd":["<DEEP>"],"comment":[]},"highlight":{"light":"<DEEP>","dark":"<DEEP>"},"prism":{"light":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism.css","dark":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism-dark.css","number":"<OTHER BIG>"},"menu_map":{},"main_menu":[]},"env":{"args":{"_":[]},"env":"production","version":"6.3.0","cmd":"deploy"},"view_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/hexo-theme-next/layout/","site":{"posts":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"]},"pages":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"],"length":9,"_model":"<DEEP>","_schema":"<DEEP>"},"categories":{"data":["<DEEP>"]},"tags":{"data":[]},"data":{}},"__":"","_p":"","next_version":"8.14.2","languages":["en"],"ccURL":"https://creativecommons.org/licenses/by-nc-sa/4.0/","filename":"<OTHER BIG>","date":"2025-12-02","date_xml":"2025-12-02T09:01:10.227Z","time":"17:01:10","full_date":"2025-12-02 17:01:10","relative_date":"a few seconds ago","time_tag":"<time datetime=\"2025-12-02T09:01:10.227Z\">2025-12-02</time>","moment":"2025-12-02T09:01:10.227Z","search_form":"<FUNCTION BIG>","strip_html":"","trim":"<FUNCTION ERROR>","titlecase":"<FUNCTION ERROR>","word_wrap":"<FUNCTION ERROR>","truncate":"<FUNCTION ERROR>","escape_html":"<FUNCTION ERROR>","fragment_cache":"<FUNCTION ERROR>","gravatar":"<FUNCTION ERROR>","is_current":false,"is_home":false,"is_home_first_page":false,"is_post":true,"is_page":false,"is_archive":false,"is_year":false,"is_month":false,"is_category":false,"is_tag":false,"list_archives":"<FUNCTION BIG>","list_categories":"<FUNCTION BIG>","list_tags":"","list_posts":"<FUNCTION BIG>","meta_generator":"<meta name=\"generator\" content=\"Hexo 6.3.0\">","open_graph":"<FUNCTION BIG>","number_format":"<FUNCTION ERROR>","paginator":"","partial":"<FUNCTION ERROR>","markdown":"<FUNCTION ERROR>","render":"<FUNCTION ERROR>","css":"\n","js":"\n","link_to":"<FUNCTION ERROR>","mail_to":"<a href=\"mailto:undefined\">","image_tag":"<img src=\"/\">","favicon_tag":"<link rel=\"shortcut icon\" href=\"/\">","feed_tag":"","tagcloud":"","tag_cloud":"","toc":"","relative_url":"","url_for":"/","full_url_for":"https://dom-bro.github.io/","inspect":"undefined","log":"<FUNCTION ERROR>","sinceDays":"2年9个月零18天","next_config":"<FUNCTION BIG>","next_config_unique":"<FUNCTION BIG>","next_font":"","next_url":"<FUNCTION ERROR>","next_inject":"<FUNCTION ERROR>","next_js":"<FUNCTION ERROR>","next_vendors":"<FUNCTION ERROR>","next_data":"<FUNCTION HTML>","next_pre":"","post_gallery":"","post_edit":"","gitalk_md5":"6666cd76f96956469e7be39d750cc7d9","i18n_path":"<FUNCTION BIG>","language_name":"English","next_menu":"<FUNCTION ERROR>","next_paginator":"","js_vendors":["anime"]}
+  console.log(window.DomBroConfig)
+  if (window.DomBroConfig.page.title) document.title = window.DomBroConfig.page.title
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    document.documentElement.classList.add('root-' + className)
+  }
+  if (DomBroConfig.packageJSON.version !== localStorage.getItem('version')) {
+    caches.keys().then(res => res.forEach(key => caches.delete(key)))
+    localStorage.setItem('version', DomBroConfig.packageJSON.version)
+  }
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+     crossorigin="anonymous"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">DOM哥</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header">
+  <a class="item active" href="/">Blog</a>
+
+  <a class="item " href="/vue#/vue">
+    <img src="/spa/images/awesome/vue.svg"/>
+    Vue
+  </a>
+  <a class="item " href="/react#/react">
+    <img src="/spa/images/awesome/react.svg"/>
+    React
+  </a>
+  <a class="item " href="/fe#/fe">
+    <img src="/spa/images/awesome/nodejs-icon.svg"/>
+    前端
+  </a>
+  <a class="item todo " href="/ai#/ai" onclick="alert('这个 Hub 正在研制，B站关注我，更新后收到通知');return false;">
+    <img src="/spa/images/logo/ChatGPT.png"/>
+    AI
+  </a>
+  <a class="item " href="/outside#/outside">
+    <img src="/spa/images/outside/usa.png"/>
+    墙外
+  </a>
+
+  <a class="item " href="/tools#/">工具</a>
+  <a class="item " href="/about#/about">About</a>
+</div>
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9D%E9%81%87-CSS%EF%BC%8C%E4%B8%80%E8%A7%81%E5%80%BE%E5%BF%83"><span class="nav-number">1.</span> <span class="nav-text">初遇 CSS，一见倾心</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B5%8C%E5%A5%97%E5%86%99%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">一、嵌套写法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%B1%9E%E6%80%A7%E5%80%BC%E7%9A%84%E5%A4%8D%E7%94%A8%E2%80%94%E2%80%94%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">二、属性值的复用——定义变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%96%87%E4%BB%B6%E7%BA%A7%E7%9A%84%E5%A4%8D%E7%94%A8%E2%80%94%E2%80%94%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.</span> <span class="nav-text">三、文件级的复用——模块系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%B1%95%E7%A4%BA%E5%B1%82%E7%9A%84%E5%A4%8D%E7%94%A8%E2%80%94%E2%80%94%E6%B7%B7%E5%90%88%E6%8C%87%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">四、展示层的复用——混合指令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%B8%8D%E5%B8%B8%E7%94%A8%E4%B8%94%E6%85%8E%E7%94%A8%E7%9A%84%E5%BC%BA%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="nav-number">6.</span> <span class="nav-text">其他不常用且慎用的强大特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E5%B1%82%E7%9A%84%E5%A4%8D%E7%94%A8%E2%80%94%E2%80%94%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6"><span class="nav-number">6.1.</span> <span class="nav-text"># 语义层的复用——继承机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E5%A4%8D%E6%9D%82%E8%AE%A1%E7%AE%97%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">6.2.</span> <span class="nav-text"># 用于复杂计算的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E5%96%84%E7%9A%84%E6%8E%A7%E5%88%B6%E6%B5%81"><span class="nav-number">6.3.</span> <span class="nav-text"># 完善的控制流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Scss%E6%9C%89Less%E6%B2%A1%E6%9C%89%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">8.</span> <span class="nav-text">Scss有Less没有的特性</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DOM哥</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/sass-contain.svg" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AFCSS%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E2%80%94%E2%80%94%E6%8E%8C%E6%8F%A1Sass%E8%BF%99%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%E5%B0%B1%E5%A4%9F%E4%BA%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DOM哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="前端CSS的工程化——掌握Sass这四大特性就够了 | DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端CSS的工程化——掌握Sass这四大特性就够了
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-03 16:43:18" itemprop="dateCreated datePublished" datetime="2018-03-03T16:43:18+08:00">2018-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 12:30:21" itemprop="dateModified" datetime="2023-02-10T12:30:21+08:00">2023-02-10</time>
+    </span>
+
+  
+    <span id="/2018/03/03/2017/%E5%89%8D%E7%AB%AFCSS%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E2%80%94%E2%80%94%E6%8E%8C%E6%8F%A1Sass%E8%BF%99%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%E5%B0%B1%E5%A4%9F%E4%BA%86/" class="post-meta-item leancloud_visitors" data-flag-title="前端CSS的工程化——掌握Sass这四大特性就够了" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="初遇-CSS，一见倾心"><a href="#初遇-CSS，一见倾心" class="headerlink" title="初遇 CSS，一见倾心"></a>初遇 CSS，一见倾心</h1><p>记得刚遇见css的时候，咱像是见了美人儿一样，简直是爱不释手啊，简简单单写几行算不上代码的代码，就能做出这么漂亮的东西，这也成了咱前端之路的最初动力。</p>
+<p>然而，随着项目体量和页面复杂度的增加，咱很快就发现这美人儿非但不漂亮，而且缺胳膊少腿儿的：</p>
+<ul>
+<li>缺少模块系统。模块系统是软件工程化的基石，CSS 的这个缺陷对前端项目的工程化管理造成了很大阻力，导致开发大型应用时编码和维护都异常困难。js 一开始也没有模块系统，后来各种轮子频出，什么CMD，AMD，UMD全蹦出来了，乱哄哄的，好在 ES6 从语言层面引入了模块系统才终结了这种乱象，以后 js 的模块化终于可以统一了。css 你怎么不好好向你的好基友 js 学习呢，人家都有了，你还傻了吧唧的一点动静都没有。</li>
+<li>没有变量机制。这对控制多个地方会引用到的属性值很不方便。比如一个颜色值，页面好多地方用到，设计MM突然心血来潮把这个值换成了另一个颜色，咱们怎么办，ctrl+f 全局替换？万一换掉了不该换的，或者漏掉了几个怎么办。</li>
+<li>嵌套的层级写法非常蛋疼。经常会出现<br><code>.page .content .left-side .profile .name&#123;&#125;; &lt;br&gt; .page .content .left-side .profile .age&#123;&#125;;</code><br>这种看起来很不爽，写起来更不爽的写法。这是程序员最不能忍受的——重复。</li>
+<li>复用困难。复用是软件工程的核心思想，css 不仅没提供模块系统，而且巧妙地避开了工程化的诸多实践。更加觉得 css 这门语言设计的跟闹着玩儿似的。</li>
+<li>blabla.. 其它的都不是很严重啦。</li>
+</ul>
+<p><strong>CSS 没有模块系统，你当我 <span class="term">@import</span> 是空气？</strong><br>CSS 的 <span class="term">@import</span> 规则是可以在一个 css 文件导入其他 css 文件，但这货需要执行到它时才能触发浏览器去下载它所 import 来的 css 文件，导致页面加载起来特别慢，还不如直接在 <span class="term">&lt;head&gt;</span> 里写一大坨 <span class="term">&lt;link&gt;</span> 标签的引入效率高，是名副其实的鸡肋功能，演员一般的存在，用你一次算我输。</p>
+<p>有需求就会有市场，<a target="_blank" rel="noopener" href="http://sass-lang.com/">Sass(Syntactically Awesome Style Sheets)</a> 应运而生。</p>
+<p>老规矩，先来看看 Sass 官网的原话：</p>
+<p>Sass 是世界上最成熟、最稳定、最强大的专业级 CSS 扩展语言！</p>
+<p>这货还真是一点也不谦虚，“最成熟，最稳定，最强大”。</p>
+<p>通过这几年项目中的实际运用，咱发现这句简短霸气的描述其实并没有丝毫的浮夸，Sass 的确厉害，完全可以 hold 住这三个“最”字，实至名归。</p>
+<p><strong>什么是预处理器</strong><br>预处理器是在程序源文件被编译之前根据预处理指令对程序源文件进行处理的程序。说白了，预处理器只不过是一个文本替换工具而已。CSS 预处理器则是通过将有特殊语法和指令的源代码处理成浏览器可使用的 CSS 文件的程序。<br><br><strong>是 Sass 还是 SCSS？</strong><br>SCSS 是 Sass 3 引入的新语法，语法上完全兼容原生 CSS，功能上完全继承 Sass，可以说是 CSS 和 Sass 的完美融合。SCSS 之于 Sass 犹如 CSS3 之于 CSS，ES6 之于 JS。所以别纠结，其实是一个东西啦。</p>
+<p>接下来就细数 Sass 带给咱们的四大实用特性，想必你一定已经使用过它们中的一个或几个。</p>
+<h1 id="一、嵌套写法"><a href="#一、嵌套写法" class="headerlink" title="一、嵌套写法"></a>一、嵌套写法</h1><p>想想之前咱们是怎样写原生 css 的：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.page</span> <span class="selector-class">.content</span> <span class="selector-class">.left-side</span> <span class="selector-class">.profile</span> <span class="selector-class">.name</span>&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">2rem</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.page</span> <span class="selector-class">.content</span> <span class="selector-class">.left-side</span> <span class="selector-class">.profile</span> <span class="selector-class">.age</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在使用 scss 可以这样写：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.page</span>&#123;</span><br><span class="line">    <span class="selector-class">.content</span>&#123;</span><br><span class="line">        <span class="selector-class">.left-side</span>&#123;</span><br><span class="line">            <span class="selector-class">.profile</span>&#123;</span><br><span class="line">                <span class="selector-class">.name</span>&#123;</span><br><span class="line">                    <span class="attribute">font-size</span>: <span class="number">2rem</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="selector-class">.age</span>&#123;</span><br><span class="line">                    <span class="attribute">color</span>: red;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译后</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.page</span> <span class="selector-class">.content</span> <span class="selector-class">.left-side</span> <span class="selector-class">.profile</span> <span class="selector-class">.name</span>&#123;<span class="attribute">font-size</span>: <span class="number">2rem</span>;&#125;</span><br><span class="line"><span class="selector-class">.page</span> <span class="selector-class">.content</span> <span class="selector-class">.left-side</span> <span class="selector-class">.profile</span> <span class="selector-class">.age</span>&#123;<span class="attribute">color</span>: red;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种嵌套写法的好处是显然的：</p>
+<ul>
+<li>结构清晰简洁，并且可与 html 文档结构对应起来；</li>
+<li>减少了大量冗余重复的选择器编码；</li>
+</ul>
+<h1 id="二、属性值的复用——定义变量"><a href="#二、属性值的复用——定义变量" class="headerlink" title="二、属性值的复用——定义变量"></a>二、属性值的复用——定义变量</h1><p>变量一直是所有编程语言的标准配置。然而 CSS 就没有，再次证明 CSS 可能是一门假语言。好在 Sass 补上了这个短板。</p>
+<p>没有变量之前的代码（这里以定义一系列表示成功风格的样式组件为例）：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.success-bg</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#dff0d8</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.success-panel</span>&#123;</span><br><span class="line">    <span class="selector-class">.panel-heading</span>&#123;</span><br><span class="line">        <span class="attribute">background</span>: <span class="number">#dff0d8</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.panel-body</span>&#123;</span><br><span class="line">        <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#dff0d8</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用了变量后的代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$success-<span class="attribute">color</span>: <span class="number">#dff0d8</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.success-bg</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: $success-color;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.success-panel</span>&#123;</span><br><span class="line">    <span class="selector-class">.panel-heading</span>&#123;</span><br><span class="line">        <span class="attribute">background</span>: $success-color;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-class">.panel-body</span>&#123;</span><br><span class="line">        <span class="attribute">border</span>: <span class="number">1px</span> solid $success-color;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用变量的好处是显而易见的：</p>
+<ul>
+<li>方便了多人协同作战，将频繁使用的属性值定义成变量放在单独的文件里，各个开发人员可方便引用而不必再关注这些小细节，有语义的变量名使用起来也要比单调的CSS值容易的多；</li>
+<li>极大地增强了代码的可维护性，便于局部和全局的样式风格统一控制；</li>
+</ul>
+<h1 id="三、文件级的复用——模块系统"><a href="#三、文件级的复用——模块系统" class="headerlink" title="三、文件级的复用——模块系统"></a>三、文件级的复用——模块系统</h1><p>模块化是软件工程的第一要务，是大型项目的必需建筑。软件工程的主要目标就是控制复杂度，这也正是模块化的目的。通过将一个大型复杂的工程拆解成一个个的小模块，使得校验、调试、测试都轻而易举。</p>
+<p>CSS原生的 <area is="term"><code>@import</code> 提供了一个并没有卵用的假模块系统。Sass 对 <area is="term"><code>@import</code> 进行了拓展，实现了一个真正意义上甚至功能更强大的模块系统。Sass 选择对 <area is="term"><code>@import</code> 进行扩展，而不是新建一个指令，可见 import 这个关键字的语义之强，JavaScript 模块系统的关键字也是 <area is="term"><code>import</code>。</p>
+<p>没有模块系统之前：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/your/site/common.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/your/site/popup.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/your/site/module_a.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/your/site/site.css&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>有了模块系统之后：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* site.scss */</span></span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;common&quot;</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;popup&quot;</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;module_a&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- index.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/your/site/site.css&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>好处嘛自然不用多说了：</p>
+<area is="well-success">
+
+<ul>
+<li>增删改模块以后是 css 自己家的事，别麻烦别人，不用再去动 html 了吼；-</li>
+<li>模块系统使得项目并不会随着业务复杂度增加而变得更加复杂。增加功能时只需要横向扩展就行了，不会纵向延伸，从而能始终保证每个模块完整而简单；-</li>
+</ul>
+<h1 id="四、展示层的复用——混合指令"><a href="#四、展示层的复用——混合指令" class="headerlink" title="四、展示层的复用——混合指令"></a>四、展示层的复用——混合指令</h1><p>混合(mixin)特别类似于 JavaScript 中的函数，然而 Sass 提供了用于表达式计算的 <area is="term"><code>@function</code> 函数指令，这里就不好这么类比了。但其实就是这么个东西，调用的时候会返回一段样式。</p>
+<p>比如下面一段存在重复样式的代码。</p>
+<p>复用之前：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.description</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: red;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.article</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#444</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>稍作优化：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.description</span>, <span class="selector-class">.article</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.description</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.article</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#444</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>似乎不错，但是之后再新加类似样式时，</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.description</span>, <span class="selector-class">.article</span>, <span class="selector-class">.style01</span>, <span class="selector-class">.style02</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"><span class="selector-class">.style01</span>&#123;&#125;</span><br><span class="line"><span class="selector-class">.style02</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每次都要改两个地方，很麻烦，很容易漏，尤其是将通用样式分离出来的话更容易出错。</p>
+<p>再做优化：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.grey-border-radius</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.description</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.article</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#444</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>似乎好了一点，但这样的话，html 每个使用的标签都需要多加上一个 .grey-border-radius 类。很显然这是多余的。这种做法可以说是“凑合”。</p>
+<p>使用 Sass 复用之后：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@mixin</span> grey-border-radius&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.description</span>&#123;</span><br><span class="line">    <span class="keyword">@include</span> grey-border-radius;</span><br><span class="line">    <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.article</span>&#123;</span><br><span class="line">    <span class="keyword">@include</span> grey-border-radius;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#444</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译后的 css 输出：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.description</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.article</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#444</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到了吧，这种做法简直“完美”：</p>
+<area is="well-success">
+
+<ul>
+<li>抽离公共的样式片段，便于多处复用；</li>
+<li>将公共的样式片段放在单独的文件里，便于项目的多个文件复用；</li>
+<li>对 html 的使用没有任何要求，css 自己家的事自己关起门来解决，绝不麻烦别人；</li>
+</ul>
+<h1 id="其他不常用且慎用的强大特性"><a href="#其他不常用且慎用的强大特性" class="headerlink" title="其他不常用且慎用的强大特性"></a>其他不常用且慎用的强大特性</h1><p>如果熟练合理地运用上面的四大特性，你已经是CSS代码工程化方面的砖家了，所写出来的代码必是清晰易维护的。Sass 提供了更多的功能，但对普通开发者来讲，上面的四点只要使用熟练，已经完全够用了，其他的可看可不看。下面提供的功能希望大家慎用，有的是出于性能考虑，有的则是从开发维护的角度考虑。尤其不要为了秀技术而去使用它们，过犹不及，事缓则圆，此为中庸之道。</p>
+<h2 id="语义层的复用——继承机制"><a href="#语义层的复用——继承机制" class="headerlink" title="# 语义层的复用——继承机制"></a># 语义层的复用——继承机制</h2><p>继承是面向对象程序设计的三大特性之一，这也是为什么说它是语义层复用的原因。你可以说一个错误信息框继承了一个信息框，而不能说一个错误信息框继承了一个灰色圆角，虽然也是可以强行这么说，但难免有些别扭哈哈。</p>
+<p>比如说下面定义一组信息框的样式，包括默认，成功和错误的样式。</p>
+<p>使用继承之前：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.msg</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#dff0d8</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.msg-success</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#4cae4c</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.msg-error</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#d43f3a</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样是上面说到的问题，编写 html 时每个使用的标签都需要多加上一个 .msg 类，很多余。</p>
+<p>使用继承之后：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.msg</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#dff0d8</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.msg-success</span>&#123;</span><br><span class="line">    <span class="keyword">@extend</span> .msg;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#4cae4c</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.msg-error</span>&#123;</span><br><span class="line">    <span class="keyword">@extend</span> .msg;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#d43f3a</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译后</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.msg</span>, <span class="selector-class">.msg-success</span>, <span class="selector-class">.msg-error</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#e3e3e3</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#dff0d8</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.msg-success</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#4cae4c</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.msg-error</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#d43f3a</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，上面的效果使用混合(mixin)也可以完成。但不同的是：继承拷贝的是选择器，而混合(mixin)拷贝的是样式片段。</p>
+<area is="bq">
+
+<p><strong>使用混合(mixin)还是继承(extend)？</strong><br>你肯定以为既然继承拷贝的是选择器，而混合拷贝的是大段的样式，那当然是优先选择继承了。然而恰恰相反，推荐做法是<area is="color-red"> **尽可能使用混合(mixin)**，具体原因 <a target="_blank" rel="noopener" href="https://www.sass.hk/skill/sass141.html">戳这里</a>。</p>
+<h2 id="用于复杂计算的函数"><a href="#用于复杂计算的函数" class="headerlink" title="# 用于复杂计算的函数"></a># 用于复杂计算的函数</h2><p>这个功能主要用于值的计算，和 JavaScript 中的函数类似。</p>
+<p>比如移动端开发时可以封装成一个函数用于把 px 转成 rem。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$baseFontSize: <span class="number">20</span>;</span><br><span class="line"><span class="keyword">@function</span> px2rem($val) &#123;</span><br><span class="line">  <span class="keyword">@return</span> $val/$baseFontSize + rem;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.big-text</span>&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="built_in">px2rem</span>(<span class="number">30</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译后：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.big-text</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">1.5rem</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样在拿到设计MM给的视觉稿之后就可以直接使用 px 进行测量使用了。</p>
+<h2 id="完善的控制流"><a href="#完善的控制流" class="headerlink" title="# 完善的控制流"></a># 完善的控制流</h2><p>控制流即程序语言中的 <code>if/else</code>，<code>for</code>，<code>while</code> 等控制语句。Sass 同样提供了指令实现：</p>
+<ul>
+<li><code>@if</code></li>
+<li><code>@for</code></li>
+<li><code>@each</code></li>
+<li><code>@while</code></li>
+</ul>
+<p>它们通常配合 <code>@function</code> 指令使用，然而功能虽强，却不常用到。毕竟样式表的功用主要是描述页面样式，而不是提供更多控制。因此在这里不展开研究，感性趣的 <a target="_blank" rel="noopener" href="https://www.sass.hk/docs/">戳这里</a>。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>Sass 完美弥补了上面原生 CSS 暴露的几个短板，同时新语法 SCSS 使 CSS 开发者可以无缝过渡，是 CSS 预处理器中当之无愧的佼佼者。使用 Sass 容易编写出结构清晰，可复用，易维护的工程样式文件，这正是工程化的期望。这么好的东西，速速用起来。</p>
+<p>本文主要参考了 <a target="_blank" rel="noopener" href="https://www.sass.hk/">Sass 中文网</a>。</p>
+<h1 id="Scss有Less没有的特性"><a href="#Scss有Less没有的特性" class="headerlink" title="Scss有Less没有的特性"></a>Scss有Less没有的特性</h1><ul>
+<li><p>函数指令</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$grid-width</span>: <span class="number">40px</span>;</span><br><span class="line"><span class="variable">$gutter-width</span>: <span class="number">10px</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@function</span> grid-width(<span class="variable">$n</span>) &#123;</span><br><span class="line">  <span class="keyword">@return</span> <span class="variable">$n</span> * <span class="variable">$grid-width</span> + (<span class="variable">$n</span> - <span class="number">1</span>) * <span class="variable">$gutter-width</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#sidebar</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="built_in">grid-width</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>for 循环</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@for</span> <span class="variable">$i</span> from <span class="number">1</span> through <span class="number">3</span> &#123;</span><br><span class="line">  <span class="selector-class">.item-</span>#&#123;<span class="variable">$i</span>&#125; &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">2em</span> * <span class="variable">$i</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更多待发掘，比如SassScript，@规则和指令，控制指令和表达式等</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/json%E4%B8%8Ejsonp%E5%8C%BA%E5%88%AB%E6%B5%85%E6%9E%90%EF%BC%88json%E6%89%8D%E6%98%AF%E7%9B%AE%E7%9A%84%EF%BC%8Cjsonp%E5%8F%AA%E6%98%AF%E6%89%8B%E6%AE%B5%EF%BC%89/" rel="prev" title="json与jsonp区别浅析（json才是目的，jsonp只是手段）">
+                  <i class="fa fa-chevron-left"></i> json与jsonp区别浅析（json才是目的，jsonp只是手段）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E6%89%8B%E5%A4%A7%E5%B8%88%E2%80%94%E2%80%94MVVM%E6%A8%A1%E5%BC%8F/" rel="next" title="前后端分手大师——MVVM模式">
+                  前后端分手大师——MVVM模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DOM哥</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><div class="copyright-custom">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span>小站已勉强运行2年9个月零18天</span> <span>最近更新于 2025-12-02 17:01:09</span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>

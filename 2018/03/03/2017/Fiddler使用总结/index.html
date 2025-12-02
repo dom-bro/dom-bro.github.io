@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="与后端数据通信是前端日常开发的重要一环，在与后端接口联调的时候往往需要通过查看后端返回的数据进行调试。如果在PC端，Chrome自带的DevTools就已经足够用了，Network面板可以记录所有网络请求，查看接口数据非常方便。但是在移动端就不能这样干了，手机上是无法直接查看网络请求数据的，这时候就需要一个能记录网络通信的工具，也就是抓包工具。来来回回尝试了好几个，Fiddler算是用起来最爽的了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fiddler使用总结">
+<meta property="og:url" content="https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="DOM哥">
+<meta property="og:description" content="与后端数据通信是前端日常开发的重要一环，在与后端接口联调的时候往往需要通过查看后端返回的数据进行调试。如果在PC端，Chrome自带的DevTools就已经足够用了，Network面板可以记录所有网络请求，查看接口数据非常方便。但是在移动端就不能这样干了，手机上是无法直接查看网络请求数据的，这时候就需要一个能记录网络通信的工具，也就是抓包工具。来来回回尝试了好几个，Fiddler算是用起来最爽的了">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/fiddler-contain.png">
+<meta property="article:published_time" content="2018-03-03T08:43:18.546Z">
+<meta property="article:modified_time" content="2023-02-12T08:20:20.860Z">
+<meta property="article:author" content="DOM哥">
+<meta property="article:tag" content="前端，vue，DOM哥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/fiddler-contain.png">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/","path":"2018/03/03/2017/Fiddler使用总结/","title":"Fiddler使用总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Fiddler使用总结 | DOM哥</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.2.15/dist/antd.min.css">
+<script>
+  window.DomBroConfig = {"packageJSON":{"name":"hexo-site","version":"0.0.75","private":true,"scripts":{"build":"hexo clean && npm run spa:build && NODE_ENV=production hexo generate","clean":"hexo clean","d":"NODE_ENV=production hexo deploy","deploy":"npm version patch && hexo clean && npm run spa:build && npm run d","server":"hexo clean && hexo server --config _config.yml,_config.localhost.yml","spa":"vite --port 4001 --force --host","spa:build":"NODE_ENV=production vite build --emptyOutDir","pre":"serve public"},"hexo":{"version":"6.3.0"},"dependencies":{"@ant-design/icons-vue":"^6.1.0","@octokit/request":"^10.0.7","@vitejs/plugin-vue":"^4.0.0","ant-design-vue":"^3.2.19","hexo":"^6.3.0","hexo-deployer-git":"^4.0.0","hexo-generator-archive":"^2.0.0","hexo-generator-category":"^2.0.0","hexo-generator-index":"^3.0.0","hexo-generator-tag":"^2.0.0","hexo-renderer-ejs":"^2.0.0","hexo-renderer-marked":"^6.0.0","hexo-renderer-stylus":"^2.1.0","hexo-server":"^3.0.0","hexo-theme-landscape":"^0.0.3","hexo-theme-next":"^8.14.2","less":"^4.1.3","moment":"^2.29.4","moment-precise-range-plugin":"^1.3.0","unplugin-vue-components":"^0.23.0","vite":"^4.1.1","vue":"^3.2.47","vue-router":"^4.1.6"},"devDependencies":{"rollup-obfuscator":"^3.0.1","vite-plugin-commonjs":"^0.10.4"}},"layout":false,"page":{"title":"Fiddler使用总结","photos":["/images/2023/fiddler-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/Fiddler使用总结.md","raw":"<OTHER BIG>","slug":"2017/Fiddler使用总结","published":true,"date":{"_i":"2018-03-03T08:43:18.546Z","_pf":"<DEEP>","_locale":"<DEEP>","_d":"2018-03-03T08:43:18.546Z","_z":null,"add":"<FUNCTION DEEP>","calendar":"<FUNCTION DEEP>","clone":"<FUNCTION DEEP>","diff":"<FUNCTION DEEP>","endOf":"<FUNCTION DEEP>","format":"<FUNCTION DEEP>","from":"<FUNCTION DEEP>","fromNow":"<FUNCTION DEEP>","to":"<FUNCTION DEEP>","toNow":"<FUNCTION DEEP>","get":"<FUNCTION DEEP>","invalidAt":"<FUNCTION DEEP>","isAfter":"<FUNCTION DEEP>","isBefore":"<FUNCTION DEEP>","isBetween":"<FUNCTION DEEP>","isSame":"<FUNCTION DEEP>","isSameOrAfter":"<FUNCTION DEEP>","isSameOrBefore":"<FUNCTION DEEP>","isValid":"<FUNCTION DEEP>","lang":"<FUNCTION DEEP>","locale":"<FUNCTION DEEP>","localeData":"<FUNCTION DEEP>","max":"<FUNCTION DEEP>","min":"<FUNCTION DEEP>","parsingFlags":"<FUNCTION DEEP>","set":"<FUNCTION DEEP>","startOf":"<FUNCTION DEEP>","subtract":"<FUNCTION DEEP>","toArray":"<FUNCTION DEEP>","toObject":"<FUNCTION DEEP>","toDate":"<FUNCTION DEEP>","toISOString":"<FUNCTION DEEP>","inspect":"<FUNCTION DEEP>","toJSON":"<FUNCTION DEEP>","toString":"<FUNCTION DEEP>","unix":"<FUNCTION DEEP>","valueOf":"<FUNCTION DEEP>","creationData":"<FUNCTION DEEP>","eraName":"<FUNCTION DEEP>","eraNarrow":"<FUNCTION DEEP>","eraAbbr":"<FUNCTION DEEP>","eraYear":"<FUNCTION DEEP>","year":"<FUNCTION DEEP>","isLeapYear":"<FUNCTION DEEP>","weekYear":"<FUNCTION DEEP>","isoWeekYear":"<FUNCTION DEEP>","quarters":"<FUNCTION DEEP>","month":"<FUNCTION DEEP>","daysInMonth":"<FUNCTION DEEP>","weeks":"<FUNCTION DEEP>","isoWeeks":"<FUNCTION DEEP>","weeksInYear":"<FUNCTION DEEP>","weeksInWeekYear":"<FUNCTION DEEP>","isoWeeksInYear":"<FUNCTION DEEP>","isoWeeksInISOWeekYear":"<FUNCTION DEEP>","date":"<FUNCTION DEEP>","days":"<FUNCTION DEEP>","weekday":"<FUNCTION DEEP>","isoWeekday":"<FUNCTION DEEP>","dayOfYear":"<FUNCTION DEEP>","hours":"<FUNCTION DEEP>","minutes":"<FUNCTION DEEP>","seconds":"<FUNCTION DEEP>","milliseconds":"<FUNCTION DEEP>","utcOffset":"<FUNCTION DEEP>","utc":"<FUNCTION DEEP>","local":"<FUNCTION DEEP>","parseZone":"<FUNCTION DEEP>","hasAlignedHourOffset":"<FUNCTION DEEP>","isDST":"<FUNCTION DEEP>","isLocal":"<FUNCTION DEEP>","isUtcOffset":"<FUNCTION DEEP>","isUtc":"<FUNCTION DEEP>","zoneAbbr":"<FUNCTION DEEP>","zoneName":"<FUNCTION DEEP>","dates":"<FUNCTION DEEP>","months":"<FUNCTION DEEP>","years":"<FUNCTION DEEP>","zone":"<FUNCTION DEEP>","isDSTShifted":"<FUNCTION DEEP>","tz":"<FUNCTION DEEP>","preciseDiff":"<FUNCTION DEEP>"},"updated":{"_i":"2023-02-12T08:20:20.860Z","_pf":"<DEEP>","_d":"2023-02-12T08:20:20.860Z"},"layout":"post","link":"","_id":"cmiocm5mp000j3nz0c8nl9buy","content":"<OTHER BIG>","site":{"data":"<DEEP>"},"path":"2018/03/03/2017/Fiddler使用总结/","permalink":"https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/Fiddler使用总结.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/Fiddler使用总结/","tags":{"data":[],"length":0,"_model":"<DEEP>","_schema":"<DEEP>","size":"<FUNCTION DEEP>","each":"<FUNCTION DEEP>","random":"<FUNCTION DEEP>"},"categories":{"data":[],"_model":"<DEEP>","_schema":"<DEEP>"},"prev":{"title":"从0到1上线一个微信小程序","photos":["/images/2023/wx-contain.png"],"excerpt":"微信小程序的出现极大地降低了个人开发者微创业的门槛，不需要后端技术，不需要服务器和域名这些乱七八糟的前置操作，只需要懂得前端技术，就能发布一款属于自己的轻量级应用，简直是前端开发者的福音呐😁","_content":"<OTHER BIG>","source":"_posts/2019/从0到1上线一个微信小程序.md","raw":"<OTHER BIG>","slug":"2019/从0到1上线一个微信小程序","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mv000u3nz0gywt4efh","content":"<OTHER BIG>","site":"<DEEP>","path":"2019/02/26/2019/从0到1上线一个微信小程序/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/从0到1上线一个微信小程序.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/从0到1上线一个微信小程序/","tags":"<DEEP>","categories":"<DEEP>","prev":"<DEEP>","next":"<DEEP>","_model":"<DEEP>","_schema":"<DEEP>","setTags":"<FUNCTION DEEP>","setCategories":"<FUNCTION DEEP>"},"next":{"title":"从输入cnblogs.com到博客园首页完全展示发生了什么","photos":["/images/2023/network-principle.jpg"],"excerpt":"之前面试时候经常被问及这个问题，支支吾吾回答没有底气，仔细研究了一下，发现里面学问还真不少。","_content":"<OTHER BIG>","source":"_posts/2017/从输入cnblogs.com到博客园首页完全展示发生了什么.md","raw":"<OTHER BIG>","slug":"2017/从输入cnblogs.com到博客园首页完全展示发生了什么","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mq000l3nz01530fqe8","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/从输入cnblogs.com到博客园首页完全展示发生了什么/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>"},"lang":"en","canonical_path":"2018/03/03/2017/Fiddler使用总结/index.html","toc":{"max_depth":6},"reward_settings":{},"quicklink":{"timeout":3000}},"url":"https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/index.html","config":{"title":"DOM哥","url":"https://dom-bro.github.io","root":"/","permalink":":year/:month/:day/:title/","pretty_urls":{},"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":"spa/**/*","new_post_name":":title.md","external_link":{"field":"site"},"highlight":{"exclude_languages":[],"first_line_number":"always1"},"prismjs":{},"default_category":"uncategorized","date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","updated_option":"mtime","per_page":10,"pagination_dir":"page","theme":"next","server":{"port":4000,"ip":"<OTHER ERROR>"},"deploy":{"type":"git","repo":"git@github.com:dom-bro/dom-bro.github.io.git"},"keywords":"前端，vue，DOM哥","index_generator":{"order_by":"-date"},"google_adsense":{"js":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js","client":"ca-pub-9410111523844245"},"theme_config":{"cache":"<DEEP>","custom_file_path":"<DEEP>","scheme":"Gemini","favicon":"<DEEP>","creative_commons":"<DEEP>","open_graph":"<DEEP>","menu_settings":"<DEEP>","sidebar":"<DEEP>","avatar":"<DEEP>","social_icons":"<DEEP>","links_settings":"<DEEP>","toc":"<DEEP>","footer":"<DEEP>","post_meta":"<DEEP>","symbols_count_time":"<DEEP>","reward_settings":"<DEEP>","related_posts":"<DEEP>","post_edit":"<DEEP>","post_navigation":"left","tagcloud":"<DEEP>","calendar":"<DEEP>","text_align":"<DEEP>","theme_color":"<DEEP>","body_scrollbar":"<DEEP>","codeblock":"<DEEP>","back2top":"<DEEP>","reading_progress":"<DEEP>","bookmark":"<DEEP>","github_banner":"<DEEP>","font":"<DEEP>","note":"<DEEP>","tabs":"<DEEP>","pdf":"<DEEP>","mermaid":"<DEEP>","math":"<DEEP>","quicklink":"<DEEP>","motion":"<DEEP>","pace":"<DEEP>","canvas_ribbon":"<DEEP>","comments":"<DEEP>","disqus":"<DEEP>","disqusjs":"<DEEP>","changyan":"<DEEP>","gitalk":"<DEEP>","utterances":"<DEEP>","google_analytics":"<DEEP>","matomo":"<DEEP>","umami":"<DEEP>","plausible":"<DEEP>","leancloud_visitors":"<DEEP>","firestore":"<DEEP>","busuanzi_count":"<DEEP>","algolia_search":"<DEEP>","local_search":"<DEEP>","chat":"<DEEP>","chatra":"<DEEP>","tidio":"<DEEP>","gitter":"<DEEP>","vendors":"<DEEP>","css":"css","js":"js","images":"images"},"category_generator":{},"archive_generator":{},"tag_generator":{},"marked":{"external_link":"<DEEP>"}},"theme":{"cache":{},"custom_file_path":{"head":"theme_next_custom_files/head.njk","header":"theme_next_custom_files/header.njk","sidebar":"theme_next_custom_files/sidebar.njk","postMeta":"theme_next_custom_files/post-meta.njk","postBodyEnd":"theme_next_custom_files/post-body-end.swig","footer":"theme_next_custom_files/footer.njk","bodyEnd":"theme_next_custom_files/body-end.njk","variable":"theme_next_custom_files/variables.styl","mixin":"theme_next_custom_files/mixins.styl","style":"theme_next_custom_files/styles.styl"},"favicon":{"small":"/favicon.png"},"creative_commons":{"license":"by-nc-sa","size":"small"},"open_graph":{},"menu_settings":{},"sidebar":{"padding":18,"offset":12},"avatar":{},"social_icons":{},"links_settings":{"icon":"fa fa-globe","layout":"block"},"toc":{},"footer":{"icon":"<DEEP>","beian":"<DEEP>","since":2023,"sinceDate":20230214},"post_meta":{"updated_at":"<DEEP>"},"symbols_count_time":{},"reward_settings":{},"related_posts":{"icon":"fa fa-signs-post"},"post_edit":{"url":"https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/"},"tagcloud":{"max":30,"amount":200,"orderby":"name","order":1},"calendar":{"calendar_id":"<required>","orderBy":"startTime","offsetMax":72,"offsetMin":4,"maxResults":250},"text_align":{"desktop":"justify"},"theme_color":{"light":"#222"},"body_scrollbar":{},"codeblock":{"theme":"<DEEP>","prism":"<DEEP>","copy_button":"<DEEP>"},"back2top":{},"reading_progress":{"position":"top","color":"#37c6c0","height":"3px"},"bookmark":{"save":"auto"},"github_banner":{"permalink":"https://github.com/yourname"},"font":{"global":"<DEEP>","title":"<DEEP>","headings":"<DEEP>","posts":"<DEEP>","codes":"<DEEP>"},"note":{"style":"simple"},"tabs":{"transition":"<DEEP>"},"pdf":{"height":"500px"},"mermaid":{"theme":"<DEEP>"},"math":{"mathjax":"<DEEP>","katex":"<DEEP>"},"quicklink":{},"motion":{"transition":"<DEEP>"},"pace":{"color":"blue","theme":"minimal"},"canvas_ribbon":{"size":300,"alpha":0.6,"zIndex":-1},"comments":{"style":"tabs"},"disqus":{},"disqusjs":{},"changyan":{},"gitalk":{"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},"utterances":{"repo":"user-name/repo-name","issue_term":"pathname","theme":"github-light"},"google_analytics":{"tracking_id":"G-ZCWSWQ4PSD"},"matomo":{},"umami":{},"plausible":{},"leancloud_visitors":{"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky"},"firestore":{"collection":"articles"},"busuanzi_count":{"total_visitors_icon":"fa fa-user","total_views_icon":"fa fa-eye"},"algolia_search":{"hits":"<DEEP>"},"local_search":{},"chat":{"icon":"fa fa-comment"},"chatra":{},"tidio":{},"gitter":{},"vendors":{"internal":"local","plugins":"cdnjs","anime":"<DEEP>","fontawesome":"<DEEP>","prism":"<DEEP>","prism_autoloader":"<DEEP>","prism_line_numbers":"<DEEP>","mathjax":"<DEEP>","katex":"<DEEP>","copy_tex_js":"<DEEP>","pjax":"<DEEP>","jquery":"<DEEP>","fancybox_js":"<DEEP>","fancybox_css":"<DEEP>","mediumzoom":"<DEEP>","lazyload":"<DEEP>","pangu":"<DEEP>","quicklink":"<DEEP>","disqusjs_js":"<DEEP>","disqusjs_css":"<DEEP>","gitalk_js":"<DEEP>","gitalk_css":"<DEEP>","firebase_app":"<DEEP>","firebase_firestore":"<DEEP>","algolia_search":"<DEEP>","instant_search":"<DEEP>","local_search":"<DEEP>","pdfobject":"<DEEP>","mermaid":"<DEEP>","animate_css":"<DEEP>","pace_js":"<DEEP>","pace_css":"<DEEP>","canvas_ribbon":"<DEEP>","creative_commons":"<DEEP>"},"injects":{"variable":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/variables.styl"],"mixin":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/mixins.styl"],"style":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/styles.styl"],"head":["<DEEP>"],"header":["<DEEP>"],"sidebar":["<DEEP>"],"postMeta":["<DEEP>"],"postBodyEnd":["<DEEP>"],"footer":["<DEEP>"],"bodyEnd":["<DEEP>"],"comment":[]},"highlight":{"light":"<DEEP>","dark":"<DEEP>"},"prism":{"light":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism.css","dark":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism-dark.css","number":"<OTHER BIG>"},"menu_map":{},"main_menu":[]},"env":{"args":{"_":[]},"env":"production","version":"6.3.0","cmd":"deploy"},"view_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/hexo-theme-next/layout/","site":{"posts":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"]},"pages":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"],"length":9,"_model":"<DEEP>","_schema":"<DEEP>"},"categories":{"data":["<DEEP>"]},"tags":{"data":[]},"data":{}},"__":"","_p":"","next_version":"8.14.2","languages":["en"],"ccURL":"https://creativecommons.org/licenses/by-nc-sa/4.0/","filename":"<OTHER BIG>","date":"2025-12-02","date_xml":"2025-12-02T09:01:10.126Z","time":"17:01:10","full_date":"2025-12-02 17:01:10","relative_date":"a few seconds ago","time_tag":"<time datetime=\"2025-12-02T09:01:10.126Z\">2025-12-02</time>","moment":"2025-12-02T09:01:10.126Z","search_form":"<FUNCTION BIG>","strip_html":"","trim":"<FUNCTION ERROR>","titlecase":"<FUNCTION ERROR>","word_wrap":"<FUNCTION ERROR>","truncate":"<FUNCTION ERROR>","escape_html":"<FUNCTION ERROR>","fragment_cache":"<FUNCTION ERROR>","gravatar":"<FUNCTION ERROR>","is_current":false,"is_home":false,"is_home_first_page":false,"is_post":true,"is_page":false,"is_archive":false,"is_year":false,"is_month":false,"is_category":false,"is_tag":false,"list_archives":"<FUNCTION BIG>","list_categories":"<FUNCTION BIG>","list_tags":"","list_posts":"<FUNCTION BIG>","meta_generator":"<meta name=\"generator\" content=\"Hexo 6.3.0\">","open_graph":"<FUNCTION BIG>","number_format":"<FUNCTION ERROR>","paginator":"","partial":"<FUNCTION ERROR>","markdown":"<FUNCTION ERROR>","render":"<FUNCTION ERROR>","css":"\n","js":"\n","link_to":"<FUNCTION ERROR>","mail_to":"<a href=\"mailto:undefined\">","image_tag":"<img src=\"/\">","favicon_tag":"<link rel=\"shortcut icon\" href=\"/\">","feed_tag":"","tagcloud":"","tag_cloud":"","toc":"","relative_url":"","url_for":"/","full_url_for":"https://dom-bro.github.io/","inspect":"undefined","log":"<FUNCTION ERROR>","sinceDays":"2年9个月零18天","next_config":"<FUNCTION BIG>","next_config_unique":"<FUNCTION BIG>","next_font":"","next_url":"<FUNCTION ERROR>","next_inject":"<FUNCTION ERROR>","next_js":"<FUNCTION ERROR>","next_vendors":"<FUNCTION ERROR>","next_data":"<FUNCTION HTML>","next_pre":"","post_gallery":"","post_edit":"","gitalk_md5":"6666cd76f96956469e7be39d750cc7d9","i18n_path":"/undefined/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/","language_name":"English","next_menu":"<FUNCTION ERROR>","next_paginator":"","js_vendors":["anime"]}
+  console.log(window.DomBroConfig)
+  if (window.DomBroConfig.page.title) document.title = window.DomBroConfig.page.title
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    document.documentElement.classList.add('root-' + className)
+  }
+  if (DomBroConfig.packageJSON.version !== localStorage.getItem('version')) {
+    caches.keys().then(res => res.forEach(key => caches.delete(key)))
+    localStorage.setItem('version', DomBroConfig.packageJSON.version)
+  }
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+     crossorigin="anonymous"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">DOM哥</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header">
+  <a class="item active" href="/">Blog</a>
+
+  <a class="item " href="/vue#/vue">
+    <img src="/spa/images/awesome/vue.svg"/>
+    Vue
+  </a>
+  <a class="item " href="/react#/react">
+    <img src="/spa/images/awesome/react.svg"/>
+    React
+  </a>
+  <a class="item " href="/fe#/fe">
+    <img src="/spa/images/awesome/nodejs-icon.svg"/>
+    前端
+  </a>
+  <a class="item todo " href="/ai#/ai" onclick="alert('这个 Hub 正在研制，B站关注我，更新后收到通知');return false;">
+    <img src="/spa/images/logo/ChatGPT.png"/>
+    AI
+  </a>
+  <a class="item " href="/outside#/outside">
+    <img src="/spa/images/outside/usa.png"/>
+    墙外
+  </a>
+
+  <a class="item " href="/tools#/">工具</a>
+  <a class="item " href="/about#/about">About</a>
+</div>
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DOM哥</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/fiddler-contain.png" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DOM哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Fiddler使用总结 | DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Fiddler使用总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-03 16:43:18" itemprop="dateCreated datePublished" datetime="2018-03-03T16:43:18+08:00">2018-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-12 16:20:20" itemprop="dateModified" datetime="2023-02-12T16:20:20+08:00">2023-02-12</time>
+    </span>
+
+  
+    <span id="/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="Fiddler使用总结" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>与后端数据通信是前端日常开发的重要一环，在与后端接口联调的时候往往需要通过查看后端返回的数据进行调试。如果在PC端，Chrome自带的DevTools就已经足够用了，Network面板可以记录所有网络请求，查看接口数据非常方便。但是在移动端就不能这样干了，手机上是无法直接查看网络请求数据的，这时候就需要一个能记录网络通信的工具，也就是抓包工具。来来回回尝试了好几个，Fiddler算是用起来最爽的了:)</p>
+<p>Fiddler是一个免费的web调试代理，它能够记录、查看和调试所有连接上的终端和远程服务器之间的http&#x2F;https通信。闲话少叙，直接说如何调试手机上的页面。</p>
+<p>在电脑上安装Fiddler之后，需要进行一些简单的配置才能对手机上的网络通讯进行捕获。</p>
+<p>如果想要捕获手机上的通信数据，首先需要手机连接上Fiddler代理，而Fiddler默认是不允许其他设备进行连接的，点击 **Tools &gt; Options…**，在 <strong>Connections</strong> 面板选中 <strong>Allow remote computers to connect</strong> 允许其他设备连接（此操作需重启Fiddler生效），</p>
+<img src="/images/2023/20230212_160953.jpg"/>
+
+<p>然后在手机上连上Fiddler代理，贴上一张IOS配置代理截图：</p>
+<img src="/images/2023/20230212_161729.jpg" width="320"/>
+
+<p>好了，现在Fiddler已经可以捕获手机页面上的http通信了。但是会发现捕获了很多 <strong>Tunnel to</strong> 的会话，这是怎么回事呢？原来这些都是https请求，而https是加密传输的，Fiddler默认是不对https进行解密的，如果想对https进行捕获，需要继续进行配置。</p>
+<p>首先配置Fiddler对https进行解密，点击 **Tools &gt; Options…**，在 <strong>HTTPS</strong> 面板选中 <strong>Decrypt HTTPS traffic</strong> 解密https通信（此操作需重启Fiddler生效），</p>
+<img src="/images/2023/20230212_161404.jpg"/>
+
+<p>然后在手机上需要安装Fiddler根证书，因为Fiddler是通过自己生成的证书对网络请求重新签名进行https会话解密的。证书的安装方法就是在手机自带浏览器中访问FiddlerServer地址(比如10.200.8.155:8888)，会出现 <strong>Fiddler Echo Service</strong> 页面，下载并安装 <strong>FiddlerRoot certificate</strong>，</p>
+<img src="/images/2023/20230212_161949.jpg"/>
+
+<p>经过这两步设置之后，Fiddler就可以捕获手机与服务器之间的所有http&#x2F;https通信了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E4%BB%8E%E8%BE%93%E5%85%A5cnblogs.com%E5%88%B0%E5%8D%9A%E5%AE%A2%E5%9B%AD%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%85%A8%E5%B1%95%E7%A4%BA%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/" rel="prev" title="从输入cnblogs.com到博客园首页完全展示发生了什么">
+                  <i class="fa fa-chevron-left"></i> 从输入cnblogs.com到博客园首页完全展示发生了什么
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/26/2019/%E4%BB%8E0%E5%88%B01%E4%B8%8A%E7%BA%BF%E4%B8%80%E4%B8%AA%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="next" title="从0到1上线一个微信小程序">
+                  从0到1上线一个微信小程序 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DOM哥</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><div class="copyright-custom">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span>小站已勉强运行2年9个月零18天</span> <span>最近更新于 2025-12-02 17:01:09</span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="微信小程序的出现极大地降低了个人开发者微创业的门槛，不需要后端技术，不需要服务器和域名这些乱七八糟的前置操作，只需要懂得前端技术，就能发布一款属于自己的轻量级应用，简直是前端开发者的福音呐😁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从0到1上线一个微信小程序">
+<meta property="og:url" content="https://dom-bro.github.io/2019/02/26/2019/%E4%BB%8E0%E5%88%B01%E4%B8%8A%E7%BA%BF%E4%B8%80%E4%B8%AA%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="DOM哥">
+<meta property="og:description" content="微信小程序的出现极大地降低了个人开发者微创业的门槛，不需要后端技术，不需要服务器和域名这些乱七八糟的前置操作，只需要懂得前端技术，就能发布一款属于自己的轻量级应用，简直是前端开发者的福音呐😁">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/wx-contain.png">
+<meta property="article:published_time" content="2019-02-26T04:43:03.573Z">
+<meta property="article:modified_time" content="2023-02-10T06:46:30.583Z">
+<meta property="article:author" content="DOM哥">
+<meta property="article:tag" content="前端，vue，DOM哥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/wx-contain.png">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2019/02/26/2019/%E4%BB%8E0%E5%88%B01%E4%B8%8A%E7%BA%BF%E4%B8%80%E4%B8%AA%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2019/02/26/2019/%E4%BB%8E0%E5%88%B01%E4%B8%8A%E7%BA%BF%E4%B8%80%E4%B8%AA%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/","path":"2019/02/26/2019/从0到1上线一个微信小程序/","title":"从0到1上线一个微信小程序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从0到1上线一个微信小程序 | DOM哥</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.2.15/dist/antd.min.css">
+<script>
+  window.DomBroConfig = {"packageJSON":{"name":"hexo-site","version":"0.0.75","private":true,"scripts":{"build":"hexo clean && npm run spa:build && NODE_ENV=production hexo generate","clean":"hexo clean","d":"NODE_ENV=production hexo deploy","deploy":"npm version patch && hexo clean && npm run spa:build && npm run d","server":"hexo clean && hexo server --config _config.yml,_config.localhost.yml","spa":"vite --port 4001 --force --host","spa:build":"NODE_ENV=production vite build --emptyOutDir","pre":"serve public"},"hexo":{"version":"6.3.0"},"dependencies":{"@ant-design/icons-vue":"^6.1.0","@octokit/request":"^10.0.7","@vitejs/plugin-vue":"^4.0.0","ant-design-vue":"^3.2.19","hexo":"^6.3.0","hexo-deployer-git":"^4.0.0","hexo-generator-archive":"^2.0.0","hexo-generator-category":"^2.0.0","hexo-generator-index":"^3.0.0","hexo-generator-tag":"^2.0.0","hexo-renderer-ejs":"^2.0.0","hexo-renderer-marked":"^6.0.0","hexo-renderer-stylus":"^2.1.0","hexo-server":"^3.0.0","hexo-theme-landscape":"^0.0.3","hexo-theme-next":"^8.14.2","less":"^4.1.3","moment":"^2.29.4","moment-precise-range-plugin":"^1.3.0","unplugin-vue-components":"^0.23.0","vite":"^4.1.1","vue":"^3.2.47","vue-router":"^4.1.6"},"devDependencies":{"rollup-obfuscator":"^3.0.1","vite-plugin-commonjs":"^0.10.4"}},"layout":false,"page":{"title":"从0到1上线一个微信小程序","photos":["/images/2023/wx-contain.png"],"excerpt":"微信小程序的出现极大地降低了个人开发者微创业的门槛，不需要后端技术，不需要服务器和域名这些乱七八糟的前置操作，只需要懂得前端技术，就能发布一款属于自己的轻量级应用，简直是前端开发者的福音呐😁","_content":"<OTHER BIG>","source":"_posts/2019/从0到1上线一个微信小程序.md","raw":"<OTHER BIG>","slug":"2019/从0到1上线一个微信小程序","published":true,"date":{"_i":"2019-02-26T04:43:03.573Z","_pf":"<DEEP>","_locale":"<DEEP>","_d":"2019-02-26T04:43:03.573Z","_z":null,"add":"<FUNCTION DEEP>","calendar":"<FUNCTION DEEP>","clone":"<FUNCTION DEEP>","diff":"<FUNCTION DEEP>","endOf":"<FUNCTION DEEP>","format":"<FUNCTION DEEP>","from":"<FUNCTION DEEP>","fromNow":"<FUNCTION DEEP>","to":"<FUNCTION DEEP>","toNow":"<FUNCTION DEEP>","get":"<FUNCTION DEEP>","invalidAt":"<FUNCTION DEEP>","isAfter":"<FUNCTION DEEP>","isBefore":"<FUNCTION DEEP>","isBetween":"<FUNCTION DEEP>","isSame":"<FUNCTION DEEP>","isSameOrAfter":"<FUNCTION DEEP>","isSameOrBefore":"<FUNCTION DEEP>","isValid":"<FUNCTION DEEP>","lang":"<FUNCTION DEEP>","locale":"<FUNCTION DEEP>","localeData":"<FUNCTION DEEP>","max":"<FUNCTION DEEP>","min":"<FUNCTION DEEP>","parsingFlags":"<FUNCTION DEEP>","set":"<FUNCTION DEEP>","startOf":"<FUNCTION DEEP>","subtract":"<FUNCTION DEEP>","toArray":"<FUNCTION DEEP>","toObject":"<FUNCTION DEEP>","toDate":"<FUNCTION DEEP>","toISOString":"<FUNCTION DEEP>","inspect":"<FUNCTION DEEP>","toJSON":"<FUNCTION DEEP>","toString":"<FUNCTION DEEP>","unix":"<FUNCTION DEEP>","valueOf":"<FUNCTION DEEP>","creationData":"<FUNCTION DEEP>","eraName":"<FUNCTION DEEP>","eraNarrow":"<FUNCTION DEEP>","eraAbbr":"<FUNCTION DEEP>","eraYear":"<FUNCTION DEEP>","year":"<FUNCTION DEEP>","isLeapYear":"<FUNCTION DEEP>","weekYear":"<FUNCTION DEEP>","isoWeekYear":"<FUNCTION DEEP>","quarters":"<FUNCTION DEEP>","month":"<FUNCTION DEEP>","daysInMonth":"<FUNCTION DEEP>","weeks":"<FUNCTION DEEP>","isoWeeks":"<FUNCTION DEEP>","weeksInYear":"<FUNCTION DEEP>","weeksInWeekYear":"<FUNCTION DEEP>","isoWeeksInYear":"<FUNCTION DEEP>","isoWeeksInISOWeekYear":"<FUNCTION DEEP>","date":"<FUNCTION DEEP>","days":"<FUNCTION DEEP>","weekday":"<FUNCTION DEEP>","isoWeekday":"<FUNCTION DEEP>","dayOfYear":"<FUNCTION DEEP>","hours":"<FUNCTION DEEP>","minutes":"<FUNCTION DEEP>","seconds":"<FUNCTION DEEP>","milliseconds":"<FUNCTION DEEP>","utcOffset":"<FUNCTION DEEP>","utc":"<FUNCTION DEEP>","local":"<FUNCTION DEEP>","parseZone":"<FUNCTION DEEP>","hasAlignedHourOffset":"<FUNCTION DEEP>","isDST":"<FUNCTION DEEP>","isLocal":"<FUNCTION DEEP>","isUtcOffset":"<FUNCTION DEEP>","isUtc":"<FUNCTION DEEP>","zoneAbbr":"<FUNCTION DEEP>","zoneName":"<FUNCTION DEEP>","dates":"<FUNCTION DEEP>","months":"<FUNCTION DEEP>","years":"<FUNCTION DEEP>","zone":"<FUNCTION DEEP>","isDSTShifted":"<FUNCTION DEEP>","tz":"<FUNCTION DEEP>","preciseDiff":"<FUNCTION DEEP>"},"updated":{"_i":"2023-02-10T06:46:30.583Z","_pf":"<DEEP>","_d":"2023-02-10T06:46:30.583Z"},"layout":"post","link":"","_id":"cmiocm5mv000u3nz0gywt4efh","content":"<OTHER BIG>","site":{"data":"<DEEP>"},"path":"2019/02/26/2019/从0到1上线一个微信小程序/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/从0到1上线一个微信小程序.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/从0到1上线一个微信小程序/","tags":{"data":[],"length":0,"_model":"<DEEP>","_schema":"<DEEP>","size":"<FUNCTION DEEP>","each":"<FUNCTION DEEP>","random":"<FUNCTION DEEP>"},"categories":{"data":[],"_model":"<DEEP>","_schema":"<DEEP>"},"prev":{"title":"跌宕起伏的小程序之登录组件","photos":["/images/2023/wx-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2019/跌宕起伏的小程序之登录组件.md","raw":"<OTHER BIG>","slug":"2019/跌宕起伏的小程序之登录组件","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mw000w3nz0bgf3hivd","content":"<OTHER BIG>","site":"<DEEP>","path":"2019/03/05/2019/跌宕起伏的小程序之登录组件/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/跌宕起伏的小程序之登录组件.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/跌宕起伏的小程序之登录组件/","tags":"<DEEP>","categories":"<DEEP>","prev":"<DEEP>","next":"<DEEP>","_model":"<DEEP>","_schema":"<DEEP>","setTags":"<FUNCTION DEEP>","setCategories":"<FUNCTION DEEP>"},"next":{"title":"Fiddler使用总结","photos":["/images/2023/fiddler-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/Fiddler使用总结.md","raw":"<OTHER BIG>","slug":"2017/Fiddler使用总结","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mp000j3nz0c8nl9buy","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/Fiddler使用总结/","permalink":"https://dom-bro.github.io/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/Fiddler使用总结.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/Fiddler使用总结/","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>"},"lang":"en","canonical_path":"2019/02/26/2019/从0到1上线一个微信小程序/index.html","toc":{"max_depth":6},"reward_settings":{},"quicklink":{"timeout":3000}},"url":"<OTHER BIG>","config":{"title":"DOM哥","url":"https://dom-bro.github.io","root":"/","permalink":":year/:month/:day/:title/","pretty_urls":{},"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":"spa/**/*","new_post_name":":title.md","external_link":{"field":"site"},"highlight":{"exclude_languages":[],"first_line_number":"always1"},"prismjs":{},"default_category":"uncategorized","date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","updated_option":"mtime","per_page":10,"pagination_dir":"page","theme":"next","server":{"port":4000,"ip":"<OTHER ERROR>"},"deploy":{"type":"git","repo":"git@github.com:dom-bro/dom-bro.github.io.git"},"keywords":"前端，vue，DOM哥","index_generator":{"order_by":"-date"},"google_adsense":{"js":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js","client":"ca-pub-9410111523844245"},"theme_config":{"cache":"<DEEP>","custom_file_path":"<DEEP>","scheme":"Gemini","favicon":"<DEEP>","creative_commons":"<DEEP>","open_graph":"<DEEP>","menu_settings":"<DEEP>","sidebar":"<DEEP>","avatar":"<DEEP>","social_icons":"<DEEP>","links_settings":"<DEEP>","toc":"<DEEP>","footer":"<DEEP>","post_meta":"<DEEP>","symbols_count_time":"<DEEP>","reward_settings":"<DEEP>","related_posts":"<DEEP>","post_edit":"<DEEP>","post_navigation":"left","tagcloud":"<DEEP>","calendar":"<DEEP>","text_align":"<DEEP>","theme_color":"<DEEP>","body_scrollbar":"<DEEP>","codeblock":"<DEEP>","back2top":"<DEEP>","reading_progress":"<DEEP>","bookmark":"<DEEP>","github_banner":"<DEEP>","font":"<DEEP>","note":"<DEEP>","tabs":"<DEEP>","pdf":"<DEEP>","mermaid":"<DEEP>","math":"<DEEP>","quicklink":"<DEEP>","motion":"<DEEP>","pace":"<DEEP>","canvas_ribbon":"<DEEP>","comments":"<DEEP>","disqus":"<DEEP>","disqusjs":"<DEEP>","changyan":"<DEEP>","gitalk":"<DEEP>","utterances":"<DEEP>","google_analytics":"<DEEP>","matomo":"<DEEP>","umami":"<DEEP>","plausible":"<DEEP>","leancloud_visitors":"<DEEP>","firestore":"<DEEP>","busuanzi_count":"<DEEP>","algolia_search":"<DEEP>","local_search":"<DEEP>","chat":"<DEEP>","chatra":"<DEEP>","tidio":"<DEEP>","gitter":"<DEEP>","vendors":"<DEEP>","css":"css","js":"js","images":"images"},"category_generator":{},"archive_generator":{},"tag_generator":{},"marked":{"external_link":"<DEEP>"}},"theme":{"cache":{},"custom_file_path":{"head":"theme_next_custom_files/head.njk","header":"theme_next_custom_files/header.njk","sidebar":"theme_next_custom_files/sidebar.njk","postMeta":"theme_next_custom_files/post-meta.njk","postBodyEnd":"theme_next_custom_files/post-body-end.swig","footer":"theme_next_custom_files/footer.njk","bodyEnd":"theme_next_custom_files/body-end.njk","variable":"theme_next_custom_files/variables.styl","mixin":"theme_next_custom_files/mixins.styl","style":"theme_next_custom_files/styles.styl"},"favicon":{"small":"/favicon.png"},"creative_commons":{"license":"by-nc-sa","size":"small"},"open_graph":{},"menu_settings":{},"sidebar":{"padding":18,"offset":12},"avatar":{},"social_icons":{},"links_settings":{"icon":"fa fa-globe","layout":"block"},"toc":{},"footer":{"icon":"<DEEP>","beian":"<DEEP>","since":2023,"sinceDate":20230214},"post_meta":{"updated_at":"<DEEP>"},"symbols_count_time":{},"reward_settings":{},"related_posts":{"icon":"fa fa-signs-post"},"post_edit":{"url":"https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/"},"tagcloud":{"max":30,"amount":200,"orderby":"name","order":1},"calendar":{"calendar_id":"<required>","orderBy":"startTime","offsetMax":72,"offsetMin":4,"maxResults":250},"text_align":{"desktop":"justify"},"theme_color":{"light":"#222"},"body_scrollbar":{},"codeblock":{"theme":"<DEEP>","prism":"<DEEP>","copy_button":"<DEEP>"},"back2top":{},"reading_progress":{"position":"top","color":"#37c6c0","height":"3px"},"bookmark":{"save":"auto"},"github_banner":{"permalink":"https://github.com/yourname"},"font":{"global":"<DEEP>","title":"<DEEP>","headings":"<DEEP>","posts":"<DEEP>","codes":"<DEEP>"},"note":{"style":"simple"},"tabs":{"transition":"<DEEP>"},"pdf":{"height":"500px"},"mermaid":{"theme":"<DEEP>"},"math":{"mathjax":"<DEEP>","katex":"<DEEP>"},"quicklink":{},"motion":{"transition":"<DEEP>"},"pace":{"color":"blue","theme":"minimal"},"canvas_ribbon":{"size":300,"alpha":0.6,"zIndex":-1},"comments":{"style":"tabs"},"disqus":{},"disqusjs":{},"changyan":{},"gitalk":{"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},"utterances":{"repo":"user-name/repo-name","issue_term":"pathname","theme":"github-light"},"google_analytics":{"tracking_id":"G-ZCWSWQ4PSD"},"matomo":{},"umami":{},"plausible":{},"leancloud_visitors":{"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky"},"firestore":{"collection":"articles"},"busuanzi_count":{"total_visitors_icon":"fa fa-user","total_views_icon":"fa fa-eye"},"algolia_search":{"hits":"<DEEP>"},"local_search":{},"chat":{"icon":"fa fa-comment"},"chatra":{},"tidio":{},"gitter":{},"vendors":{"internal":"local","plugins":"cdnjs","anime":"<DEEP>","fontawesome":"<DEEP>","prism":"<DEEP>","prism_autoloader":"<DEEP>","prism_line_numbers":"<DEEP>","mathjax":"<DEEP>","katex":"<DEEP>","copy_tex_js":"<DEEP>","pjax":"<DEEP>","jquery":"<DEEP>","fancybox_js":"<DEEP>","fancybox_css":"<DEEP>","mediumzoom":"<DEEP>","lazyload":"<DEEP>","pangu":"<DEEP>","quicklink":"<DEEP>","disqusjs_js":"<DEEP>","disqusjs_css":"<DEEP>","gitalk_js":"<DEEP>","gitalk_css":"<DEEP>","firebase_app":"<DEEP>","firebase_firestore":"<DEEP>","algolia_search":"<DEEP>","instant_search":"<DEEP>","local_search":"<DEEP>","pdfobject":"<DEEP>","mermaid":"<DEEP>","animate_css":"<DEEP>","pace_js":"<DEEP>","pace_css":"<DEEP>","canvas_ribbon":"<DEEP>","creative_commons":"<DEEP>"},"injects":{"variable":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/variables.styl"],"mixin":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/mixins.styl"],"style":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/styles.styl"],"head":["<DEEP>"],"header":["<DEEP>"],"sidebar":["<DEEP>"],"postMeta":["<DEEP>"],"postBodyEnd":["<DEEP>"],"footer":["<DEEP>"],"bodyEnd":["<DEEP>"],"comment":[]},"highlight":{"light":"<DEEP>","dark":"<DEEP>"},"prism":{"light":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism.css","dark":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism-dark.css","number":"<OTHER BIG>"},"menu_map":{},"main_menu":[]},"env":{"args":{"_":[]},"env":"production","version":"6.3.0","cmd":"deploy"},"view_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/hexo-theme-next/layout/","site":{"posts":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"]},"pages":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"],"length":9,"_model":"<DEEP>","_schema":"<DEEP>"},"categories":{"data":["<DEEP>"]},"tags":{"data":[]},"data":{}},"__":"","_p":"","next_version":"8.14.2","languages":["en"],"ccURL":"https://creativecommons.org/licenses/by-nc-sa/4.0/","filename":"<OTHER BIG>","date":"2025-12-02","date_xml":"2025-12-02T09:01:10.101Z","time":"17:01:10","full_date":"2025-12-02 17:01:10","relative_date":"a few seconds ago","time_tag":"<time datetime=\"2025-12-02T09:01:10.101Z\">2025-12-02</time>","moment":"2025-12-02T09:01:10.101Z","search_form":"<FUNCTION BIG>","strip_html":"","trim":"<FUNCTION ERROR>","titlecase":"<FUNCTION ERROR>","word_wrap":"<FUNCTION ERROR>","truncate":"<FUNCTION ERROR>","escape_html":"<FUNCTION ERROR>","fragment_cache":"<FUNCTION ERROR>","gravatar":"<FUNCTION ERROR>","is_current":false,"is_home":false,"is_home_first_page":false,"is_post":true,"is_page":false,"is_archive":false,"is_year":false,"is_month":false,"is_category":false,"is_tag":false,"list_archives":"<FUNCTION BIG>","list_categories":"<FUNCTION BIG>","list_tags":"","list_posts":"<FUNCTION BIG>","meta_generator":"<meta name=\"generator\" content=\"Hexo 6.3.0\">","open_graph":"<FUNCTION BIG>","number_format":"<FUNCTION ERROR>","paginator":"","partial":"<FUNCTION ERROR>","markdown":"<FUNCTION ERROR>","render":"<FUNCTION ERROR>","css":"\n","js":"\n","link_to":"<FUNCTION ERROR>","mail_to":"<a href=\"mailto:undefined\">","image_tag":"<img src=\"/\">","favicon_tag":"<link rel=\"shortcut icon\" href=\"/\">","feed_tag":"","tagcloud":"","tag_cloud":"","toc":"","relative_url":"","url_for":"/","full_url_for":"https://dom-bro.github.io/","inspect":"undefined","log":"<FUNCTION ERROR>","sinceDays":"2年9个月零18天","next_config":"<FUNCTION BIG>","next_config_unique":"<FUNCTION BIG>","next_font":"","next_url":"<FUNCTION ERROR>","next_inject":"<FUNCTION ERROR>","next_js":"<FUNCTION ERROR>","next_vendors":"<FUNCTION ERROR>","next_data":"<FUNCTION HTML>","next_pre":"","post_gallery":"","post_edit":"","gitalk_md5":"6666cd76f96956469e7be39d750cc7d9","i18n_path":"<FUNCTION BIG>","language_name":"English","next_menu":"<FUNCTION ERROR>","next_paginator":"","js_vendors":["anime"]}
+  console.log(window.DomBroConfig)
+  if (window.DomBroConfig.page.title) document.title = window.DomBroConfig.page.title
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    document.documentElement.classList.add('root-' + className)
+  }
+  if (DomBroConfig.packageJSON.version !== localStorage.getItem('version')) {
+    caches.keys().then(res => res.forEach(key => caches.delete(key)))
+    localStorage.setItem('version', DomBroConfig.packageJSON.version)
+  }
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+     crossorigin="anonymous"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">DOM哥</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header">
+  <a class="item active" href="/">Blog</a>
+
+  <a class="item " href="/vue#/vue">
+    <img src="/spa/images/awesome/vue.svg"/>
+    Vue
+  </a>
+  <a class="item " href="/react#/react">
+    <img src="/spa/images/awesome/react.svg"/>
+    React
+  </a>
+  <a class="item " href="/fe#/fe">
+    <img src="/spa/images/awesome/nodejs-icon.svg"/>
+    前端
+  </a>
+  <a class="item todo " href="/ai#/ai" onclick="alert('这个 Hub 正在研制，B站关注我，更新后收到通知');return false;">
+    <img src="/spa/images/logo/ChatGPT.png"/>
+    AI
+  </a>
+  <a class="item " href="/outside#/outside">
+    <img src="/spa/images/outside/usa.png"/>
+    墙外
+  </a>
+
+  <a class="item " href="/tools#/">工具</a>
+  <a class="item " href="/about#/about">About</a>
+</div>
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-0-%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">0.0 前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-1-%E5%88%9B%E6%84%8F"><span class="nav-number">2.</span> <span class="nav-text">0.1 创意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-2-%E6%8A%80%E6%9C%AF"><span class="nav-number">3.</span> <span class="nav-text">0.2 技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">3.1.</span> <span class="nav-text">小程序的运行环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="nav-number">3.2.</span> <span class="nav-text">技术栈</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-3-%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">0.3 实际开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E9%A2%84%E8%A7%88"><span class="nav-number">4.1.</span> <span class="nav-text">调试预览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E4%B8%AA%E6%A1%86%E6%9E%B6"><span class="nav-number">4.2.</span> <span class="nav-text">选个框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="nav-number">4.3.</span> <span class="nav-text">开发中遇到的坑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-9-%E6%8F%90%E4%BA%A4%E5%BE%AE%E4%BF%A1%E5%AE%A1%E6%A0%B8"><span class="nav-number">5.</span> <span class="nav-text">0.9 提交微信审核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-0-%E5%8F%91%E5%B8%83%E4%B8%8A%E7%BA%BF"><span class="nav-number">6.</span> <span class="nav-text">1.0 发布上线</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DOM哥</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/wx-contain.png" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2019/02/26/2019/%E4%BB%8E0%E5%88%B01%E4%B8%8A%E7%BA%BF%E4%B8%80%E4%B8%AA%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DOM哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从0到1上线一个微信小程序 | DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从0到1上线一个微信小程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-02-26 12:43:03" itemprop="dateCreated datePublished" datetime="2019-02-26T12:43:03+08:00">2019-02-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 14:46:30" itemprop="dateModified" datetime="2023-02-10T14:46:30+08:00">2023-02-10</time>
+    </span>
+
+  
+    <span id="/2019/02/26/2019/%E4%BB%8E0%E5%88%B01%E4%B8%8A%E7%BA%BF%E4%B8%80%E4%B8%AA%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" class="post-meta-item leancloud_visitors" data-flag-title="从0到1上线一个微信小程序" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="0-0-前期准备"><a href="#0-0-前期准备" class="headerlink" title="0.0 前期准备"></a>0.0 前期准备</h2><p>微信小程序的出现极大地降低了个人开发者微创业的门槛，不需要后端技术，不需要服务器和域名这些乱七八糟的前置操作，只需要懂得前端技术，就能发布一款属于自己的轻量级应用，简直是前端开发者的福音呐😁</p>
+<p>现在其实更火的当是微信小游戏，小程序热度排行榜上长期被小游戏霸屏。但小游戏的开发技术栈比小程序要多，需要的人力物力也更大。目前正在研究之中，有时间再做讨论。</p>
+<p>在开始之前需要准备一个邮箱去<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/wxopen/waregister?action=step1&token=&lang=zh_CN">创建一个小程序账号</a>。一个邮箱能且只能创建一个小程序，这让人有点难以理解，每创建一个小程序就要去申请个邮箱账号，小游戏同样是这样，导致我现在都不知道自己有几个邮箱账号了。</p>
+<h2 id="0-1-创意"><a href="#0-1-创意" class="headerlink" title="0.1 创意"></a>0.1 创意</h2><p>虽然研发成本极大降低，但想要做出一款成功受青睐的小程序，还是需要动很大的脑筋的。据不完全统计，现在市面上已发布的小程序已经几百万个😨，想要在这么多的形形色色的小作品里面脱颖而出，要么就是你的作品非常有创意，戳中了一些人的痛点，要么就是你路走偏锋，做了漏网之鱼😂</p>
+<p>相比之下，小游戏却是更能突显创意的战场。2048，围住神经猫，跳一跳这些让人眼前一亮的精致小玩意儿，都是创意制胜的代表。奈何在下也是应试教育的产物，脑子里的创新区域只在做梦的时候才会活跃。假如你想到了一个有趣可行的点子，那离用户百万就已经成功了一半。我一位同事说想做一个实时社交的小程序，让用户可以实现无障碍沟通。我当时就想，这样有理想的人怎么就和我做了同事了呢😂</p>
+<h2 id="0-2-技术"><a href="#0-2-技术" class="headerlink" title="0.2 技术"></a>0.2 技术</h2><h3 id="小程序的运行环境"><a href="#小程序的运行环境" class="headerlink" title="小程序的运行环境"></a>小程序的运行环境</h3><p>小程序的运行环境可以用一句话概括：敌情相当复杂。</p>
+<blockquote>
+<p>在 iOS 上，小程序逻辑层的 javascript 代码运行在 JavaScriptCore 中，视图层是由 WKWebView 来渲染的，环境有 iOS8、iOS9、iOS10</p>
+<p>在 Android旧版本 上，小程序逻辑层的 javascript 代码运行中 X5 JSCore 中，视图层是由 X5 基于 Mobile Chrome 57 内核来渲染的</p>
+<p> 在 Android新版本 上，小程序逻辑层的 javascript 代码运行在 V8 中，视图层是由自研 XWeb 引擎基于 Mobile Chrome 67 内核来渲染的</p>
+<p>在微信开发者工具上，小程序逻辑层的 javascript 代码是运行在 NW.js 中，视图层是由 Chromium 60 Webview 来渲染的</p>
+</blockquote>
+<p>也就是说一切以实物为准，在微信开发者工具上的表现和真机上的表现不尽相同，在真机的不同机器上表现也会因机而异😂</p>
+<p>另外由于是寄生在微信上，所以微信又做了一层封装，额外加了一些限制，比如</p>
+<blockquote>
+<p>不支持使用 eval 执行 JS 代码</p>
+<p>不支持使用 new Function 创建函数</p>
+</blockquote>
+<p>也就是不让动态执行 JS 代码，说实话，这确实挡住了很多骚操作。正所谓人在屋檐下，不得不低头。鉴于微信提供的巨大流量入口和裂变能力，就这样凑合着用吧😑</p>
+<p>上面这些都是各种限制，兼容性问题，当然也有让人开心的地方，那就是CSS3和ES6的特性基本上可以随便用，记住是基本上。</p>
+<h3 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h3><p>众所周知，浏览器的web技术是html，css和js。而小程序虽然类似浏览器，但并不是浏览器。所以他的技术是wxml，wxss和js😂。应该说并没有什么新的技术，就是照抄web标准然后本土化了一下。前端同学基本上可以无缝切入。</p>
+<p>我们开发web的时候基本上不会直接去写原生html，css，js，而是使用一些框架和库提升开发效率，例如曾经的jquery，现在的vue，react等。小程序也是如此，通常不会去直接写原生wxml，wxss。当然如果喜欢的话也可以直接去写，但随着项目迭代很快就会难以维护。要知道软件工程的奥义即在于控制复杂性。现在github上已经有了一些不错的框架出来，比如<a target="_blank" rel="noopener" href="https://github.com/Tencent/wepy">wepy</a>，<a target="_blank" rel="noopener" href="https://github.com/Meituan-Dianping/mpvue">mpvue</a>。</p>
+<p>前端技术 + <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/index.html">小程序官方文档</a> + 框架文档，基本上这三样就能hold住一个小程序了</p>
+<p>说下我的小程序官方文档读后感，不到一个小时读完了简易教程，感觉挺简单的嘛，简直小case。然后去读小程序的框架，组件和api，卧槽，才发现刚才只是读了一本厚书的目录。接下来断断续续看了将近一个月，才勉强看了一遍。哈哈，一切事情都不会像看上去那么简单呐！但如果只是作为入门，不需要很多高级特性，则不需要读那么多章节。</p>
+<h2 id="0-3-实际开发"><a href="#0-3-实际开发" class="headerlink" title="0.3 实际开发"></a>0.3 实际开发</h2><h3 id="调试预览"><a href="#调试预览" class="headerlink" title="调试预览"></a>调试预览</h3><p>工欲善其事，必先利其器。我们开发web时可以随便在某一个你喜欢的浏览器里预览效果，小程序就没那么随意了。因为小程序的宿主是微信，所以小程序只能在微信中才能跑起来。好在微信团队还是挺给力的，为开发者专门开发了一个预览调试工具，即<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html">微信开发者工具</a>。修改代码后即可在该工具上实时看到效果，但可是，该工具上呈现的效果并非是真实手机上呈现的效果，就像chrome开发者工具的模拟设备模式一样，虽然八九不离十，但是差之毫厘即谬以千里😂。这个工具上常用且实用的功能还挺多的，建议好好熟悉，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html">文档在此</a>，当然最快熟悉的方式还是点点点，哪里不懂点哪里😁</p>
+<h3 id="选个框架"><a href="#选个框架" class="headerlink" title="选个框架"></a>选个框架</h3><p>现在的主流框架选择只有wepy和mpvue两位，两者都是向最nb的 Vue.js 看齐。经过仔细斟酌，多方位比对，最终我还是选了wepy，因为发现wepy的星星要比mpvue的多上几个哈哈。<a target="_blank" rel="noopener" href="https://tencent.github.io/wepy/">wepy文档在此</a>。用了wepy将近一年时间，发现坑还挺多的，可能我对他的期待是像vue一样吧，期待太高了😂。vue稍微高级一点的特性都不支持，有一些实现还和vue是反着来的。不过那还能怎样呢，自己搞一个框架出来？在下实在才薄智浅。曾有一段时间被坑得决心要转向mpvue，但机智的我先去谷歌了一下mpvue的坑，发现相较wepy只多不少，哈哈我赶紧说服自己还是好好和wepy凑合着过吧。</p>
+<p>接下来就是写代码开发了，此处直接省略十万字，具体开发的细节就不说了哈，开发-调试-。。。-开发-调试，无限循环，大家都懂的</p>
+<h3 id="开发中遇到的坑"><a href="#开发中遇到的坑" class="headerlink" title="开发中遇到的坑"></a>开发中遇到的坑</h3><ul>
+<li>【wepy】<a target="_blank" rel="noopener" href="https://github.com/Tencent/wepy/issues/2023">多次路由到同一个页面时，页面上的变量会相互污染</a></li>
+<li>【wepy】<a target="_blank" rel="noopener" href="https://tencent.github.io/wepy/document.html#/?id=%E6%99%AE%E9%80%9A%E7%BB%84%E4%BB%B6%E5%BC%95%E7%94%A8">组件是静态组件，导致每实例化一个标签都需要在js的components里声明一次</a></li>
+<li>【wepy】<a href="ttps://tencent.github.io/wepy/document.html#/?id=wepy数据绑定方式">在更新数据之后需要调用<code>this.$apply()</code>更新视图，准确的说应该是在异步更新数据之后，也就是说他不是双向绑定</a></li>
+<li>【小程序】文件下载，webview，ajax都需要在小程序管理后台配置安全域名，否则都会失败。</li>
+<li>【小程序】<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html">webview和h5通信的方式postMessage机制只在特定时机触发，也就是除了这些时机，webview和url完全无法通信</a></li>
+<li>【小程序】<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/community/develop/buglist">web-view中使用input type&#x3D;’file’闪退</a></li>
+<li>小程序的坑可以单独拿出来写一篇千字作文了，有时间再总结一下，此处就不再举例了😂</li>
+</ul>
+<h2 id="0-9-提交微信审核"><a href="#0-9-提交微信审核" class="headerlink" title="0.9 提交微信审核"></a>0.9 提交微信审核</h2><p>此时功能已经开发测试完毕。接下来就是让用户看到我们辛辛苦苦完成的作品，虽然可能不受待见，甚至被疯狂吐槽，但更大的可能是用户根本不会去访问你的小程序😂，除非你有自己的推广渠道，比如公众号，微博等，否则微信用户纵然数十亿，你的小程序用户却很难破零哈哈。</p>
+<p>不管结果怎样，先发布再说。首先需要点击微信开发者工具工具栏的上传按钮上传小程序代码，上传成功后即可前往<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/">微信公众平台小程序管理后台</a>去提审你的小程序了，在版本管理里面选择刚才上传的那个版本，然后填写一些信息即可提交审核。首次提交审核通常会等待1～2个工作日，之后迭代版本一般1～2个小时即可过审。</p>
+<p>微信审核还是挺严格的，<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/product/index.html?t=19022720">审核规范在此</a>。比较普遍的做法是通过后端接口在提交审核时候过滤敏感内容，以此混过去，等发布到线上之后再把敏感内容放开。哈哈只要思想不滑坡，办法总比困难多。</p>
+<h2 id="1-0-发布上线"><a href="#1-0-发布上线" class="headerlink" title="1.0 发布上线"></a>1.0 发布上线</h2><p>终于，最后的最后，小程序审核通过了，可以发布到线上了。审核通过之后不会自动发布到线上，需要手动去点发布。发布到线上之后就可以去微信上任何一个入口搜索自己发布的小程序了。</p>
+<p>到此可以长舒一口气了，因为已经走完了万里长征的第一步，接下来就是思考怎么去推广和运营小程序，总之，这只是刚刚开始。</p>
+<p>最后贴一下自己辛辛苦苦的成果</p>
+<img width=260 src="https://dev.tencent.com/u/iovec/p/photo-list-static/git/raw/master/src/qr-code.jpg">
+
+<p>我去看了一下管理后台的访问数据，果然不出所料，用户量至今尚未破零😅</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/Fiddler%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" rel="prev" title="Fiddler使用总结">
+                  <i class="fa fa-chevron-left"></i> Fiddler使用总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/05/2019/%E8%B7%8C%E5%AE%95%E8%B5%B7%E4%BC%8F%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B9%8B%E7%99%BB%E5%BD%95%E7%BB%84%E4%BB%B6/" rel="next" title="跌宕起伏的小程序之登录组件">
+                  跌宕起伏的小程序之登录组件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DOM哥</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><div class="copyright-custom">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span>小站已勉强运行2年9个月零18天</span> <span>最近更新于 2025-12-02 17:01:09</span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>

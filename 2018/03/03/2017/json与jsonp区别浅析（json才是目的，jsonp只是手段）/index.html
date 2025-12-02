@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一言以蔽之，json返回的是一串数据；而jsonp返回的是脚本代码（包含一个函数调用）；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="json与jsonp区别浅析（json才是目的，jsonp只是手段）">
+<meta property="og:url" content="https://dom-bro.github.io/2018/03/03/2017/json%E4%B8%8Ejsonp%E5%8C%BA%E5%88%AB%E6%B5%85%E6%9E%90%EF%BC%88json%E6%89%8D%E6%98%AF%E7%9B%AE%E7%9A%84%EF%BC%8Cjsonp%E5%8F%AA%E6%98%AF%E6%89%8B%E6%AE%B5%EF%BC%89/index.html">
+<meta property="og:site_name" content="DOM哥">
+<meta property="og:description" content="一言以蔽之，json返回的是一串数据；而jsonp返回的是脚本代码（包含一个函数调用）；">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/json-contain.png">
+<meta property="article:published_time" content="2018-03-03T08:43:18.543Z">
+<meta property="article:modified_time" content="2023-02-10T13:47:48.761Z">
+<meta property="article:author" content="DOM哥">
+<meta property="article:tag" content="前端，vue，DOM哥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/json-contain.png">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2018/03/03/2017/json%E4%B8%8Ejsonp%E5%8C%BA%E5%88%AB%E6%B5%85%E6%9E%90%EF%BC%88json%E6%89%8D%E6%98%AF%E7%9B%AE%E7%9A%84%EF%BC%8Cjsonp%E5%8F%AA%E6%98%AF%E6%89%8B%E6%AE%B5%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2018/03/03/2017/json%E4%B8%8Ejsonp%E5%8C%BA%E5%88%AB%E6%B5%85%E6%9E%90%EF%BC%88json%E6%89%8D%E6%98%AF%E7%9B%AE%E7%9A%84%EF%BC%8Cjsonp%E5%8F%AA%E6%98%AF%E6%89%8B%E6%AE%B5%EF%BC%89/","path":"2018/03/03/2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）/","title":"json与jsonp区别浅析（json才是目的，jsonp只是手段）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>json与jsonp区别浅析（json才是目的，jsonp只是手段） | DOM哥</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.2.15/dist/antd.min.css">
+<script>
+  window.DomBroConfig = {"packageJSON":{"name":"hexo-site","version":"0.0.75","private":true,"scripts":{"build":"hexo clean && npm run spa:build && NODE_ENV=production hexo generate","clean":"hexo clean","d":"NODE_ENV=production hexo deploy","deploy":"npm version patch && hexo clean && npm run spa:build && npm run d","server":"hexo clean && hexo server --config _config.yml,_config.localhost.yml","spa":"vite --port 4001 --force --host","spa:build":"NODE_ENV=production vite build --emptyOutDir","pre":"serve public"},"hexo":{"version":"6.3.0"},"dependencies":{"@ant-design/icons-vue":"^6.1.0","@octokit/request":"^10.0.7","@vitejs/plugin-vue":"^4.0.0","ant-design-vue":"^3.2.19","hexo":"^6.3.0","hexo-deployer-git":"^4.0.0","hexo-generator-archive":"^2.0.0","hexo-generator-category":"^2.0.0","hexo-generator-index":"^3.0.0","hexo-generator-tag":"^2.0.0","hexo-renderer-ejs":"^2.0.0","hexo-renderer-marked":"^6.0.0","hexo-renderer-stylus":"^2.1.0","hexo-server":"^3.0.0","hexo-theme-landscape":"^0.0.3","hexo-theme-next":"^8.14.2","less":"^4.1.3","moment":"^2.29.4","moment-precise-range-plugin":"^1.3.0","unplugin-vue-components":"^0.23.0","vite":"^4.1.1","vue":"^3.2.47","vue-router":"^4.1.6"},"devDependencies":{"rollup-obfuscator":"^3.0.1","vite-plugin-commonjs":"^0.10.4"}},"layout":false,"page":{"title":"json与jsonp区别浅析（json才是目的，jsonp只是手段）","photos":["/images/2023/json-contain.png"],"excerpt":"一言以蔽之，json返回的是一串数据；而jsonp返回的是脚本代码（包含一个函数调用）；","_content":"<OTHER BIG>","source":"_posts/2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）.md","raw":"<OTHER BIG>","slug":"2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）","published":true,"date":{"_i":"2018-03-03T08:43:18.543Z","_pf":"<DEEP>","_locale":"<DEEP>","_d":"2018-03-03T08:43:18.543Z","_z":null,"add":"<FUNCTION DEEP>","calendar":"<FUNCTION DEEP>","clone":"<FUNCTION DEEP>","diff":"<FUNCTION DEEP>","endOf":"<FUNCTION DEEP>","format":"<FUNCTION DEEP>","from":"<FUNCTION DEEP>","fromNow":"<FUNCTION DEEP>","to":"<FUNCTION DEEP>","toNow":"<FUNCTION DEEP>","get":"<FUNCTION DEEP>","invalidAt":"<FUNCTION DEEP>","isAfter":"<FUNCTION DEEP>","isBefore":"<FUNCTION DEEP>","isBetween":"<FUNCTION DEEP>","isSame":"<FUNCTION DEEP>","isSameOrAfter":"<FUNCTION DEEP>","isSameOrBefore":"<FUNCTION DEEP>","isValid":"<FUNCTION DEEP>","lang":"<FUNCTION DEEP>","locale":"<FUNCTION DEEP>","localeData":"<FUNCTION DEEP>","max":"<FUNCTION DEEP>","min":"<FUNCTION DEEP>","parsingFlags":"<FUNCTION DEEP>","set":"<FUNCTION DEEP>","startOf":"<FUNCTION DEEP>","subtract":"<FUNCTION DEEP>","toArray":"<FUNCTION DEEP>","toObject":"<FUNCTION DEEP>","toDate":"<FUNCTION DEEP>","toISOString":"<FUNCTION DEEP>","inspect":"<FUNCTION DEEP>","toJSON":"<FUNCTION DEEP>","toString":"<FUNCTION DEEP>","unix":"<FUNCTION DEEP>","valueOf":"<FUNCTION DEEP>","creationData":"<FUNCTION DEEP>","eraName":"<FUNCTION DEEP>","eraNarrow":"<FUNCTION DEEP>","eraAbbr":"<FUNCTION DEEP>","eraYear":"<FUNCTION DEEP>","year":"<FUNCTION DEEP>","isLeapYear":"<FUNCTION DEEP>","weekYear":"<FUNCTION DEEP>","isoWeekYear":"<FUNCTION DEEP>","quarters":"<FUNCTION DEEP>","month":"<FUNCTION DEEP>","daysInMonth":"<FUNCTION DEEP>","weeks":"<FUNCTION DEEP>","isoWeeks":"<FUNCTION DEEP>","weeksInYear":"<FUNCTION DEEP>","weeksInWeekYear":"<FUNCTION DEEP>","isoWeeksInYear":"<FUNCTION DEEP>","isoWeeksInISOWeekYear":"<FUNCTION DEEP>","date":"<FUNCTION DEEP>","days":"<FUNCTION DEEP>","weekday":"<FUNCTION DEEP>","isoWeekday":"<FUNCTION DEEP>","dayOfYear":"<FUNCTION DEEP>","hours":"<FUNCTION DEEP>","minutes":"<FUNCTION DEEP>","seconds":"<FUNCTION DEEP>","milliseconds":"<FUNCTION DEEP>","utcOffset":"<FUNCTION DEEP>","utc":"<FUNCTION DEEP>","local":"<FUNCTION DEEP>","parseZone":"<FUNCTION DEEP>","hasAlignedHourOffset":"<FUNCTION DEEP>","isDST":"<FUNCTION DEEP>","isLocal":"<FUNCTION DEEP>","isUtcOffset":"<FUNCTION DEEP>","isUtc":"<FUNCTION DEEP>","zoneAbbr":"<FUNCTION DEEP>","zoneName":"<FUNCTION DEEP>","dates":"<FUNCTION DEEP>","months":"<FUNCTION DEEP>","years":"<FUNCTION DEEP>","zone":"<FUNCTION DEEP>","isDSTShifted":"<FUNCTION DEEP>","tz":"<FUNCTION DEEP>","preciseDiff":"<FUNCTION DEEP>"},"updated":{"_i":"2023-02-10T13:47:48.761Z","_pf":"<DEEP>","_d":"2023-02-10T13:47:48.761Z"},"layout":"post","link":"","_id":"cmiocm5mr000m3nz0a6aoguew","content":"<OTHER BIG>","site":{"data":"<DEEP>"},"path":"2018/03/03/2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":{"data":[],"length":0,"_model":"<DEEP>","_schema":"<DEEP>","size":"<FUNCTION DEEP>","each":"<FUNCTION DEEP>","random":"<FUNCTION DEEP>"},"categories":{"data":[],"_model":"<DEEP>","_schema":"<DEEP>"},"prev":{"title":"前端CSS的工程化——掌握Sass这四大特性就够了","photos":["/images/2023/sass-contain.svg"],"excerpt":"记得刚遇见css的时候，咱像是见了美人儿一样，简直是爱不释手啊，简简单单写几行算不上代码的代码，就能做出这么漂亮的东西，这也成了咱前端之路的最初动力。","_content":"<OTHER BIG>","source":"_posts/2017/前端CSS的工程化——掌握Sass这四大特性就够了.md","raw":"<OTHER BIG>","slug":"2017/前端CSS的工程化——掌握Sass这四大特性就够了","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5ms000p3nz0bsc64g8g","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/前端CSS的工程化——掌握Sass这四大特性就够了/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":"<DEEP>","categories":"<DEEP>","prev":"<DEEP>","next":"<DEEP>","_model":"<DEEP>","_schema":"<DEEP>","setTags":"<FUNCTION DEEP>","setCategories":"<FUNCTION DEEP>"},"next":{"title":"摧枯拉朽，说说ES6的三把火","photos":["/images/2023/html-js-css-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/摧枯拉朽，说说ES6的三把火.md","raw":"<OTHER BIG>","slug":"2017/摧枯拉朽，说说ES6的三把火","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mt000r3nz088ry4xd4","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/摧枯拉朽，说说ES6的三把火/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/摧枯拉朽，说说ES6的三把火.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/摧枯拉朽，说说ES6的三把火/","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>"},"lang":"en","canonical_path":"2018/03/03/2017/json与jsonp区别浅析（json才是目的，jsonp只是手段）/index.html","toc":{"max_depth":6},"reward_settings":{},"quicklink":{"timeout":3000}},"url":"<OTHER BIG>","config":{"title":"DOM哥","url":"https://dom-bro.github.io","root":"/","permalink":":year/:month/:day/:title/","pretty_urls":{},"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":"spa/**/*","new_post_name":":title.md","external_link":{"field":"site"},"highlight":{"exclude_languages":[],"first_line_number":"always1"},"prismjs":{},"default_category":"uncategorized","date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","updated_option":"mtime","per_page":10,"pagination_dir":"page","theme":"next","server":{"port":4000,"ip":"<OTHER ERROR>"},"deploy":{"type":"git","repo":"git@github.com:dom-bro/dom-bro.github.io.git"},"keywords":"前端，vue，DOM哥","index_generator":{"order_by":"-date"},"google_adsense":{"js":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js","client":"ca-pub-9410111523844245"},"theme_config":{"cache":"<DEEP>","custom_file_path":"<DEEP>","scheme":"Gemini","favicon":"<DEEP>","creative_commons":"<DEEP>","open_graph":"<DEEP>","menu_settings":"<DEEP>","sidebar":"<DEEP>","avatar":"<DEEP>","social_icons":"<DEEP>","links_settings":"<DEEP>","toc":"<DEEP>","footer":"<DEEP>","post_meta":"<DEEP>","symbols_count_time":"<DEEP>","reward_settings":"<DEEP>","related_posts":"<DEEP>","post_edit":"<DEEP>","post_navigation":"left","tagcloud":"<DEEP>","calendar":"<DEEP>","text_align":"<DEEP>","theme_color":"<DEEP>","body_scrollbar":"<DEEP>","codeblock":"<DEEP>","back2top":"<DEEP>","reading_progress":"<DEEP>","bookmark":"<DEEP>","github_banner":"<DEEP>","font":"<DEEP>","note":"<DEEP>","tabs":"<DEEP>","pdf":"<DEEP>","mermaid":"<DEEP>","math":"<DEEP>","quicklink":"<DEEP>","motion":"<DEEP>","pace":"<DEEP>","canvas_ribbon":"<DEEP>","comments":"<DEEP>","disqus":"<DEEP>","disqusjs":"<DEEP>","changyan":"<DEEP>","gitalk":"<DEEP>","utterances":"<DEEP>","google_analytics":"<DEEP>","matomo":"<DEEP>","umami":"<DEEP>","plausible":"<DEEP>","leancloud_visitors":"<DEEP>","firestore":"<DEEP>","busuanzi_count":"<DEEP>","algolia_search":"<DEEP>","local_search":"<DEEP>","chat":"<DEEP>","chatra":"<DEEP>","tidio":"<DEEP>","gitter":"<DEEP>","vendors":"<DEEP>","css":"css","js":"js","images":"images"},"category_generator":{},"archive_generator":{},"tag_generator":{},"marked":{"external_link":"<DEEP>"}},"theme":{"cache":{},"custom_file_path":{"head":"theme_next_custom_files/head.njk","header":"theme_next_custom_files/header.njk","sidebar":"theme_next_custom_files/sidebar.njk","postMeta":"theme_next_custom_files/post-meta.njk","postBodyEnd":"theme_next_custom_files/post-body-end.swig","footer":"theme_next_custom_files/footer.njk","bodyEnd":"theme_next_custom_files/body-end.njk","variable":"theme_next_custom_files/variables.styl","mixin":"theme_next_custom_files/mixins.styl","style":"theme_next_custom_files/styles.styl"},"favicon":{"small":"/favicon.png"},"creative_commons":{"license":"by-nc-sa","size":"small"},"open_graph":{},"menu_settings":{},"sidebar":{"padding":18,"offset":12},"avatar":{},"social_icons":{},"links_settings":{"icon":"fa fa-globe","layout":"block"},"toc":{},"footer":{"icon":"<DEEP>","beian":"<DEEP>","since":2023,"sinceDate":20230214},"post_meta":{"updated_at":"<DEEP>"},"symbols_count_time":{},"reward_settings":{},"related_posts":{"icon":"fa fa-signs-post"},"post_edit":{"url":"https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/"},"tagcloud":{"max":30,"amount":200,"orderby":"name","order":1},"calendar":{"calendar_id":"<required>","orderBy":"startTime","offsetMax":72,"offsetMin":4,"maxResults":250},"text_align":{"desktop":"justify"},"theme_color":{"light":"#222"},"body_scrollbar":{},"codeblock":{"theme":"<DEEP>","prism":"<DEEP>","copy_button":"<DEEP>"},"back2top":{},"reading_progress":{"position":"top","color":"#37c6c0","height":"3px"},"bookmark":{"save":"auto"},"github_banner":{"permalink":"https://github.com/yourname"},"font":{"global":"<DEEP>","title":"<DEEP>","headings":"<DEEP>","posts":"<DEEP>","codes":"<DEEP>"},"note":{"style":"simple"},"tabs":{"transition":"<DEEP>"},"pdf":{"height":"500px"},"mermaid":{"theme":"<DEEP>"},"math":{"mathjax":"<DEEP>","katex":"<DEEP>"},"quicklink":{},"motion":{"transition":"<DEEP>"},"pace":{"color":"blue","theme":"minimal"},"canvas_ribbon":{"size":300,"alpha":0.6,"zIndex":-1},"comments":{"style":"tabs"},"disqus":{},"disqusjs":{},"changyan":{},"gitalk":{"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},"utterances":{"repo":"user-name/repo-name","issue_term":"pathname","theme":"github-light"},"google_analytics":{"tracking_id":"G-ZCWSWQ4PSD"},"matomo":{},"umami":{},"plausible":{},"leancloud_visitors":{"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky"},"firestore":{"collection":"articles"},"busuanzi_count":{"total_visitors_icon":"fa fa-user","total_views_icon":"fa fa-eye"},"algolia_search":{"hits":"<DEEP>"},"local_search":{},"chat":{"icon":"fa fa-comment"},"chatra":{},"tidio":{},"gitter":{},"vendors":{"internal":"local","plugins":"cdnjs","anime":"<DEEP>","fontawesome":"<DEEP>","prism":"<DEEP>","prism_autoloader":"<DEEP>","prism_line_numbers":"<DEEP>","mathjax":"<DEEP>","katex":"<DEEP>","copy_tex_js":"<DEEP>","pjax":"<DEEP>","jquery":"<DEEP>","fancybox_js":"<DEEP>","fancybox_css":"<DEEP>","mediumzoom":"<DEEP>","lazyload":"<DEEP>","pangu":"<DEEP>","quicklink":"<DEEP>","disqusjs_js":"<DEEP>","disqusjs_css":"<DEEP>","gitalk_js":"<DEEP>","gitalk_css":"<DEEP>","firebase_app":"<DEEP>","firebase_firestore":"<DEEP>","algolia_search":"<DEEP>","instant_search":"<DEEP>","local_search":"<DEEP>","pdfobject":"<DEEP>","mermaid":"<DEEP>","animate_css":"<DEEP>","pace_js":"<DEEP>","pace_css":"<DEEP>","canvas_ribbon":"<DEEP>","creative_commons":"<DEEP>"},"injects":{"variable":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/variables.styl"],"mixin":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/mixins.styl"],"style":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/styles.styl"],"head":["<DEEP>"],"header":["<DEEP>"],"sidebar":["<DEEP>"],"postMeta":["<DEEP>"],"postBodyEnd":["<DEEP>"],"footer":["<DEEP>"],"bodyEnd":["<DEEP>"],"comment":[]},"highlight":{"light":"<DEEP>","dark":"<DEEP>"},"prism":{"light":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism.css","dark":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism-dark.css","number":"<OTHER BIG>"},"menu_map":{},"main_menu":[]},"env":{"args":{"_":[]},"env":"production","version":"6.3.0","cmd":"deploy"},"view_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/hexo-theme-next/layout/","site":{"posts":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"]},"pages":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"],"length":9,"_model":"<DEEP>","_schema":"<DEEP>"},"categories":{"data":["<DEEP>"]},"tags":{"data":[]},"data":{}},"__":"","_p":"","next_version":"8.14.2","languages":["en"],"ccURL":"https://creativecommons.org/licenses/by-nc-sa/4.0/","filename":"<OTHER BIG>","date":"2025-12-02","date_xml":"2025-12-02T09:01:10.258Z","time":"17:01:10","full_date":"2025-12-02 17:01:10","relative_date":"a few seconds ago","time_tag":"<time datetime=\"2025-12-02T09:01:10.258Z\">2025-12-02</time>","moment":"2025-12-02T09:01:10.258Z","search_form":"<FUNCTION BIG>","strip_html":"","trim":"<FUNCTION ERROR>","titlecase":"<FUNCTION ERROR>","word_wrap":"<FUNCTION ERROR>","truncate":"<FUNCTION ERROR>","escape_html":"<FUNCTION ERROR>","fragment_cache":"<FUNCTION ERROR>","gravatar":"<FUNCTION ERROR>","is_current":false,"is_home":false,"is_home_first_page":false,"is_post":true,"is_page":false,"is_archive":false,"is_year":false,"is_month":false,"is_category":false,"is_tag":false,"list_archives":"<FUNCTION BIG>","list_categories":"<FUNCTION BIG>","list_tags":"","list_posts":"<FUNCTION BIG>","meta_generator":"<meta name=\"generator\" content=\"Hexo 6.3.0\">","open_graph":"<FUNCTION BIG>","number_format":"<FUNCTION ERROR>","paginator":"","partial":"<FUNCTION ERROR>","markdown":"<FUNCTION ERROR>","render":"<FUNCTION ERROR>","css":"\n","js":"\n","link_to":"<FUNCTION ERROR>","mail_to":"<a href=\"mailto:undefined\">","image_tag":"<img src=\"/\">","favicon_tag":"<link rel=\"shortcut icon\" href=\"/\">","feed_tag":"","tagcloud":"","tag_cloud":"","toc":"","relative_url":"","url_for":"/","full_url_for":"https://dom-bro.github.io/","inspect":"undefined","log":"<FUNCTION ERROR>","sinceDays":"2年9个月零18天","next_config":"<FUNCTION BIG>","next_config_unique":"<FUNCTION BIG>","next_font":"","next_url":"<FUNCTION ERROR>","next_inject":"<FUNCTION ERROR>","next_js":"<FUNCTION ERROR>","next_vendors":"<FUNCTION ERROR>","next_data":"<FUNCTION HTML>","next_pre":"","post_gallery":"","post_edit":"","gitalk_md5":"6666cd76f96956469e7be39d750cc7d9","i18n_path":"<FUNCTION BIG>","language_name":"English","next_menu":"<FUNCTION ERROR>","next_paginator":"","js_vendors":["anime"]}
+  console.log(window.DomBroConfig)
+  if (window.DomBroConfig.page.title) document.title = window.DomBroConfig.page.title
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    document.documentElement.classList.add('root-' + className)
+  }
+  if (DomBroConfig.packageJSON.version !== localStorage.getItem('version')) {
+    caches.keys().then(res => res.forEach(key => caches.delete(key)))
+    localStorage.setItem('version', DomBroConfig.packageJSON.version)
+  }
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+     crossorigin="anonymous"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">DOM哥</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header">
+  <a class="item active" href="/">Blog</a>
+
+  <a class="item " href="/vue#/vue">
+    <img src="/spa/images/awesome/vue.svg"/>
+    Vue
+  </a>
+  <a class="item " href="/react#/react">
+    <img src="/spa/images/awesome/react.svg"/>
+    React
+  </a>
+  <a class="item " href="/fe#/fe">
+    <img src="/spa/images/awesome/nodejs-icon.svg"/>
+    前端
+  </a>
+  <a class="item todo " href="/ai#/ai" onclick="alert('这个 Hub 正在研制，B站关注我，更新后收到通知');return false;">
+    <img src="/spa/images/logo/ChatGPT.png"/>
+    AI
+  </a>
+  <a class="item " href="/outside#/outside">
+    <img src="/spa/images/outside/usa.png"/>
+    墙外
+  </a>
+
+  <a class="item " href="/tools#/">工具</a>
+  <a class="item " href="/about#/about">About</a>
+</div>
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DOM哥</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/json-contain.png" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2018/03/03/2017/json%E4%B8%8Ejsonp%E5%8C%BA%E5%88%AB%E6%B5%85%E6%9E%90%EF%BC%88json%E6%89%8D%E6%98%AF%E7%9B%AE%E7%9A%84%EF%BC%8Cjsonp%E5%8F%AA%E6%98%AF%E6%89%8B%E6%AE%B5%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DOM哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="json与jsonp区别浅析（json才是目的，jsonp只是手段） | DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          json与jsonp区别浅析（json才是目的，jsonp只是手段）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-03 16:43:18" itemprop="dateCreated datePublished" datetime="2018-03-03T16:43:18+08:00">2018-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 21:47:48" itemprop="dateModified" datetime="2023-02-10T21:47:48+08:00">2023-02-10</time>
+    </span>
+
+  
+    <span id="/2018/03/03/2017/json%E4%B8%8Ejsonp%E5%8C%BA%E5%88%AB%E6%B5%85%E6%9E%90%EF%BC%88json%E6%89%8D%E6%98%AF%E7%9B%AE%E7%9A%84%EF%BC%8Cjsonp%E5%8F%AA%E6%98%AF%E6%89%8B%E6%AE%B5%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="json与jsonp区别浅析（json才是目的，jsonp只是手段）" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>一言以蔽之，json返回的是一串数据；而jsonp返回的是脚本代码（包含一个函数调用）；</p>
+<p>JSON其实就是JavaScript中的一个对象，跟var obj&#x3D;{}在质上完全一样，只是在量上可以无限扩展。简单地讲，json其实就是JavaScript中的对象(Object)和数组(Array，其实也是对象)这倆好基友在那儿你嵌我我嵌你地套上n多层，以此模拟出许多复杂的数据结构。</p>
+<p>json易于人阅读和编写，也易于机器解析和生成，相对网络传输速率较高，功能型网站前后端往往要频繁大量交换数据，而json凭借其强大的表现力和高颜值渐渐地成为理想的前后端数据交换语言。那xml前辈呢，我觉得应该会像微软的xp那样功成身退。</p>
+<p>同源（不懂同源策略的童鞋请自行百度）下的前后端数据交换格式确定使用json了，那么问题来了，如果我想获取别人网站上提供的数据肿么做到呢？也就是跨域读取数据问题（不要钻牛角说你不需要读取其他网站的数据，相信我，你早晚得需要），json行不行呢？答案是No Way，为什么呢，因为json只是普通的文本格式，能让你这样就轻松拿到那服务端就没有任何安全和保密性可言了，这样的话互联网世界非乱套不可，这个问题那些牛X的规范制定者早就想到了，所以使用了同源策略来限制文件获取。最后的结果就是只有像img、script、iframe这类可以指定src属性的标签有跨域获取别人网站上数据（图片，脚本，源文件其实都是数据）的能力。比如：</p>
+<pre><code>&lt;!--京东商品图片--&gt;
+&lt;img src=&quot;http://img30.360buyimg.com/jgsq-productsoa/jfs/t2407/323/1635505465/47386/f2d89d88/56615e00N7a475ee6.jpg&quot; /&gt;
+&lt;!--百度CDN--&gt;
+&lt;script src=&quot;http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>看来直接获取json是行不通了，那有没有其他方法能拿到数据呢？于是乎jsonp就这样被聪明的开发者给发现了，为什么说是发现而不是发明呢，因为并没有涉及到任何新技术，就像发现ajax一样。</p>
+<p>jsonp原理是这样的，网站A需要获取网站B的数据，网站B说我给你们一个方法，【1. 你们使用<script src="http://www.B.com/open.js"></script>标签先获取到open.js文件（网站B的责任），这里边有你们需要的数据。2. 你们获取数据后处理数据（总得处理数据吧）的方法名必须命名为foo（数据请求者的责任和义务）】，这里相当于B网站和请求获取数据者之间建立了一个协议，要求请求者务必按照规则办事，如果请求者不能同时遵守上面两条就不能按预期获取数据。额..，这也算相当于建立了一个潜规则吧</p>
+<p>open.js内容</p>
+<pre><code>foo(&#123;&quot;name&quot;:&quot;B&quot;,&quot;age&quot;:23&#125;);　　//为什么不直接写成json数据&#123;&quot;name&quot;:&quot;B&quot;,&quot;age&quot;:23&#125;呢，原因很简单，在js文件总得合乎js语法吧
+//这也是为什么协议中明确规定处理数据的方法名必须命名为foo，因为B网站是在假定请求者的脚本中已经定义了数据处理方法foo的情况下返回数据；
+//不然就会报foo is not defined错误
+</code></pre>
+<p>网站A脚本须有</p>
+<pre><code>function foo(data)&#123;
+    console.log(data);
+    //ToDo..  
+&#125;
+</code></pre>
+<p>啊！虽然拐了个弯，但数据总算得到了，网站A，网站B都非常高兴，那么问题又来了，网站C说也需要获取网站B的数据，网站B把协议甩给它，网站C拿过来一看，草泥马啊，foo这个名字已经在自己的脚本文件的6868行用过了，而且已经使用在脚本的各个角落，批量替换会导致很多潜在bug啊，网站B情急之下决定把foo改成fool，网站A立马蹦起来，因为自己的网站已经在很多地方使用foo引用了数据。</p>
+<p>为了避免上面情况发生，那些牛X哄哄的开发者使用了动态生成js文件的方法，php版本如下：</p>
+<p>open.php</p>
+<pre><code>&lt;?php
+    header(&#39;Content-type: application/javascript&#39;);
+    $jsonCallback = htmlspecialchars($_REQUEST [&#39;callback&#39;]);    //获取请求者自定义的回调函数名
+    $jsonData =&#39;&#123;&quot;name&quot;:&quot;B&quot;,&quot;age&quot;:23&#125;&#39;;    //待返回的json数据
+    echo $jsonCallback . &quot;(&quot; . $jsonData . &quot;)&quot;;    //输出jsonp格式的数据，即一行函数调用语句
+?&gt;
+</code></pre>
+<p>额 ..，至于php为什么能返回js格式文件，自行百度。<br>于是网站A用<script src="http://www.B.com/open.php?callback=foo"></script>来请求数据，不需要修改任何变量，返回给A的脚本文件内容是：</p>
+<pre><code>foo(&#123;&quot;name&quot;:&quot;B&quot;,&quot;age&quot;:23&#125;);  //所谓的jsonp，就是一句函数调用，数据都被包裹传递到参数中了，千万别穿个马甲就不认识了
+</code></pre>
+<p>网站C就用<script src="http://www.B.com/open.php?callback=blah"></script>来请求数据，返回给C的脚本文件内容是：</p>
+<pre><code>blah(&#123;&quot;name&quot;:&quot;B&quot;,&quot;age&quot;:23&#125;);
+</code></pre>
+<p>网站N就用<script src="http://www.B.com/open.php?callback=what"></script>来请求数据，返回给N的脚本文件内容是：</p>
+<pre><code>what(&#123;&quot;name&quot;:&quot;B&quot;,&quot;age&quot;:23&#125;);
+</code></pre>
+<p>Problem Solved，大家都取到了期望的数据，并且避免了命名冲突。</p>
+<p>jsonp全名叫做json with padding，很形象，就是把json对象用符合js语法的形式包裹起来以使其它网站可以请求得到，也就是将json数据封装成js文件；</p>
+<p><span style="color:#e00">json是理想的数据交换格式，但没办法跨域直接获取，于是就将json包裹(padding)在一个合法的js语句中作为js文件传过去。这就是json和jsonp的区别，json是想要的东西，jsonp是达到这个目的而普遍采用的一种方法，当然最终获得和处理的还是json。所以说json是目的，jsonp只是手段。json总会用到，而jsonp只有在跨域获取数据才会用到。</span></p>
+<p>理解了json和jsonp的区别之后，其实ajax里的跨域获取数据就很好理解和实现了，同源时候并没有什么特别的，直接取就行，跨域时候需要拐个弯来达到目的。</p>
+<p>附上jquery中ajax请求json数据实例：</p>
+<p>（同源）：</p>
+<pre><code>$.ajax(&#123;
+    url:&quot;persons.json&quot;,
+    success:function(data)&#123;
+　　　　console.log(data);
+　　 　 //ToDo..
+　 &#125;
+&#125;);
+</code></pre>
+<p>（跨域）</p>
+<pre><code>$.ajax(&#123;
+    url:&quot;http://www.B.com/open.php?callback=?&quot;,
+    dataType:&quot;jsonp&quot;,
+    success:function(data)&#123;
+        console.log(data);
+        //ToDo..
+    &#125;
+&#125;);    
+</code></pre>
+<p>jquery已把jsonp封装进ajax，很合理，因为毕竟绝大多数的jsonp请求都是ajax，关于jquery的ajax具体用法请自行百度，另外要注意的一点就是不同的网站提供的数据接口的$_REQUEST [‘callback’]中不一定绝对是callback也可能是cb,cbk等，具体使用时务必阅读服务端提供的有关接口使用的详细文档。</p>
+<p><span style="color:#e00">觉得不错就关注一下吧:)，你们的支持是我最大的动力，前端路漫漫，分享知识和心得，推荐精品书目，大家一起成长！</span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E6%91%A7%E6%9E%AF%E6%8B%89%E6%9C%BD%EF%BC%8C%E8%AF%B4%E8%AF%B4ES6%E7%9A%84%E4%B8%89%E6%8A%8A%E7%81%AB/" rel="prev" title="摧枯拉朽，说说ES6的三把火">
+                  <i class="fa fa-chevron-left"></i> 摧枯拉朽，说说ES6的三把火
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E5%89%8D%E7%AB%AFCSS%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E2%80%94%E2%80%94%E6%8E%8C%E6%8F%A1Sass%E8%BF%99%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%E5%B0%B1%E5%A4%9F%E4%BA%86/" rel="next" title="前端CSS的工程化——掌握Sass这四大特性就够了">
+                  前端CSS的工程化——掌握Sass这四大特性就够了 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DOM哥</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><div class="copyright-custom">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span>小站已勉强运行2年9个月零18天</span> <span>最近更新于 2025-12-02 17:01:09</span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>

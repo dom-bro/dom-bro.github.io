@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="构建工具是一段自动根据源代码生成可使用文件的程序，构建过程包括打包、编译、压缩、测试等一切需要对源代码进行的相关处理。构建工具的目的是实现构建过程的自动化，使用它可以让咱们避免机械重复的劳动（这怕是程序员最不能忍受的了），从而解放我们的双手。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上">
+<meta property="og:url" content="https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B9%8B%E4%BA%89%E2%80%94%E2%80%94Webpack%20vs%20Gulp%20%E8%B0%81%E4%BC%9A%E8%A2%AB%E6%8B%8D%E6%AD%BB%E5%9C%A8%E6%B2%99%E6%BB%A9%E4%B8%8A/index.html">
+<meta property="og:site_name" content="DOM哥">
+<meta property="og:description" content="构建工具是一段自动根据源代码生成可使用文件的程序，构建过程包括打包、编译、压缩、测试等一切需要对源代码进行的相关处理。构建工具的目的是实现构建过程的自动化，使用它可以让咱们避免机械重复的劳动（这怕是程序员最不能忍受的了），从而解放我们的双手。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/gulp-vs-webpack.webp">
+<meta property="article:published_time" content="2018-03-03T08:43:18.545Z">
+<meta property="article:modified_time" content="2023-02-12T08:58:00.356Z">
+<meta property="article:author" content="DOM哥">
+<meta property="article:tag" content="前端，vue，DOM哥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/gulp-vs-webpack.webp">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B9%8B%E4%BA%89%E2%80%94%E2%80%94Webpack%20vs%20Gulp%20%E8%B0%81%E4%BC%9A%E8%A2%AB%E6%8B%8D%E6%AD%BB%E5%9C%A8%E6%B2%99%E6%BB%A9%E4%B8%8A/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B9%8B%E4%BA%89%E2%80%94%E2%80%94Webpack%20vs%20Gulp%20%E8%B0%81%E4%BC%9A%E8%A2%AB%E6%8B%8D%E6%AD%BB%E5%9C%A8%E6%B2%99%E6%BB%A9%E4%B8%8A/","path":"2018/03/03/2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上/","title":"前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上 | DOM哥</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.2.15/dist/antd.min.css">
+<script>
+  window.DomBroConfig = {"packageJSON":{"name":"hexo-site","version":"0.0.75","private":true,"scripts":{"build":"hexo clean && npm run spa:build && NODE_ENV=production hexo generate","clean":"hexo clean","d":"NODE_ENV=production hexo deploy","deploy":"npm version patch && hexo clean && npm run spa:build && npm run d","server":"hexo clean && hexo server --config _config.yml,_config.localhost.yml","spa":"vite --port 4001 --force --host","spa:build":"NODE_ENV=production vite build --emptyOutDir","pre":"serve public"},"hexo":{"version":"6.3.0"},"dependencies":{"@ant-design/icons-vue":"^6.1.0","@octokit/request":"^10.0.7","@vitejs/plugin-vue":"^4.0.0","ant-design-vue":"^3.2.19","hexo":"^6.3.0","hexo-deployer-git":"^4.0.0","hexo-generator-archive":"^2.0.0","hexo-generator-category":"^2.0.0","hexo-generator-index":"^3.0.0","hexo-generator-tag":"^2.0.0","hexo-renderer-ejs":"^2.0.0","hexo-renderer-marked":"^6.0.0","hexo-renderer-stylus":"^2.1.0","hexo-server":"^3.0.0","hexo-theme-landscape":"^0.0.3","hexo-theme-next":"^8.14.2","less":"^4.1.3","moment":"^2.29.4","moment-precise-range-plugin":"^1.3.0","unplugin-vue-components":"^0.23.0","vite":"^4.1.1","vue":"^3.2.47","vue-router":"^4.1.6"},"devDependencies":{"rollup-obfuscator":"^3.0.1","vite-plugin-commonjs":"^0.10.4"}},"layout":false,"page":{"title":"前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上","photos":["/images/2023/gulp-vs-webpack.webp"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上.md","raw":"<OTHER BIG>","slug":"2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上","published":true,"date":{"_i":"2018-03-03T08:43:18.545Z","_pf":"<DEEP>","_locale":"<DEEP>","_d":"2018-03-03T08:43:18.545Z","_z":null,"add":"<FUNCTION DEEP>","calendar":"<FUNCTION DEEP>","clone":"<FUNCTION DEEP>","diff":"<FUNCTION DEEP>","endOf":"<FUNCTION DEEP>","format":"<FUNCTION DEEP>","from":"<FUNCTION DEEP>","fromNow":"<FUNCTION DEEP>","to":"<FUNCTION DEEP>","toNow":"<FUNCTION DEEP>","get":"<FUNCTION DEEP>","invalidAt":"<FUNCTION DEEP>","isAfter":"<FUNCTION DEEP>","isBefore":"<FUNCTION DEEP>","isBetween":"<FUNCTION DEEP>","isSame":"<FUNCTION DEEP>","isSameOrAfter":"<FUNCTION DEEP>","isSameOrBefore":"<FUNCTION DEEP>","isValid":"<FUNCTION DEEP>","lang":"<FUNCTION DEEP>","locale":"<FUNCTION DEEP>","localeData":"<FUNCTION DEEP>","max":"<FUNCTION DEEP>","min":"<FUNCTION DEEP>","parsingFlags":"<FUNCTION DEEP>","set":"<FUNCTION DEEP>","startOf":"<FUNCTION DEEP>","subtract":"<FUNCTION DEEP>","toArray":"<FUNCTION DEEP>","toObject":"<FUNCTION DEEP>","toDate":"<FUNCTION DEEP>","toISOString":"<FUNCTION DEEP>","inspect":"<FUNCTION DEEP>","toJSON":"<FUNCTION DEEP>","toString":"<FUNCTION DEEP>","unix":"<FUNCTION DEEP>","valueOf":"<FUNCTION DEEP>","creationData":"<FUNCTION DEEP>","eraName":"<FUNCTION DEEP>","eraNarrow":"<FUNCTION DEEP>","eraAbbr":"<FUNCTION DEEP>","eraYear":"<FUNCTION DEEP>","year":"<FUNCTION DEEP>","isLeapYear":"<FUNCTION DEEP>","weekYear":"<FUNCTION DEEP>","isoWeekYear":"<FUNCTION DEEP>","quarters":"<FUNCTION DEEP>","month":"<FUNCTION DEEP>","daysInMonth":"<FUNCTION DEEP>","weeks":"<FUNCTION DEEP>","isoWeeks":"<FUNCTION DEEP>","weeksInYear":"<FUNCTION DEEP>","weeksInWeekYear":"<FUNCTION DEEP>","isoWeeksInYear":"<FUNCTION DEEP>","isoWeeksInISOWeekYear":"<FUNCTION DEEP>","date":"<FUNCTION DEEP>","days":"<FUNCTION DEEP>","weekday":"<FUNCTION DEEP>","isoWeekday":"<FUNCTION DEEP>","dayOfYear":"<FUNCTION DEEP>","hours":"<FUNCTION DEEP>","minutes":"<FUNCTION DEEP>","seconds":"<FUNCTION DEEP>","milliseconds":"<FUNCTION DEEP>","utcOffset":"<FUNCTION DEEP>","utc":"<FUNCTION DEEP>","local":"<FUNCTION DEEP>","parseZone":"<FUNCTION DEEP>","hasAlignedHourOffset":"<FUNCTION DEEP>","isDST":"<FUNCTION DEEP>","isLocal":"<FUNCTION DEEP>","isUtcOffset":"<FUNCTION DEEP>","isUtc":"<FUNCTION DEEP>","zoneAbbr":"<FUNCTION DEEP>","zoneName":"<FUNCTION DEEP>","dates":"<FUNCTION DEEP>","months":"<FUNCTION DEEP>","years":"<FUNCTION DEEP>","zone":"<FUNCTION DEEP>","isDSTShifted":"<FUNCTION DEEP>","tz":"<FUNCTION DEEP>","preciseDiff":"<FUNCTION DEEP>"},"updated":{"_i":"2023-02-12T08:58:00.356Z","_pf":"<DEEP>","_d":"2023-02-12T08:58:00.356Z"},"layout":"post","link":"","_id":"cmiocm5ms000q3nz05bqrde9p","content":"<OTHER BIG>","site":{"data":"<DEEP>"},"path":"2018/03/03/2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":{"data":[],"length":0,"_model":"<DEEP>","_schema":"<DEEP>","size":"<FUNCTION DEEP>","each":"<FUNCTION DEEP>","random":"<FUNCTION DEEP>"},"categories":{"data":[],"_model":"<DEEP>","_schema":"<DEEP>"},"prev":{"title":"从输入cnblogs.com到博客园首页完全展示发生了什么","photos":["/images/2023/network-principle.jpg"],"excerpt":"之前面试时候经常被问及这个问题，支支吾吾回答没有底气，仔细研究了一下，发现里面学问还真不少。","_content":"<OTHER BIG>","source":"_posts/2017/从输入cnblogs.com到博客园首页完全展示发生了什么.md","raw":"<OTHER BIG>","slug":"2017/从输入cnblogs.com到博客园首页完全展示发生了什么","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mq000l3nz01530fqe8","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/从输入cnblogs.com到博客园首页完全展示发生了什么/","permalink":"<OTHER BIG>","full_source":"<OTHER BIG>","asset_dir":"<OTHER BIG>","tags":"<DEEP>","categories":"<DEEP>","prev":"<DEEP>","next":"<DEEP>","_model":"<DEEP>","_schema":"<DEEP>","setTags":"<FUNCTION DEEP>","setCategories":"<FUNCTION DEEP>"},"next":{"title":"前后端分手大师——MVVM模式","photos":["/images/2023/mvvm-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2017/前后端分手大师——MVVM模式.md","raw":"<OTHER BIG>","slug":"2017/前后端分手大师——MVVM模式","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mr000o3nz07w6wgiam","content":"<OTHER BIG>","site":"<DEEP>","path":"2018/03/03/2017/前后端分手大师——MVVM模式/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/前后端分手大师——MVVM模式.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2017/前后端分手大师——MVVM模式/","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>"},"lang":"en","canonical_path":"2018/03/03/2017/前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上/index.html","toc":{"max_depth":6},"reward_settings":{},"quicklink":{"timeout":3000}},"url":"<OTHER BIG>","config":{"title":"DOM哥","url":"https://dom-bro.github.io","root":"/","permalink":":year/:month/:day/:title/","pretty_urls":{},"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":"spa/**/*","new_post_name":":title.md","external_link":{"field":"site"},"highlight":{"exclude_languages":[],"first_line_number":"always1"},"prismjs":{},"default_category":"uncategorized","date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","updated_option":"mtime","per_page":10,"pagination_dir":"page","theme":"next","server":{"port":4000,"ip":"<OTHER ERROR>"},"deploy":{"type":"git","repo":"git@github.com:dom-bro/dom-bro.github.io.git"},"keywords":"前端，vue，DOM哥","index_generator":{"order_by":"-date"},"google_adsense":{"js":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js","client":"ca-pub-9410111523844245"},"theme_config":{"cache":"<DEEP>","custom_file_path":"<DEEP>","scheme":"Gemini","favicon":"<DEEP>","creative_commons":"<DEEP>","open_graph":"<DEEP>","menu_settings":"<DEEP>","sidebar":"<DEEP>","avatar":"<DEEP>","social_icons":"<DEEP>","links_settings":"<DEEP>","toc":"<DEEP>","footer":"<DEEP>","post_meta":"<DEEP>","symbols_count_time":"<DEEP>","reward_settings":"<DEEP>","related_posts":"<DEEP>","post_edit":"<DEEP>","post_navigation":"left","tagcloud":"<DEEP>","calendar":"<DEEP>","text_align":"<DEEP>","theme_color":"<DEEP>","body_scrollbar":"<DEEP>","codeblock":"<DEEP>","back2top":"<DEEP>","reading_progress":"<DEEP>","bookmark":"<DEEP>","github_banner":"<DEEP>","font":"<DEEP>","note":"<DEEP>","tabs":"<DEEP>","pdf":"<DEEP>","mermaid":"<DEEP>","math":"<DEEP>","quicklink":"<DEEP>","motion":"<DEEP>","pace":"<DEEP>","canvas_ribbon":"<DEEP>","comments":"<DEEP>","disqus":"<DEEP>","disqusjs":"<DEEP>","changyan":"<DEEP>","gitalk":"<DEEP>","utterances":"<DEEP>","google_analytics":"<DEEP>","matomo":"<DEEP>","umami":"<DEEP>","plausible":"<DEEP>","leancloud_visitors":"<DEEP>","firestore":"<DEEP>","busuanzi_count":"<DEEP>","algolia_search":"<DEEP>","local_search":"<DEEP>","chat":"<DEEP>","chatra":"<DEEP>","tidio":"<DEEP>","gitter":"<DEEP>","vendors":"<DEEP>","css":"css","js":"js","images":"images"},"category_generator":{},"archive_generator":{},"tag_generator":{},"marked":{"external_link":"<DEEP>"}},"theme":{"cache":{},"custom_file_path":{"head":"theme_next_custom_files/head.njk","header":"theme_next_custom_files/header.njk","sidebar":"theme_next_custom_files/sidebar.njk","postMeta":"theme_next_custom_files/post-meta.njk","postBodyEnd":"theme_next_custom_files/post-body-end.swig","footer":"theme_next_custom_files/footer.njk","bodyEnd":"theme_next_custom_files/body-end.njk","variable":"theme_next_custom_files/variables.styl","mixin":"theme_next_custom_files/mixins.styl","style":"theme_next_custom_files/styles.styl"},"favicon":{"small":"/favicon.png"},"creative_commons":{"license":"by-nc-sa","size":"small"},"open_graph":{},"menu_settings":{},"sidebar":{"padding":18,"offset":12},"avatar":{},"social_icons":{},"links_settings":{"icon":"fa fa-globe","layout":"block"},"toc":{},"footer":{"icon":"<DEEP>","beian":"<DEEP>","since":2023,"sinceDate":20230214},"post_meta":{"updated_at":"<DEEP>"},"symbols_count_time":{},"reward_settings":{},"related_posts":{"icon":"fa fa-signs-post"},"post_edit":{"url":"https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/"},"tagcloud":{"max":30,"amount":200,"orderby":"name","order":1},"calendar":{"calendar_id":"<required>","orderBy":"startTime","offsetMax":72,"offsetMin":4,"maxResults":250},"text_align":{"desktop":"justify"},"theme_color":{"light":"#222"},"body_scrollbar":{},"codeblock":{"theme":"<DEEP>","prism":"<DEEP>","copy_button":"<DEEP>"},"back2top":{},"reading_progress":{"position":"top","color":"#37c6c0","height":"3px"},"bookmark":{"save":"auto"},"github_banner":{"permalink":"https://github.com/yourname"},"font":{"global":"<DEEP>","title":"<DEEP>","headings":"<DEEP>","posts":"<DEEP>","codes":"<DEEP>"},"note":{"style":"simple"},"tabs":{"transition":"<DEEP>"},"pdf":{"height":"500px"},"mermaid":{"theme":"<DEEP>"},"math":{"mathjax":"<DEEP>","katex":"<DEEP>"},"quicklink":{},"motion":{"transition":"<DEEP>"},"pace":{"color":"blue","theme":"minimal"},"canvas_ribbon":{"size":300,"alpha":0.6,"zIndex":-1},"comments":{"style":"tabs"},"disqus":{},"disqusjs":{},"changyan":{},"gitalk":{"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},"utterances":{"repo":"user-name/repo-name","issue_term":"pathname","theme":"github-light"},"google_analytics":{"tracking_id":"G-ZCWSWQ4PSD"},"matomo":{},"umami":{},"plausible":{},"leancloud_visitors":{"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky"},"firestore":{"collection":"articles"},"busuanzi_count":{"total_visitors_icon":"fa fa-user","total_views_icon":"fa fa-eye"},"algolia_search":{"hits":"<DEEP>"},"local_search":{},"chat":{"icon":"fa fa-comment"},"chatra":{},"tidio":{},"gitter":{},"vendors":{"internal":"local","plugins":"cdnjs","anime":"<DEEP>","fontawesome":"<DEEP>","prism":"<DEEP>","prism_autoloader":"<DEEP>","prism_line_numbers":"<DEEP>","mathjax":"<DEEP>","katex":"<DEEP>","copy_tex_js":"<DEEP>","pjax":"<DEEP>","jquery":"<DEEP>","fancybox_js":"<DEEP>","fancybox_css":"<DEEP>","mediumzoom":"<DEEP>","lazyload":"<DEEP>","pangu":"<DEEP>","quicklink":"<DEEP>","disqusjs_js":"<DEEP>","disqusjs_css":"<DEEP>","gitalk_js":"<DEEP>","gitalk_css":"<DEEP>","firebase_app":"<DEEP>","firebase_firestore":"<DEEP>","algolia_search":"<DEEP>","instant_search":"<DEEP>","local_search":"<DEEP>","pdfobject":"<DEEP>","mermaid":"<DEEP>","animate_css":"<DEEP>","pace_js":"<DEEP>","pace_css":"<DEEP>","canvas_ribbon":"<DEEP>","creative_commons":"<DEEP>"},"injects":{"variable":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/variables.styl"],"mixin":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/mixins.styl"],"style":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/styles.styl"],"head":["<DEEP>"],"header":["<DEEP>"],"sidebar":["<DEEP>"],"postMeta":["<DEEP>"],"postBodyEnd":["<DEEP>"],"footer":["<DEEP>"],"bodyEnd":["<DEEP>"],"comment":[]},"highlight":{"light":"<DEEP>","dark":"<DEEP>"},"prism":{"light":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism.css","dark":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism-dark.css","number":"<OTHER BIG>"},"menu_map":{},"main_menu":[]},"env":{"args":{"_":[]},"env":"production","version":"6.3.0","cmd":"deploy"},"view_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/hexo-theme-next/layout/","site":{"posts":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"]},"pages":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"],"length":9,"_model":"<DEEP>","_schema":"<DEEP>"},"categories":{"data":["<DEEP>"]},"tags":{"data":[]},"data":{}},"__":"","_p":"","next_version":"8.14.2","languages":["en"],"ccURL":"https://creativecommons.org/licenses/by-nc-sa/4.0/","filename":"<OTHER BIG>","date":"2025-12-02","date_xml":"2025-12-02T09:01:10.174Z","time":"17:01:10","full_date":"2025-12-02 17:01:10","relative_date":"a few seconds ago","time_tag":"<time datetime=\"2025-12-02T09:01:10.174Z\">2025-12-02</time>","moment":"2025-12-02T09:01:10.174Z","search_form":"<FUNCTION BIG>","strip_html":"","trim":"<FUNCTION ERROR>","titlecase":"<FUNCTION ERROR>","word_wrap":"<FUNCTION ERROR>","truncate":"<FUNCTION ERROR>","escape_html":"<FUNCTION ERROR>","fragment_cache":"<FUNCTION ERROR>","gravatar":"<FUNCTION ERROR>","is_current":false,"is_home":false,"is_home_first_page":false,"is_post":true,"is_page":false,"is_archive":false,"is_year":false,"is_month":false,"is_category":false,"is_tag":false,"list_archives":"<FUNCTION BIG>","list_categories":"<FUNCTION BIG>","list_tags":"","list_posts":"<FUNCTION BIG>","meta_generator":"<meta name=\"generator\" content=\"Hexo 6.3.0\">","open_graph":"<FUNCTION BIG>","number_format":"<FUNCTION ERROR>","paginator":"","partial":"<FUNCTION ERROR>","markdown":"<FUNCTION ERROR>","render":"<FUNCTION ERROR>","css":"\n","js":"\n","link_to":"<FUNCTION ERROR>","mail_to":"<a href=\"mailto:undefined\">","image_tag":"<img src=\"/\">","favicon_tag":"<link rel=\"shortcut icon\" href=\"/\">","feed_tag":"","tagcloud":"","tag_cloud":"","toc":"","relative_url":"","url_for":"/","full_url_for":"https://dom-bro.github.io/","inspect":"undefined","log":"<FUNCTION ERROR>","sinceDays":"2年9个月零18天","next_config":"<FUNCTION BIG>","next_config_unique":"<FUNCTION BIG>","next_font":"","next_url":"<FUNCTION ERROR>","next_inject":"<FUNCTION ERROR>","next_js":"<FUNCTION ERROR>","next_vendors":"<FUNCTION ERROR>","next_data":"<FUNCTION HTML>","next_pre":"","post_gallery":"","post_edit":"","gitalk_md5":"6666cd76f96956469e7be39d750cc7d9","i18n_path":"<FUNCTION BIG>","language_name":"English","next_menu":"<FUNCTION ERROR>","next_paginator":"","js_vendors":["anime"]}
+  console.log(window.DomBroConfig)
+  if (window.DomBroConfig.page.title) document.title = window.DomBroConfig.page.title
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    document.documentElement.classList.add('root-' + className)
+  }
+  if (DomBroConfig.packageJSON.version !== localStorage.getItem('version')) {
+    caches.keys().then(res => res.forEach(key => caches.delete(key)))
+    localStorage.setItem('version', DomBroConfig.packageJSON.version)
+  }
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+     crossorigin="anonymous"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">DOM哥</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header">
+  <a class="item active" href="/">Blog</a>
+
+  <a class="item " href="/vue#/vue">
+    <img src="/spa/images/awesome/vue.svg"/>
+    Vue
+  </a>
+  <a class="item " href="/react#/react">
+    <img src="/spa/images/awesome/react.svg"/>
+    React
+  </a>
+  <a class="item " href="/fe#/fe">
+    <img src="/spa/images/awesome/nodejs-icon.svg"/>
+    前端
+  </a>
+  <a class="item todo " href="/ai#/ai" onclick="alert('这个 Hub 正在研制，B站关注我，更新后收到通知');return false;">
+    <img src="/spa/images/logo/ChatGPT.png"/>
+    AI
+  </a>
+  <a class="item " href="/outside#/outside">
+    <img src="/spa/images/outside/usa.png"/>
+    墙外
+  </a>
+
+  <a class="item " href="/tools#/">工具</a>
+  <a class="item " href="/about#/about">About</a>
+</div>
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%90%86%E6%83%B3%E7%9A%84%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">理想的前端开发流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gulp-%E4%B8%BA%E4%BD%95%E7%89%A9"><span class="nav-number">2.</span> <span class="nav-text">Gulp 为何物</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#webpack-%E5%8F%88%E6%98%AF%E4%BB%8E%E5%93%AA%E5%86%92%E5%87%BA%E6%9D%A5%E7%9A%84"><span class="nav-number">3.</span> <span class="nav-text">webpack 又是从哪冒出来的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DOM哥</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/gulp-vs-webpack.webp" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2018/03/03/2017/%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B9%8B%E4%BA%89%E2%80%94%E2%80%94Webpack%20vs%20Gulp%20%E8%B0%81%E4%BC%9A%E8%A2%AB%E6%8B%8D%E6%AD%BB%E5%9C%A8%E6%B2%99%E6%BB%A9%E4%B8%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DOM哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上 | DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-03-03 16:43:18" itemprop="dateCreated datePublished" datetime="2018-03-03T16:43:18+08:00">2018-03-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-12 16:58:00" itemprop="dateModified" datetime="2023-02-12T16:58:00+08:00">2023-02-12</time>
+    </span>
+
+  
+    <span id="/2018/03/03/2017/%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E4%B9%8B%E4%BA%89%E2%80%94%E2%80%94Webpack%20vs%20Gulp%20%E8%B0%81%E4%BC%9A%E8%A2%AB%E6%8B%8D%E6%AD%BB%E5%9C%A8%E6%B2%99%E6%BB%A9%E4%B8%8A/" class="post-meta-item leancloud_visitors" data-flag-title="前端构建工具之争——Webpack vs Gulp 谁会被拍死在沙滩上" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>文章有点长，总共 1800 字，阅读需要 18 分钟。哈哈，没耐心的直接<a href="javascript:" scroll-to="#f_04">戳我到高潮部分</a>。</p>
+<h1 id="理想的前端开发流程"><a href="#理想的前端开发流程" class="headerlink" title="理想的前端开发流程"></a>理想的前端开发流程</h1><p>在说构建工具之前得先说说咱期望的前端开发流程是怎样的？</p>
+<area is="well-success">
+
+<ul>
+<li>写业务逻辑代码（例如 es6，scss，pug 等）</li>
+<li>处理成浏览器认识的（js，css，html）</li>
+<li>浏览器自动刷新看到效果</li>
+</ul>
+<p>前端开发就是在不断的 123..123..123…. 循环中进行的，上面的后两步（也就是 2 和 3）应该是<area is="color-red"> <strong>自动化</strong> 的，前端开发者理应只需关注第 1 步——写业务逻辑代码。</p>
+<p>自动化的事情应该交由构建工具来做，时下流行的前端构建工具有 gulp 和 webpack（有人说 webpack 不算是构建工具，我觉得这没什么好争的。横看成岭侧成峰，我觉得从当前 webpack 所能做的事情来看，说它是构建工具丝毫不为过）。本文不会对 <a target="_blank" rel="noopener" href="http://www.gulpjs.com.cn/">gulp</a> 和 <a target="_blank" rel="noopener" href="http://webpack.github.io/">webpack</a> 的概念和内容做深入解析，而是希望从宏观的角度研究他们的优势短缺和适用场景，从而说清长期弥漫在前端圈二者之间扑朔迷离的关系。</p>
+<area is="bq">
+
+<p><strong>什么是构建工具</strong><br>构建工具是一段自动根据源代码生成可使用文件的程序，构建过程包括打包、编译、压缩、测试等一切需要对源代码进行的相关处理。构建工具的目的是实现构建过程的自动化，使用它可以让咱们避免机械重复的劳动（这怕是程序员最不能忍受的了），从而解放我们的双手。<br><br><strong>解放了双手干什么</strong><br>哇槽，爱干什么干什么。</p>
+<h1 id="Gulp-为何物"><a href="#Gulp-为何物" class="headerlink" title="Gulp 为何物"></a>Gulp 为何物</h1><p>先来听听 Ta 的官网是怎么说：</p>
+<area is="bq-info">
+
+<p>Gulp 致力于<area is="color-red"> <strong>自动化和优化</strong> 你的工作流，它是一个自动化你开发工作中<area is="color-red"> <strong>痛苦又耗时任务</strong> 的工具包。</p>
+<p>想一想咱们日常的开发工作中痛苦又耗时任务有哪些呢？</p>
+<area is="well-error">
+
+<ul>
+<li>用 es6，typescript 编写的脚本文件需要编译成浏览器认识的 javascript</li>
+<li>用 scss，less 编写的样式文件需要编译成浏览器认识的 css</li>
+<li>检查代码是否符合书写规范，跑单元测试和集成测试</li>
+<li>开发环境如果有 sourcemaps 的话调试起来就方便多了，修改完代码浏览器能自动刷新立即看到效果就更好了</li>
+<li>生产环境部署代码需要压缩合并静态文件，添加文件指纹控制缓存</li>
+<li>blabla…更多的你自己想吧</li>
+</ul>
+<p><strong>Gulp</strong> 声称要帮咱们实现<area is="color-red"> <strong>自动化</strong>，那他是怎样帮助咱们实现自动化的呢？这就不得不先提一嘴牛逼哄哄的 <strong>NodeJS</strong>。</p>
+<p><area is="panel-info panel-heading">Node 背景小知识</p>
+<area is="panel-info panel-body">
+
+<p>Node 使前端 Jser 有了脱离浏览器工作的能力，要搁以前的话咱们写的 js 要么嵌到 html 页面里，然后用浏览器打开 html 页面才能运行js，要么就是在浏览器开发者工具的 Console 面板里编写运行代码片段。总之没了浏览器这个宿主，咱们的 js 就 run 不起来。Node 这货突发奇想，把开发者工具的 Console 给抠下来了，从此 js 可以脱离浏览器直接在 node 里运行。<area is="color-red"><strong>相当于 js 现在有了两个宿主环境，一个是浏览器，一个是 node</strong>。当然了，Node 可不是开发者工具里的 Console，那只是打个比方。它是基于Chrome V8 引擎实现的一个 JavaScript 运行环境，功能其实类似 Console 面板，但提供了大量实用的 API，感兴趣的同学可前往 <a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node官网</a> 详细了解，英文吃力的骚年 <a target="_blank" rel="noopener" href="http://nodejs.cn/">戳这里</a>。Node 可以算是前端革命式的创新，随 node 一起发布的 node 包管理器 npm(node package manager) 也已经是全球最大的开源库生态系统。node&#x2F;npm 这对组合一出，前端生态迎来了大爆发，一时间为解决各种问题的 node 包层出不穷，遍地开花。gulp 就是披荆斩棘，一路过五关斩六将闯出来的一个小 node 包。</p>
+<p>扯谈完毕，接下来就来看看 <strong>gulp</strong> 是不是在装逼，他到底能不能帮我们实现自动化。</p>
+<p>作为一个 node 包，标准打开方式当然是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -g gulp</span><br></pre></td></tr></table></figure>
+
+<p>然后呢，这里以编译 less 为例，首先安装编译 less 需要用到的 node 包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i --save-dev gulp gulp-less</span><br></pre></td></tr></table></figure>
+
+<area is="bq">
+
+<p><strong>前面已经全局安装过 gulp 了，怎么又本地安装了一遍</strong><br>前面的 <area is="term"><code>-g</code> 是全局安装，是为了执行你所编写的 gulp 任务，即 <kbd>gulp yourTask</kbd>。而后面的 <kbd>--save-dev</kbd> 是本地安装，是为了咱们编写任务时使用 gulp 提供的 api，例如 <area is="term"><code>gulp.src()</code>、<area is="term"><code>gulp.task()</code>、<area is="term"><code>gulp.dest()</code> 等等。当然也是可以直接使用全局安装的 gulp 的 api 的，但是强烈不推荐，因为这样涉及到 gulp 版本控制的问题，而且使用全局 gulp 的 api 的话就会产生环境依赖（你假设环境已经全局安装了gulp，万一没装呢，程序不就出错了）。</p>
+<p>接着在项目的根目录下新建一个 <strong>gulpfile.js</strong> 文件，这是 gulp 的默认配置文件。</p>
+<area is="bq">
+
+<p><strong>gulpfile.js 必须放在项目根目录？</strong><br>当然也可放在其他目录，但这样的话就得在启动 gulp 任务时手动指定 gulp 配置文件 <kbd>gulp yourTask --gulpfile yourGulpfilePath</kbd>，可能还需要全局安装 gulp-cli，所以除非有特殊需要，否则就放在项目根目录就行了，这样最简单。<br><br><strong>配置文件的名字必须是 gulpfile.js 吗？</strong><br>不区分大小写，取成 gULPFile.js 的话 gulp 也能认识，只要 toLowerCase 之后是 gulpfile 就行了，如果取其它名字那你就又得使用 <kbd>--gulpfile</kbd> 选项去指定了。</p>
+<p>现在工程目录结构已经成了下面的样子：<br><img src="/images/2023/20230212_164412.jpg"><br><area is="img-description">构建前 gulp 工程目录结构</p>
+<p>接下来就是在 gulpfile.js 里编写 <strong>gulp task</strong>（gulp 把为每个痛苦又耗时任务编写的处理方法称为一个 <strong>task</strong>）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> less = <span class="built_in">require</span>(<span class="string">&#x27;gulp-less&#x27;</span>);</span><br><span class="line"></span><br><span class="line">gulp.<span class="title function_">task</span>(<span class="string">&#x27;build:less&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.<span class="title function_">src</span>(<span class="string">&#x27;./src/*.less&#x27;</span>)</span><br><span class="line">        .<span class="title function_">pipe</span>(<span class="title function_">less</span>())</span><br><span class="line">        .<span class="title function_">pipe</span>(gulp.<span class="title function_">dest</span>(<span class="string">&#x27;./dist&#x27;</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>最后就是打开一个终端，在终端里运行 <kbd>gulp build:less</kbd>。好了，编译后的文件已经被输出到了 <strong>dist</strong> 目录：</p>
+<img src="/images/2023/20230212_164458.jpg">
+<area is="img-description">构建后 gulp 工程目录结构
+
+<p>至此你已经算是一个 gulp 砖家了，这基本上就是 gulp 的全部内容。怎么样，是不是够简单，够丝滑。这也是 gulp 的突出特点——易于学习，易于使用，五分钟成砖家。如果想要执行解决其他痛苦又耗时的任务，只需下载安装对应的 gulp 插件包，然后依次类推写一个 <area is="term"><code>gulp.task</code> 出来就行了。</p>
+<area is="bq">
+
+<p><strong>这些源代码具体是怎样被处理的</strong><br>这通常不需要关心，因为 gulp 插件包已为你做好了，并且封装的非常漂亮，你只需要告诉 gulp 你要什么，gulp 及其插件会帮你打点好一切。这就好比你把一份电子文档传进打印机，告诉它我要一份 A4 纸打印，呲呲呲~，打印机就吐出来一张 A4 纸，上面是你的文档内容。源代码就是你的电子文档，gulp 插件就是打印机，生成的可用文件就是你手里的那张 A4 纸，你不用关心打印机内部是怎样工作的，因为它封装的很好，或者你可以把打印机拆了一探究竟也行。<br><br><strong>Gulp 是基于流的？</strong><br>流（Stream）不是 gulp 创造的概念，而是从 unix 时代就开始使用的 I&#x2F;O 机制，一直到现在仍在广泛使用。Node 封装了一个 <a target="_blank" rel="noopener" href="http://nodejs.cn/api/stream.html">stream</a> 模块专门用来对流进行操作。gulp 所基于的流即是 Node 封装起来的 stream。上面 <area is="term"><code>gulp.task()</code> 代码里面的 <a target="_blank" rel="noopener" href="http://nodejs.cn/api/stream.html#stream_readable_pipe_destination_options">pipe</a> 方法并不是 gulp 提供的 api，而是 node 的 api，准确的说应该是 node 的 stream 模块提供的 api。具体是怎么实现的呢：<area is="term"><code>gulp.src()</code> 的返回值是 node Stream 的一个实例，之后的 <area is="term"><code>pipe</code> 调用的其实是这个实例的 <area is="term"><code>pipe</code> 方法，而 <area is="term"><code>pipe</code> 方法的返回值依然是 node Stream 实例，以此实现前面的 <area is="term"><code>.pipe().pipe().pipe()</code> 这种串联写法。熟悉 jQuery 的同学应该很清楚这种技巧。</p>
+<h1 id="webpack-又是从哪冒出来的"><a href="#webpack-又是从哪冒出来的" class="headerlink" title="webpack 又是从哪冒出来的"></a>webpack 又是从哪冒出来的</h1><p>gulp 似乎是完美的，对前端开发工作中每一项痛苦又耗时任务都能见招拆招，各个击破。然而前端发展速度之快超乎想象，对页面性能和用户体验更是追求极致，以至于 gulp 某些领域尤其大型 <strong>SPA</strong>（单页应用）显得有些不够用了：</p>
+<area is="well-error">
+
+<ul>
+<li>单页应用的核心是模块化，ES6 之前 JavaScript 语言本身一直是没有模块系统的，导致 AMD，CMD，UMD 各种轮子模块化方案都蹦出来。对这种模块化乱象，gulp 显得无能为力，gulp 插件对这一块也没有什么想法。不过也可以理解，模块化解决方案可不是谁都能 hold 住的，需要考虑的问题太多了；</li>
+<li>对前沿的 SPA 技术 gulp 处理起来显得有些力不从心，例如 Vue 的单文件组件，gulp 配合一些插件可以勉强处理，但是很蹩脚。其实归根结底，还是模块化处理方面的不足；</li>
+<li>优化页面加载速度的一条重要法则就是减少 http 请求。gulp 只是对静态资源做流式处理，处理之后并未做有效的优化整合，也就是说 gulp 忽略了系统层面的处理，这一块还有很大的优化空间，尤其是移动端，那才真的是一寸光阴一寸金啊，哪怕是几百毫秒的优化所带来的收益（用户？流量？付费？）绝对超乎你的想象。别跟我说 gulp-concat，CSS Sprites，这俩玩意儿小打小闹还行，遇上大型应用根本拿不上台面。现在的页面动辄上百个零碎资源（图片，样式表，脚本），也就是上百个 http 请求，因此这个优化需求还是相当迫切的。关于为何减少 http 请求可以有效降低页面加载时间<a target="_blank" rel="noopener" href="http://www.cnblogs.com/iovec/p/7904416.html">戳这里</a>。</li>
+<li>blabla… 你自己想吧，主要就是大型单页应用方面有短板；</li>
+</ul>
+<p>时势造英雄。webpack 一声吼，大张旗鼓地挖起了gulp 的墙角。</p>
+<p>老规矩，先看看webpack官网怎么<del style="color:#999">吹牛逼</del>介绍自己的：</p>
+<area is="bq-info">
+
+<p><strong>Webpack</strong> 是当下最热门的前端资源模块化<area class="color-red"> <strong>管理和打包</strong> 工具。它可以将许多松散的模块按照依赖和规则打包成符合生产环境部署的前端资源。还可以将按需加载的模块进行代码分割，等到实际需要的时候再异步加载。</p>
+<p>是不是看完一脸懵逼，不明觉厉。其实翻译过来就是 “在我眼里，什么都是模块”。webpack “万物皆模块” 的理念和 SPA 配合起来简直是金童玉女，天作之合。这也是 webpack 短时间内名声大噪，直接撼动 gulp 地位的主要原因。</p>
+<p>webpack 的理念比较前卫，它本身也带来了很多新的概念和内容，诸如加载器（loader）、依赖图（Dependency Graph）等等。和 gulp 两小时成砖家的学习难度相比，webpack 或许你研究两天仍然会晕头转向。</p>
+<p>接下来简单看一下 webpack 的主要工作方式。</p>
+<p>webpack 和 gulp 一样也是一个小 node 包，打开方式自然是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i -g webpack</span><br><span class="line">npm i --save-dev webpack</span><br></pre></td></tr></table></figure>
+
+<p>和 gulp 一样，全局安装是为了执行 webpack 任务，本地安装是为了使用 webpack 提供的 api。</p>
+<p>安装完 webpack 之后在项目根目录下新建一个 <strong>webpack.config.js</strong>，这是 webpack 的默认配置文件，同 gulp 的 gulpfile.js 的功能类似。webpack.config.js 同样是不区分大小写的，取成 webPACk.CONfig.js 的话 webpack 也能认识，但是取成其他名字或放在别的目录就需要使用 <kbd>--config</kbd> 选项去指定配置文件了。</p>
+<p>现在工程目录结构如下：<br><img src="/images/2023/20230212_164547.jpg"><br><area is="img-description">构建前webpack工程目录结构</p>
+<p>接下来就是在 webpack.config.js 里配置需要的选项，注意了，webpack 与 gulp 的重要不同就是使用方式<area is="color-red"> <strong>由编程式变成了配置式</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="attr">entry</span>: <span class="string">&#x27;./src/index.js&#x27;</span>,        <span class="comment">// 告诉 webpack 你要编译哪个文件</span></span><br><span class="line">    <span class="attr">output</span>: &#123;                       <span class="comment">// 告诉 webpack 你要把编译后生成的文件放在哪</span></span><br><span class="line">        <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">        <span class="attr">path</span>: path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>最后仍然和 gulp 类似，就是在终端里运行 <kbd>webpack</kbd>（终端里一般会出现一大坨编译信息）。好了，现在 webpack 已经把编译好的文件输出到了 dist 目录：<br><img src="/images/2023/20230212_164122.jpg"></p>
+<p><area is="img-description">构建后webpack工程目录结构</p>
+<p>看到这是不是已经一头雾水了，在你还没明白发生了什么的时候 webpack 已经把事情干完了。这也是 webpack 和 gulp 作业方式的重要不同：<strong>Gulp</strong> 是搭了个台子，让 gulp 插件在上面唱戏，尽情表演，所有构建相关的具体事情都交由 gulp 插件去做。而 <strong>Webpack</strong> 就牛逼了，webpack 先搭了个台子，然后自己在上面唱嗨了，仔细一听，他在上面唱的是《我们不一样》，当然了他也是让 webpack 插件在上面唱戏的。</p>
+<p>也就是说 webpack 把很多功能都封装进了自己身体里面，使得自己强大同时臃肿。现在你可以在 <code>./src/index.js</code> 文件里直接写 ES6 代码，因为 webpack 把编译 ES6 的工作已经封装到自己的实现里了，使得 webpack 看起来原生支持 ES6 而不需要借助第三方插件，其实他内部也是用了第三方插件的，所以你不用再专门去下一个 babel 之类的插件去转译 ES6。这样封装的好处是使用起来很方便，不好的地方就是使用者完全不知道发生了什么，构建完了还一脸懵逼。</p>
+<p>上面仅是 webpack 使用的最最最简单示例，简直连 “hello world” 都算不上。具体怎样打包各种资源（typescript，样式表，图片，字体等等）可前往 <a target="_blank" rel="noopener" href="http://webpack.github.io/">webpack官网</a> 深入学习，想看中文的同学使劲 <a target="_blank" rel="noopener" href="http://www.css88.com/doc/webpack/">戳这里</a>。</p>
+<p>webpack “一切皆模块” 的特点完美解决了上面 gulp 暴露的几个短板，连 webpack 官网也说自己是因为看到现存的模块打包器都不太适合大型 SPA 应用，于是决定打造一个适合大型 SPA 应用的模块打包器，也就是说 <a target="_blank" rel="noopener" href="http://webpack.github.io/docs/what-is-webpack.html">webpack 其实就是为大型 SPA 而生的</a>。</p>
+<area is="bq">
+
+<p><strong>webpack 怎么实现像 gulp 一样对大量源文件进行流式处理</strong><br>人家 webpack 本来就没打算做这事。webpack 不是以取代 gulp 为目的的，而是为了给大型 SPA 提供更好的构建方案。对大量源文件进行流式处理是 gulp 擅长的事，webpack 不想抢，也没必要抢。即使抢，也无非是再造一个蹩脚的 gulp 出来而已。<br><br><strong>既然 webpack 模块化这么强，那以后模块化就全用 webpack 好了</strong><br>webpack 模块化是强，但是他胖啊，不是所有人都抱得动，主要是他为了提供更多的功能封装进了太多东西，所以选择上还是需要因地制宜。如果单纯只是打包 js（多页应用往往是这种需求），完全可以使用 rollup，browserify 这种小而美的实现，因为他们只做一件事——打包js。而如果需要将图片，样式，字体等所有静态资源全部打包，webpack 毫无疑问是首选。这也是为什么越来越多的流行库和框架开始从 webpack 转向使用 rollup 进行打包，因为他们只需要打包 js，webpack 好多强大功能根本用不到。连 rollup 官网也坦言如果你在构建一个库，rollup 绝对是首选，但如果是构建一个应用，那么请选 webpack。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>我看好多人说 gulp 和 webpack 不是一类东西，我不这么觉得，虽然说两者的出发点确实是不一样的，gulp 走的是流式处理路线，webpack 走的是模块处理路线，但是两者所要达成的目标却是一样的，那就是<area is="color-red"><strong>促进前端领域的自动化和工程化管理</strong>。webpack 发展到现在，已经非常强大了，强大到在构建方面 gulp 能做的事 webpack 基本上都可以胜任，gulp 做不了的 webpack 也能搞。同样的那些开发工作中痛苦又耗时的任务，gulp 和 webpack 都能解决，只是解决思路有天壤之别。</p>
+<p>下表是从各个角度对 gulp 和 webpack 做的对比：</p>
+<table class="table">
+    <tr>
+        <td width=80></td>
+        <td>Gulp</td>
+        <td>Webpack</td>
+    </tr>
+    <tr>
+        <td>定位</td>
+        <td>基于流的自动化构建工具</td>
+        <td>一个万能模块打包器</td>
+    </tr>
+    <tr class="bg-error">
+        <td>目标</td>
+        <td>自动化和优化开发工作流，为通用 website 开发而生</td>
+        <td>通用模块打包加载器，为移动端大型 <span class="bold">SPA</span> 应用而生</td>
+    </tr>
+    <tr>
+        <td>学习难度</td>
+        <td>易于学习，易于使用，api总共只有5个方法</td>
+        <td>有大量新的概念和api，不过好在有详尽的官方文档</td>
+    </tr>
+    <tr class="bg-info">
+        <td>适用场景</td>
+        <td>基于流的作业方式适合多页面应用开发</td>
+        <td>一切皆模块的特点适合单页面应用开发</td>
+    </tr>
+    <tr>
+        <td>作业方式</td>
+        <td>对输入（gulp.src）的 js，ts，scss，less 等源文件依次执行打包（bundle）、编译（compile）、压缩、重命名等处理后输出（gulp.dest）到指定目录中去，为了构建而打包</td>
+        <td>对入口文件（entry）递归解析生成依赖关系图，然后将所有依赖打包在一起，在打包之前会将所有依赖转译成可打包的 js 模块，为了打包而构建</td>
+    </tr>
+    <tr>
+        <td>使用方式</td>
+        <td>常规 js 开发，编写一系列构建任务（task）。</td>
+        <td>编辑各种 JSON 配置项</td>
+    </tr>
+    <tr class="bg-info">
+        <td>优点</td>
+        <td>适合多页面开发，易于学习，易于使用，接口优雅。</td>
+        <td>可以打包一切资源，适配各种模块系统</td>
+    </tr>
+    <tr class="bg-warn">
+        <td>缺点</td>
+        <td>在单页面应用方面输出乏力，而且对流行的单页技术有些难以处理（比如 Vue 单文件组件，使用 gulp 处理就会很困难，而 webpack 一个 loader 就能轻松搞定）</td>
+        <td>不适合多页应用开发，灵活度高但同时配置很繁琐复杂。“打包一切” 这个优点对于 HTTP/1.1 尤其重要，因为所有资源打包在一起能明显减少浏览器访问页面时的资源请求数量，从而减少应用程序必须等待的时间。但这个优点可能会随着 HTTP/2 的流行而变得不那么突出，因为 HTTP/2 的多路复用可以有效解决客户端并行请求时的瓶颈问题。</td>
+    </tr>
+    <tr class="bg-success">
+        <td>结论</td>
+        <td>浏览器多页应用(MPA)首选方案</td>
+        <td>浏览器单页应用(SPA)首选方案</td>
+    </tr>
+</table>
+
+<area is="bq-success">
+
+<p><strong>gulp 为何不吸取百家之长，把 webpack 的东西集成进来，反正都是开源的</strong><br>腾讯那么牛逼，你说他怎么不把阿里巴巴集成进来。集成应该是没可能，因为 gulp 和 webpack 的定位不一样。所以，没有放之天下而皆准的解决方案，只有具体问题具体分析选择适合的解决方案才能正确地解决问题。gulp 和 webpack 只是我们解决问题的工具，不要被工具束缚了手脚不能前进。<br><br><strong>扯了这么多，到底谁会被拍死在沙滩上</strong><br>可以看出来，这两个工具其实各有优缺，都有用武之地。合理地配合使用，取长补短，才能发挥最大的威力，所以这俩基友并不是互斥的，而是互补的，谁也不会被拍死在沙滩上。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E6%89%8B%E5%A4%A7%E5%B8%88%E2%80%94%E2%80%94MVVM%E6%A8%A1%E5%BC%8F/" rel="prev" title="前后端分手大师——MVVM模式">
+                  <i class="fa fa-chevron-left"></i> 前后端分手大师——MVVM模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/03/2017/%E4%BB%8E%E8%BE%93%E5%85%A5cnblogs.com%E5%88%B0%E5%8D%9A%E5%AE%A2%E5%9B%AD%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%85%A8%E5%B1%95%E7%A4%BA%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88/" rel="next" title="从输入cnblogs.com到博客园首页完全展示发生了什么">
+                  从输入cnblogs.com到博客园首页完全展示发生了什么 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DOM哥</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><div class="copyright-custom">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span>小站已勉强运行2年9个月零18天</span> <span>最近更新于 2025-12-02 17:01:09</span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+  <link rel="mask-icon" href="/favicon.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dom-bro.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="作为开源世界最优秀的作品之一，Git已经成为目前进行项目版本控制的最佳方案，也逐渐成为程序员必备的基础技能。“迁个新分支开发”，“提交一下代码”，“合到QA分支进行提测”，“提个上线的MR”等等这些Git工作流成为我们日常工作的重要部分。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个按键搞定日常git操作">
+<meta property="og:url" content="https://dom-bro.github.io/2019/06/18/2020/%E4%B8%80%E4%B8%AA%E6%8C%89%E9%94%AE%E6%90%9E%E5%AE%9A%E6%97%A5%E5%B8%B8git%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="DOM哥">
+<meta property="og:description" content="作为开源世界最优秀的作品之一，Git已经成为目前进行项目版本控制的最佳方案，也逐渐成为程序员必备的基础技能。“迁个新分支开发”，“提交一下代码”，“合到QA分支进行提测”，“提个上线的MR”等等这些Git工作流成为我们日常工作的重要部分。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dom-bro.github.io/images/2023/git-contain.png">
+<meta property="article:published_time" content="2019-06-18T03:22:29.106Z">
+<meta property="article:modified_time" content="2023-02-12T07:43:03.255Z">
+<meta property="article:author" content="DOM哥">
+<meta property="article:tag" content="前端，vue，DOM哥">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dom-bro.github.io/images/2023/git-contain.png">
+
+
+<link rel="canonical" href="https://dom-bro.github.io/2019/06/18/2020/%E4%B8%80%E4%B8%AA%E6%8C%89%E9%94%AE%E6%90%9E%E5%AE%9A%E6%97%A5%E5%B8%B8git%E6%93%8D%E4%BD%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://dom-bro.github.io/2019/06/18/2020/%E4%B8%80%E4%B8%AA%E6%8C%89%E9%94%AE%E6%90%9E%E5%AE%9A%E6%97%A5%E5%B8%B8git%E6%93%8D%E4%BD%9C/","path":"2019/06/18/2020/一个按键搞定日常git操作/","title":"一个按键搞定日常git操作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一个按键搞定日常git操作 | DOM哥</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZCWSWQ4PSD"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-ZCWSWQ4PSD","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.2.15/dist/antd.min.css">
+<script>
+  window.DomBroConfig = {"packageJSON":{"name":"hexo-site","version":"0.0.75","private":true,"scripts":{"build":"hexo clean && npm run spa:build && NODE_ENV=production hexo generate","clean":"hexo clean","d":"NODE_ENV=production hexo deploy","deploy":"npm version patch && hexo clean && npm run spa:build && npm run d","server":"hexo clean && hexo server --config _config.yml,_config.localhost.yml","spa":"vite --port 4001 --force --host","spa:build":"NODE_ENV=production vite build --emptyOutDir","pre":"serve public"},"hexo":{"version":"6.3.0"},"dependencies":{"@ant-design/icons-vue":"^6.1.0","@octokit/request":"^10.0.7","@vitejs/plugin-vue":"^4.0.0","ant-design-vue":"^3.2.19","hexo":"^6.3.0","hexo-deployer-git":"^4.0.0","hexo-generator-archive":"^2.0.0","hexo-generator-category":"^2.0.0","hexo-generator-index":"^3.0.0","hexo-generator-tag":"^2.0.0","hexo-renderer-ejs":"^2.0.0","hexo-renderer-marked":"^6.0.0","hexo-renderer-stylus":"^2.1.0","hexo-server":"^3.0.0","hexo-theme-landscape":"^0.0.3","hexo-theme-next":"^8.14.2","less":"^4.1.3","moment":"^2.29.4","moment-precise-range-plugin":"^1.3.0","unplugin-vue-components":"^0.23.0","vite":"^4.1.1","vue":"^3.2.47","vue-router":"^4.1.6"},"devDependencies":{"rollup-obfuscator":"^3.0.1","vite-plugin-commonjs":"^0.10.4"}},"layout":false,"page":{"title":"一个按键搞定日常git操作","photos":["/images/2023/git-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2020/一个按键搞定日常git操作.md","raw":"<OTHER BIG>","slug":"2020/一个按键搞定日常git操作","published":true,"date":{"_i":"2019-06-18T03:22:29.106Z","_pf":"<DEEP>","_locale":"<DEEP>","_d":"2019-06-18T03:22:29.106Z","_z":null,"add":"<FUNCTION DEEP>","calendar":"<FUNCTION DEEP>","clone":"<FUNCTION DEEP>","diff":"<FUNCTION DEEP>","endOf":"<FUNCTION DEEP>","format":"<FUNCTION DEEP>","from":"<FUNCTION DEEP>","fromNow":"<FUNCTION DEEP>","to":"<FUNCTION DEEP>","toNow":"<FUNCTION DEEP>","get":"<FUNCTION DEEP>","invalidAt":"<FUNCTION DEEP>","isAfter":"<FUNCTION DEEP>","isBefore":"<FUNCTION DEEP>","isBetween":"<FUNCTION DEEP>","isSame":"<FUNCTION DEEP>","isSameOrAfter":"<FUNCTION DEEP>","isSameOrBefore":"<FUNCTION DEEP>","isValid":"<FUNCTION DEEP>","lang":"<FUNCTION DEEP>","locale":"<FUNCTION DEEP>","localeData":"<FUNCTION DEEP>","max":"<FUNCTION DEEP>","min":"<FUNCTION DEEP>","parsingFlags":"<FUNCTION DEEP>","set":"<FUNCTION DEEP>","startOf":"<FUNCTION DEEP>","subtract":"<FUNCTION DEEP>","toArray":"<FUNCTION DEEP>","toObject":"<FUNCTION DEEP>","toDate":"<FUNCTION DEEP>","toISOString":"<FUNCTION DEEP>","inspect":"<FUNCTION DEEP>","toJSON":"<FUNCTION DEEP>","toString":"<FUNCTION DEEP>","unix":"<FUNCTION DEEP>","valueOf":"<FUNCTION DEEP>","creationData":"<FUNCTION DEEP>","eraName":"<FUNCTION DEEP>","eraNarrow":"<FUNCTION DEEP>","eraAbbr":"<FUNCTION DEEP>","eraYear":"<FUNCTION DEEP>","year":"<FUNCTION DEEP>","isLeapYear":"<FUNCTION DEEP>","weekYear":"<FUNCTION DEEP>","isoWeekYear":"<FUNCTION DEEP>","quarters":"<FUNCTION DEEP>","month":"<FUNCTION DEEP>","daysInMonth":"<FUNCTION DEEP>","weeks":"<FUNCTION DEEP>","isoWeeks":"<FUNCTION DEEP>","weeksInYear":"<FUNCTION DEEP>","weeksInWeekYear":"<FUNCTION DEEP>","isoWeeksInYear":"<FUNCTION DEEP>","isoWeeksInISOWeekYear":"<FUNCTION DEEP>","date":"<FUNCTION DEEP>","days":"<FUNCTION DEEP>","weekday":"<FUNCTION DEEP>","isoWeekday":"<FUNCTION DEEP>","dayOfYear":"<FUNCTION DEEP>","hours":"<FUNCTION DEEP>","minutes":"<FUNCTION DEEP>","seconds":"<FUNCTION DEEP>","milliseconds":"<FUNCTION DEEP>","utcOffset":"<FUNCTION DEEP>","utc":"<FUNCTION DEEP>","local":"<FUNCTION DEEP>","parseZone":"<FUNCTION DEEP>","hasAlignedHourOffset":"<FUNCTION DEEP>","isDST":"<FUNCTION DEEP>","isLocal":"<FUNCTION DEEP>","isUtcOffset":"<FUNCTION DEEP>","isUtc":"<FUNCTION DEEP>","zoneAbbr":"<FUNCTION DEEP>","zoneName":"<FUNCTION DEEP>","dates":"<FUNCTION DEEP>","months":"<FUNCTION DEEP>","years":"<FUNCTION DEEP>","zone":"<FUNCTION DEEP>","isDSTShifted":"<FUNCTION DEEP>","tz":"<FUNCTION DEEP>","preciseDiff":"<FUNCTION DEEP>"},"updated":{"_i":"2023-02-12T07:43:03.255Z","_pf":"<DEEP>","_d":"2023-02-12T07:43:03.255Z"},"layout":"post","link":"","_id":"cmiocm5mu000t3nz0box79hmi","content":"<OTHER BIG>","site":{"data":"<DEEP>"},"path":"2019/06/18/2020/一个按键搞定日常git操作/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2020/一个按键搞定日常git操作.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2020/一个按键搞定日常git操作/","tags":{"data":[],"length":0,"_model":"<DEEP>","_schema":"<DEEP>","size":"<FUNCTION DEEP>","each":"<FUNCTION DEEP>","random":"<FUNCTION DEEP>"},"categories":{"data":["<DEEP>"],"length":1,"_model":"<DEEP>","_schema":"<DEEP>"},"prev":{"title":"3分钟接入socket.io使用","photos":["/images/2023/logo-contain.svg"],"excerpt":"socket.io 是一个类库，内部封装了WebSocket，可以在浏览器与服务器之间建立实时通信。","_content":"<OTHER BIG>","source":"_posts/2020/3分钟接入socket.io使用.md","raw":"<OTHER BIG>","slug":"2020/3分钟接入socket.io使用","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mw000y3nz03ekcequd","content":"<OTHER BIG>","site":"<DEEP>","path":"2020/01/18/2020/3分钟接入socket.io使用/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2020/3分钟接入socket.io使用.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2020/3分钟接入socket.io使用/","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>","_model":"<DEEP>","_schema":"<DEEP>","setTags":"<FUNCTION DEEP>","setCategories":"<FUNCTION DEEP>"},"next":{"title":"跌宕起伏的小程序之登录组件","photos":["/images/2023/wx-contain.png"],"excerpt":"<OTHER BIG>","_content":"<OTHER BIG>","source":"_posts/2019/跌宕起伏的小程序之登录组件.md","raw":"<OTHER BIG>","slug":"2019/跌宕起伏的小程序之登录组件","date":"<DEEP>","updated":"<DEEP>","_id":"cmiocm5mw000w3nz0bgf3hivd","content":"<OTHER BIG>","site":"<DEEP>","path":"2019/03/05/2019/跌宕起伏的小程序之登录组件/","permalink":"<OTHER BIG>","full_source":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/跌宕起伏的小程序之登录组件.md","asset_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/source/_posts/2019/跌宕起伏的小程序之登录组件/","tags":"<DEEP>","categories":"<DEEP>","next":"<DEEP>"},"lang":"en","canonical_path":"2019/06/18/2020/一个按键搞定日常git操作/index.html","toc":{"max_depth":6},"reward_settings":{},"quicklink":{"timeout":3000}},"url":"<OTHER BIG>","config":{"title":"DOM哥","url":"https://dom-bro.github.io","root":"/","permalink":":year/:month/:day/:title/","pretty_urls":{},"source_dir":"source","public_dir":"public","tag_dir":"tags","archive_dir":"archives","category_dir":"categories","code_dir":"downloads/code","i18n_dir":":lang","skip_render":"spa/**/*","new_post_name":":title.md","external_link":{"field":"site"},"highlight":{"exclude_languages":[],"first_line_number":"always1"},"prismjs":{},"default_category":"uncategorized","date_format":"YYYY-MM-DD","time_format":"HH:mm:ss","updated_option":"mtime","per_page":10,"pagination_dir":"page","theme":"next","server":{"port":4000,"ip":"<OTHER ERROR>"},"deploy":{"type":"git","repo":"git@github.com:dom-bro/dom-bro.github.io.git"},"keywords":"前端，vue，DOM哥","index_generator":{"order_by":"-date"},"google_adsense":{"js":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js","client":"ca-pub-9410111523844245"},"theme_config":{"cache":"<DEEP>","custom_file_path":"<DEEP>","scheme":"Gemini","favicon":"<DEEP>","creative_commons":"<DEEP>","open_graph":"<DEEP>","menu_settings":"<DEEP>","sidebar":"<DEEP>","avatar":"<DEEP>","social_icons":"<DEEP>","links_settings":"<DEEP>","toc":"<DEEP>","footer":"<DEEP>","post_meta":"<DEEP>","symbols_count_time":"<DEEP>","reward_settings":"<DEEP>","related_posts":"<DEEP>","post_edit":"<DEEP>","post_navigation":"left","tagcloud":"<DEEP>","calendar":"<DEEP>","text_align":"<DEEP>","theme_color":"<DEEP>","body_scrollbar":"<DEEP>","codeblock":"<DEEP>","back2top":"<DEEP>","reading_progress":"<DEEP>","bookmark":"<DEEP>","github_banner":"<DEEP>","font":"<DEEP>","note":"<DEEP>","tabs":"<DEEP>","pdf":"<DEEP>","mermaid":"<DEEP>","math":"<DEEP>","quicklink":"<DEEP>","motion":"<DEEP>","pace":"<DEEP>","canvas_ribbon":"<DEEP>","comments":"<DEEP>","disqus":"<DEEP>","disqusjs":"<DEEP>","changyan":"<DEEP>","gitalk":"<DEEP>","utterances":"<DEEP>","google_analytics":"<DEEP>","matomo":"<DEEP>","umami":"<DEEP>","plausible":"<DEEP>","leancloud_visitors":"<DEEP>","firestore":"<DEEP>","busuanzi_count":"<DEEP>","algolia_search":"<DEEP>","local_search":"<DEEP>","chat":"<DEEP>","chatra":"<DEEP>","tidio":"<DEEP>","gitter":"<DEEP>","vendors":"<DEEP>","css":"css","js":"js","images":"images"},"category_generator":{},"archive_generator":{},"tag_generator":{},"marked":{"external_link":"<DEEP>"}},"theme":{"cache":{},"custom_file_path":{"head":"theme_next_custom_files/head.njk","header":"theme_next_custom_files/header.njk","sidebar":"theme_next_custom_files/sidebar.njk","postMeta":"theme_next_custom_files/post-meta.njk","postBodyEnd":"theme_next_custom_files/post-body-end.swig","footer":"theme_next_custom_files/footer.njk","bodyEnd":"theme_next_custom_files/body-end.njk","variable":"theme_next_custom_files/variables.styl","mixin":"theme_next_custom_files/mixins.styl","style":"theme_next_custom_files/styles.styl"},"favicon":{"small":"/favicon.png"},"creative_commons":{"license":"by-nc-sa","size":"small"},"open_graph":{},"menu_settings":{},"sidebar":{"padding":18,"offset":12},"avatar":{},"social_icons":{},"links_settings":{"icon":"fa fa-globe","layout":"block"},"toc":{},"footer":{"icon":"<DEEP>","beian":"<DEEP>","since":2023,"sinceDate":20230214},"post_meta":{"updated_at":"<DEEP>"},"symbols_count_time":{},"reward_settings":{},"related_posts":{"icon":"fa fa-signs-post"},"post_edit":{"url":"https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/"},"tagcloud":{"max":30,"amount":200,"orderby":"name"},"calendar":{"calendar_id":"<required>","orderBy":"startTime","offsetMax":72,"offsetMin":4,"maxResults":250},"text_align":{"desktop":"justify"},"theme_color":{"light":"#222"},"body_scrollbar":{},"codeblock":{"theme":"<DEEP>","prism":"<DEEP>","copy_button":"<DEEP>"},"back2top":{},"reading_progress":{"position":"top","color":"#37c6c0","height":"3px"},"bookmark":{"save":"auto"},"github_banner":{"permalink":"https://github.com/yourname"},"font":{"global":"<DEEP>","title":"<DEEP>","headings":"<DEEP>","posts":"<DEEP>","codes":"<DEEP>"},"note":{"style":"simple"},"tabs":{"transition":"<DEEP>"},"pdf":{"height":"500px"},"mermaid":{"theme":"<DEEP>"},"math":{"mathjax":"<DEEP>","katex":"<DEEP>"},"quicklink":{},"motion":{"transition":"<DEEP>"},"pace":{"color":"blue","theme":"minimal"},"canvas_ribbon":{"size":300,"alpha":0.6,"zIndex":-1},"comments":{"style":"tabs"},"disqus":{},"disqusjs":{},"changyan":{},"gitalk":{"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},"utterances":{"repo":"user-name/repo-name","issue_term":"pathname","theme":"github-light"},"google_analytics":{"tracking_id":"G-ZCWSWQ4PSD"},"matomo":{},"umami":{},"plausible":{},"leancloud_visitors":{"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky"},"firestore":{"collection":"articles"},"busuanzi_count":{"total_visitors_icon":"fa fa-user","total_views_icon":"fa fa-eye"},"algolia_search":{"hits":"<DEEP>"},"local_search":{},"chat":{"icon":"fa fa-comment"},"chatra":{},"tidio":{},"gitter":{},"vendors":{"internal":"local","plugins":"cdnjs","anime":"<DEEP>","fontawesome":"<DEEP>","prism":"<DEEP>","prism_autoloader":"<DEEP>","prism_line_numbers":"<DEEP>","mathjax":"<DEEP>","katex":"<DEEP>","copy_tex_js":"<DEEP>","pjax":"<DEEP>","jquery":"<DEEP>","fancybox_js":"<DEEP>","fancybox_css":"<DEEP>","mediumzoom":"<DEEP>","lazyload":"<DEEP>","pangu":"<DEEP>","quicklink":"<DEEP>","disqusjs_js":"<DEEP>","disqusjs_css":"<DEEP>","gitalk_js":"<DEEP>","gitalk_css":"<DEEP>","firebase_app":"<DEEP>","firebase_firestore":"<DEEP>","algolia_search":"<DEEP>","instant_search":"<DEEP>","local_search":"<DEEP>","pdfobject":"<DEEP>","mermaid":"<DEEP>","animate_css":"<DEEP>","pace_js":"<DEEP>","pace_css":"<DEEP>","canvas_ribbon":"<DEEP>","creative_commons":"<DEEP>"},"injects":{"variable":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/variables.styl"],"mixin":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/mixins.styl"],"style":["/Users/yunzhaoli/Documents/project/practice/blog-site/theme_next_custom_files/styles.styl"],"head":["<DEEP>"],"header":["<DEEP>"],"sidebar":["<DEEP>"],"postMeta":["<DEEP>"],"postBodyEnd":["<DEEP>"],"footer":["<DEEP>"],"bodyEnd":["<DEEP>"],"comment":[]},"highlight":{"light":"<DEEP>","dark":"<DEEP>"},"prism":{"light":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism.css","dark":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/prismjs/themes/prism-dark.css","number":"<OTHER BIG>"},"menu_map":{},"main_menu":[]},"env":{"args":{"_":[]},"env":"production","version":"6.3.0","cmd":"deploy"},"view_dir":"/Users/yunzhaoli/Documents/project/practice/blog-site/node_modules/hexo-theme-next/layout/","site":{"posts":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"]},"pages":{"data":["<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>","<DEEP>"],"length":9,"_model":"<DEEP>","_schema":"<DEEP>"},"categories":{"data":["<DEEP>"]},"tags":{"data":[]},"data":{}},"__":"","_p":"","next_version":"8.14.2","languages":["en"],"ccURL":"https://creativecommons.org/licenses/by-nc-sa/4.0/","filename":"<OTHER BIG>","date":"2025-12-02","date_xml":"2025-12-02T09:01:10.045Z","time":"17:01:10","full_date":"2025-12-02 17:01:10","relative_date":"a few seconds ago","time_tag":"<time datetime=\"2025-12-02T09:01:10.046Z\">2025-12-02</time>","moment":"2025-12-02T09:01:10.046Z","search_form":"<FUNCTION BIG>","strip_html":"","trim":"<FUNCTION ERROR>","titlecase":"<FUNCTION ERROR>","word_wrap":"<FUNCTION ERROR>","truncate":"<FUNCTION ERROR>","escape_html":"<FUNCTION ERROR>","fragment_cache":"<FUNCTION ERROR>","gravatar":"<FUNCTION ERROR>","is_current":false,"is_home":false,"is_home_first_page":false,"is_post":true,"is_page":false,"is_archive":false,"is_year":false,"is_month":false,"is_category":false,"is_tag":false,"list_archives":"<FUNCTION BIG>","list_categories":"<FUNCTION BIG>","list_tags":"","list_posts":"<FUNCTION BIG>","meta_generator":"<meta name=\"generator\" content=\"Hexo 6.3.0\">","open_graph":"<FUNCTION BIG>","number_format":"<FUNCTION ERROR>","paginator":"","partial":"<FUNCTION ERROR>","markdown":"<FUNCTION ERROR>","render":"<FUNCTION ERROR>","css":"\n","js":"\n","link_to":"<FUNCTION ERROR>","mail_to":"<a href=\"mailto:undefined\">","image_tag":"<img src=\"/\">","favicon_tag":"<link rel=\"shortcut icon\" href=\"/\">","feed_tag":"","tagcloud":"","tag_cloud":"","toc":"","relative_url":"","url_for":"/","full_url_for":"https://dom-bro.github.io/","inspect":"undefined","log":"<FUNCTION ERROR>","sinceDays":"2年9个月零18天","next_config":"<FUNCTION BIG>","next_config_unique":"<FUNCTION BIG>","next_font":"","next_url":"<FUNCTION ERROR>","next_inject":"<FUNCTION ERROR>","next_js":"<FUNCTION ERROR>","next_vendors":"<FUNCTION ERROR>","next_data":"<FUNCTION HTML>","next_pre":"","post_gallery":"","post_edit":"","gitalk_md5":"6666cd76f96956469e7be39d750cc7d9","i18n_path":"<FUNCTION BIG>","language_name":"English","next_menu":"<FUNCTION ERROR>","next_paginator":"","js_vendors":["anime"]}
+  console.log(window.DomBroConfig)
+  if (window.DomBroConfig.page.title) document.title = window.DomBroConfig.page.title
+  let className
+  if (DomBroConfig.is_home) className = 'home'
+  if (DomBroConfig.is_post) className = 'post'
+  if (DomBroConfig.is_page) className = 'page'
+  if (className) {
+    document.documentElement.classList.add('root-' + className)
+  }
+  if (DomBroConfig.packageJSON.version !== localStorage.getItem('version')) {
+    caches.keys().then(res => res.forEach(key => caches.delete(key)))
+    localStorage.setItem('version', DomBroConfig.packageJSON.version)
+  }
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410111523844245"
+     crossorigin="anonymous"></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">DOM哥</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="slot-header">
+  <a class="item active" href="/">Blog</a>
+
+  <a class="item " href="/vue#/vue">
+    <img src="/spa/images/awesome/vue.svg"/>
+    Vue
+  </a>
+  <a class="item " href="/react#/react">
+    <img src="/spa/images/awesome/react.svg"/>
+    React
+  </a>
+  <a class="item " href="/fe#/fe">
+    <img src="/spa/images/awesome/nodejs-icon.svg"/>
+    前端
+  </a>
+  <a class="item todo " href="/ai#/ai" onclick="alert('这个 Hub 正在研制，B站关注我，更新后收到通知');return false;">
+    <img src="/spa/images/logo/ChatGPT.png"/>
+    AI
+  </a>
+  <a class="item " href="/outside#/outside">
+    <img src="/spa/images/outside/usa.png"/>
+    墙外
+  </a>
+
+  <a class="item " href="/tools#/">工具</a>
+  <a class="item " href="/about#/about">About</a>
+</div>
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%88%91%E4%BF%AE%E6%94%B9%E4%BA%86%E5%93%AA%E4%BA%9B%E6%96%87%E4%BB%B6-git-status"><span class="nav-number">1.</span> <span class="nav-text">我修改了哪些文件 git status</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%87%E5%88%B0%E6%9F%90%E4%B8%AA%E5%88%86%E6%94%AF-git-checkout"><span class="nav-number">2.</span> <span class="nav-text">切到某个分支 git checkout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%9E%E4%B8%AA%E6%96%B0%E5%88%86%E6%94%AF%E5%BC%80%E5%A7%8B%E5%BC%80%E5%8F%91-git-checkout-b"><span class="nav-number">3.</span> <span class="nav-text">搞个新分支开始开发 git checkout -b</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%88%91%E7%9A%84%E4%BF%AE%E6%94%B9-git-commit"><span class="nav-number">4.</span> <span class="nav-text">提交我的修改 git commit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%89%E5%8F%96%E6%9C%80%E6%96%B0%E7%9A%84%E4%BB%A3%E7%A0%81-git-pull"><span class="nav-number">5.</span> <span class="nav-text">拉取最新的代码 git pull</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%8A%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%A0%81%E6%8E%A8%E5%88%B0%E8%BF%9C%E7%AB%AF-git-push"><span class="nav-number">6.</span> <span class="nav-text">把本地代码推到远端 git push</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%8A%E5%88%AB%E7%9A%84%E5%88%86%E6%94%AF%E5%90%88%E5%88%B0%E6%88%91%E7%9A%84%E5%88%86%E6%94%AF%E4%B8%8A%E6%9D%A5-git-merge"><span class="nav-number">7.</span> <span class="nav-text">把别的分支合到我的分支上来 git merge</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%8A%E6%88%91%E7%9A%84%E5%88%86%E6%94%AF%E5%90%88%E5%88%B0%E5%88%AB%E7%9A%84%E5%88%86%E6%94%AF%E4%B8%8A%E5%8E%BB-%F0%9F%A7%90"><span class="nav-number">8.</span> <span class="nav-text">把我的分支合到别的分支上去? 🧐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9C%8B%E4%B8%80%E4%B8%8B%E6%8F%90%E4%BA%A4%E8%AE%B0%E5%BD%95-git-log"><span class="nav-number">9.</span> <span class="nav-text">看一下提交记录 git log</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E9%A1%B9%E7%9B%AE%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%88%86%E6%94%AF-git-branch"><span class="nav-number">10.</span> <span class="nav-text">当前项目都有哪些分支 git branch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shit%EF%BC%8C%E5%90%88%E9%94%99%E4%BB%A3%E7%A0%81%E4%BA%86%EF%BC%8C%E6%88%91%E8%A6%81%E5%9B%9E%E6%BB%9A%E4%BB%A3%E7%A0%81-git-reset"><span class="nav-number">11.</span> <span class="nav-text">shit，合错代码了，我要回滚代码 git reset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9C%8B%E7%9C%8B%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%E8%B0%81%E6%8F%90%E4%BA%A4%E7%9A%84%E6%9C%80%E5%A4%9A"><span class="nav-number">12.</span> <span class="nav-text">看看这个项目谁提交的最多</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E5%88%86%E6%94%AF%E5%90%8D%E7%A7%B0"><span class="nav-number">13.</span> <span class="nav-text">获取当前分支名称</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%92%A4%E9%94%80%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E6%9F%90%E6%AC%A1-commit"><span class="nav-number">14.</span> <span class="nav-text">撤销提交历史上的某次 commit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E6%8E%92%E8%A1%8C"><span class="nav-number">15.</span> <span class="nav-text">查看自己的命令使用排行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E6%9C%80%E5%90%8E"><span class="nav-number">16.</span> <span class="nav-text">最后的最后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DOM哥</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="slot-sidebar">
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/2023/git-contain.png" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://dom-bro.github.io/2019/06/18/2020/%E4%B8%80%E4%B8%AA%E6%8C%89%E9%94%AE%E6%90%9E%E5%AE%9A%E6%97%A5%E5%B8%B8git%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DOM哥">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一个按键搞定日常git操作 | DOM哥">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一个按键搞定日常git操作
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-06-18 11:22:29" itemprop="dateCreated datePublished" datetime="2019-06-18T11:22:29+08:00">2019-06-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-12 15:43:03" itemprop="dateModified" datetime="2023-02-12T15:43:03+08:00">2023-02-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B9%B2%E8%B4%A7/" itemprop="url" rel="index"><span itemprop="name">干货</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/06/18/2020/%E4%B8%80%E4%B8%AA%E6%8C%89%E9%94%AE%E6%90%9E%E5%AE%9A%E6%97%A5%E5%B8%B8git%E6%93%8D%E4%BD%9C/" class="post-meta-item leancloud_visitors" data-flag-title="一个按键搞定日常git操作" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span><div class="slot-post-meta"></div>
+
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.</p>
+</blockquote>
+<p>作为开源世界最优秀的作品之一，Git已经成为目前进行项目版本控制的最佳方案，也逐渐成为程序员必备的基础技能。“迁个新分支开发”，“提交一下代码”，“合到QA分支进行提测”，“提个上线的MR”等等这些Git工作流成为我们日常工作的重要部分。</p>
+<p>闲话少叙，开始git之旅吧！</p>
+<h1 id="我修改了哪些文件-git-status"><a href="#我修改了哪些文件-git-status" class="headerlink" title="我修改了哪些文件 git status"></a>我修改了哪些文件 <code>git status</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> s=<span class="string">&#x27;git status&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>用于查看文件变更情况。</p>
+<p>这里取 <kbd>s</kbd> 键，即 git <span style="color:red"><strong>s</strong></span>tatus</p>
+<h1 id="切到某个分支-git-checkout"><a href="#切到某个分支-git-checkout" class="headerlink" title="切到某个分支 git checkout"></a>切到某个分支 <code>git checkout</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> c=<span class="string">&#x27;git checkout&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>用于切换分支。</p>
+<p>这里取 <kbd>c</kbd> 键，即 git <span style="color:red"><strong>c</strong></span>heckout</p>
+<h1 id="搞个新分支开始开发-git-checkout-b"><a href="#搞个新分支开始开发-git-checkout-b" class="headerlink" title="搞个新分支开始开发 git checkout -b"></a>搞个新分支开始开发 <code>git checkout -b</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> cb=<span class="string">&#x27;git checkout -b&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>这里取 <kbd>c</kbd><kbd>b</kbd> 键，即 git <span style="color:red"><strong>c</strong></span>heckout -<span style="color:red"><strong>b</strong><span style="color:red"></p>
+<p>其实也可以直接使用上条命令 <code>c -b &lt;branch&gt;</code>，但我迁新分支的频率比较高，所以就单独搞了一个命令嘿嘿</p>
+<p>我们开发新功能时通常需要基于线上分支（一般是master）迁出一个新分支来开发。</p>
+<h1 id="提交我的修改-git-commit"><a href="#提交我的修改-git-commit" class="headerlink" title="提交我的修改 git commit"></a>提交我的修改 <code>git commit</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> C=<span class="string">&#x27;git commit&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>修修改改终于做了一部分功能，提交一下自己修改的文件</p>
+<p>这里取大写 <kbd>C</kbd> 键（因为小写 <code>c</code> 已经给 git checkout 啦），即 git <span style="color:red"><strong>c</strong></span>ommit</p>
+<h1 id="拉取最新的代码-git-pull"><a href="#拉取最新的代码-git-pull" class="headerlink" title="拉取最新的代码 git pull"></a>拉取最新的代码 <code>git pull</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> q=<span class="string">&#x27;git pull&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>用于拉取最新代码，比如别人在你工作的分支上修改了代码并推到了远端，那么你在git push之前就得先把最新的代码拉下来跟你本地的代码合并。</p>
+<p>这里取 <kbd>q</kbd> 键，而不是 p 键，完全是因为个人偏好😁，我想把按键都集中在键盘左半部分。而且<code>q</code>和<code>p</code>很像鸭，并不会增加记忆难度。</p>
+<blockquote>
+<p>git pull 其实等于先 git fetch 再 git merge，两步操作合成一步完成啦</p>
+</blockquote>
+<h1 id="把本地代码推到远端-git-push"><a href="#把本地代码推到远端-git-push" class="headerlink" title="把本地代码推到远端 git push"></a>把本地代码推到远端 <code>git push</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> Q=<span class="string">&#x27;git push&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>你写了一段非常优美的代码，别人想欣赏一下。此时就需要推到远端。</p>
+<p>这里取 <kbd>Q</kbd> 键，git pull 和 git push 是最常用的一对操作，绑到一个按键上是非常方便的（用大小写对应）。</p>
+<blockquote>
+<p>如果是新建的分支第一次推到远端，会报 <code>The current branch has no upstream branch</code>错误<br><br>执行下 <code>git push --set-upstream origin &lt;branch&gt;</code> 就行啦</p>
+<p>你还可以用这个命令删掉一个远端分支(–delete) <code>Q -d origin &lt;branch&gt;</code>，谨慎操作喔！<br><br>这里只是删掉了远端的分支，本地对应的分支还在哟，双重保险，不怕手误嘿嘿。</p>
+<p>配合下面的 <code>b -d &lt;branch&gt;</code> 效果更佳哦~</p>
+</blockquote>
+<h1 id="把别的分支合到我的分支上来-git-merge"><a href="#把别的分支合到我的分支上来-git-merge" class="headerlink" title="把别的分支合到我的分支上来 git merge"></a>把别的分支合到我的分支上来 <code>git merge</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> m=<span class="string">&#x27;git merge&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们将个人开发分支的代码合到线上分支之前，往往需要把线上分支的最新代码先合到自己的个人开发分支，以确保没有冲突</p>
+<p>这里取 <kbd>m</kbd> 键，即 git <span style="color:red"><strong>m</strong></span>erge</p>
+<blockquote>
+<p>合个分支谁曾想有100多个冲突🥴，特么不合了 <code>m --abort</code></p>
+<p>玩归玩，闹归闹，别拿冲突开玩笑，吐血解决了100多个冲突，接着合并 <code>m --continue</code></p>
+<p>假如有个文件冲突了1000多行，实在懒得看，直接用某个分支的文件就行啦 <code>C &lt;wantted-branch&gt; -- the/path/of/file.js</code><br><br><code>--</code> 是为了隔开分支名和文件名，后面跟上文件路径就行啦</p>
+</blockquote>
+<h1 id="把我的分支合到别的分支上去-🧐"><a href="#把我的分支合到别的分支上去-🧐" class="headerlink" title="把我的分支合到别的分支上去? 🧐"></a>把我的分支合到别的分支上去? 🧐</h1><p>git 只提供了 <code>git merge</code> 把别的分支合到我的分支上来，并没有提供把我的分支合到别的分支上的命令</p>
+<p>通常为了把当前工作分支合到别的分支上去（比如提测需要合到测试分支，上线需要合到线上分支），需要依次进行以下几步：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 比如说我正在my-branch分支工作，需要合到test分支进行提测</span></span><br><span class="line">1. git checkout <span class="built_in">test</span> <span class="comment"># 先切到目标分支test</span></span><br><span class="line">2. git pull <span class="comment"># 拉取test最新的代码</span></span><br><span class="line">3. git merge my-branch <span class="comment"># 把我的分支合到test上</span></span><br><span class="line">4. git push <span class="comment"># 把test推到远端</span></span><br><span class="line">5. git checkout my-branch <span class="comment"># 切回我的分支继续工作</span></span><br></pre></td></tr></table></figure>
+
+<p>之后你解决了一个bug，又要重复一遍上面的5步操作。一天下来可能要重复 N 遍这枯燥且无聊的合并过程。</p>
+<p>既然git没提供（我猜是出于安全考虑），那就撸起袖子自己搞一个</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">consoleLog</span></span>()&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;\033[33;1m<span class="variable">$1</span>\033[0m&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">consoleError</span></span>()&#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;\033[31;1m<span class="variable">$1</span>\033[0m&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">local</span> error=0</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">checkError</span></span>()&#123;</span><br><span class="line">  ((error)) &amp;&amp; consoleError <span class="string">&quot;🚨 出现错误&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 合并当前分支到指定分支</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">mt</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> ((<span class="variable">$#</span>==<span class="number">0</span>)) &#123;</span><br><span class="line">    consoleError <span class="string">&quot;缺少参数&quot;</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">local</span> <span class="built_in">source</span>=$(current_branch)</span><br><span class="line"></span><br><span class="line">    consoleLog <span class="string">&quot;🔦 git checkout <span class="variable">$1</span>&quot;</span></span><br><span class="line">    git checkout <span class="variable">$1</span>; error=$?</span><br><span class="line">    &#123;checkError&#125; &amp;&amp; <span class="built_in">return</span> error</span><br><span class="line"></span><br><span class="line">    consoleLog <span class="string">&quot;⬇️  git pull origin <span class="variable">$1</span>&quot;</span></span><br><span class="line">    git pull; error=$?</span><br><span class="line">    &#123;checkError&#125; &amp;&amp; <span class="built_in">return</span> error</span><br><span class="line"></span><br><span class="line">    consoleLog <span class="string">&quot;🔗 git merge <span class="variable">$source</span> --no-ff&quot;</span></span><br><span class="line">    git merge <span class="variable">$source</span> --no-edit --no-ff; error=$?</span><br><span class="line">    &#123;checkError&#125; &amp;&amp; <span class="built_in">return</span> error</span><br><span class="line"></span><br><span class="line">    consoleLog <span class="string">&quot;⬆️  git push origin <span class="variable">$1</span>&quot;</span></span><br><span class="line">    git push; error=$?</span><br><span class="line">    &#123;checkError&#125; &amp;&amp; <span class="built_in">return</span> error</span><br><span class="line"></span><br><span class="line">    consoleLog <span class="string">&quot;🔦 git checkout <span class="variable">$source</span>&quot;</span></span><br><span class="line">    git checkout <span class="variable">$source</span>; error=$?</span><br><span class="line">    &#123;checkError&#125; &amp;&amp; <span class="built_in">return</span> error</span><br><span class="line"></span><br><span class="line">    consoleLog <span class="string">&quot;🎉🎉🎉 done!&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面是zsh语法。上面代码的主要作用是把上面的5个合并步骤串行执行，加了一些错误处理和进度提示。</p>
+<p>这里取 <kbd>m</kbd><kbd>t</kbd>，因为是<span style="color:red"><strong>m</strong></span>erge <span style="color:red"><strong>t</strong></span>o的缩写鸭</p>
+<p>现在只需要执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mt <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p>即可完成把当前工作分支合并至别的分支，合并完成后，你依然在当前的工作分支。</p>
+<p>来体验一下这一键操作的畅快吧</p>
+<p><img src="/images/2023/git.gif"></p>
+<p>上面gif动图里git pull和git push时的停顿是在我家访问github时的龟速网络导致的，不影响实际使用</p>
+<blockquote>
+<p>温馨提示：上线时合到线上分支最好还是老老实实在GitLab上提merge request吧，安全起见二次确认一下文件变更🤓</p>
+</blockquote>
+<h1 id="看一下提交记录-git-log"><a href="#看一下提交记录-git-log" class="headerlink" title="看一下提交记录 git log"></a>看一下提交记录 <code>git log</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> v=<span class="string">&#x27;git log --pretty=format:&quot;%C(auto)%h %s %C(italic dim white)%an[%ad]%Creset%C(auto)%d%Creset%n&quot;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>辛辛苦苦忙了一天，看看自己今天提交了哪些commit</p>
+<p>追查真凶：线上出bug啦，是这个文件导致的，看看谁改了这个文件</p>
+<p>git log 后面那一大串 <code>--pretty=format:</code> 是为了美化log的输出格式</p>
+<p><img src="/images/2023/20230212_125535.jpg"></p>
+<p>具体占位符含义可参考 <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-log#_pretty_formats">git log pretty formats</a></p>
+<p>这里取了 <kbd>v</kbd> 键，意为 <span style="color:red"><strong>v</strong></span>iew git log，而且 <code>v</code> 键的位置比较不错 😎</p>
+<h1 id="当前项目都有哪些分支-git-branch"><a href="#当前项目都有哪些分支-git-branch" class="headerlink" title="当前项目都有哪些分支 git branch"></a>当前项目都有哪些分支 <code>git branch</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> b=<span class="string">&#x27;git branch&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>用于显示本地有哪些分支</p>
+<p>这里取 <kbd>b</kbd>键，即 git <span style="color:red"><strong>b</strong></span>ranch</p>
+<blockquote>
+<p>也可以查看有哪些远程分支(–remotes) <code>b -r</code></p>
+<p>还可以列出本地和远程所有分支(–all) <code>b -a</code></p>
+<p>🎉功能开发完上线啦，本地分支可以删啦(–delete) <code>b -d &lt;branch&gt;</code><br><br>尼玛手抖分支删错了肿么办，不要怕，这里只是删掉了本地分支，分支在远端还好好的呢</p>
+</blockquote>
+<h1 id="shit，合错代码了，我要回滚代码-git-reset"><a href="#shit，合错代码了，我要回滚代码-git-reset" class="headerlink" title="shit，合错代码了，我要回滚代码 git reset"></a>shit，合错代码了，我要回滚代码 <code>git reset</code></h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> r=<span class="string">&#x27;git reset&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>这里取 <kbd>r</kbd> 键，即 git <span style="color:red"><strong>r</strong></span>eset</p>
+<p>只见你十指在键盘上快速飞舞，修改代码，暂存，拉最新，提交一气呵成。看着git命令一行行执行，log日志随之在bash里闪烁跳动。趁这间隙，你随手拿起手边的养生水杯，嘴角开始微微上扬，准备补充一下生命的源泉。你似乎想起了什么，神情倏地变得紧张起来，你的手开始颤抖，杯具里的水也跟着泛起了水花，突然一拍脑门：我尼玛忘切分支了，全提到线上分支去了！</p>
+<p>此时你可以 <code>r @^</code></p>
+<blockquote>
+<p><code>@</code> 是 HEAD 的缩写，指向最新的commit。<code>^</code>表示之前的一个commit，和 @ 连起来就是：上一个commit</p>
+<p>git reset 只是重置了 HEAD 指向的位置，你的修改都还在，只是回到了未提交的状态，就像刚才你从没提交过一样！</p>
+</blockquote>
+<p>然而在另一个阳光明媚的下午，你竟然一不小心又把测试分支合到线上分支啦，还特么推到远端了</p>
+<p>不要慌，此时只需要 <code>r --hard @^</code>，就会回到合测试分支之前的commit节点，并且丢掉所有相关的修改（参数–hard的奇效）</p>
+<p>但此时你是 git push 不了的，因为你的本地分支HEAD落后远端分支，git会提示你要先 git pull</p>
+<p>不要理它，直接 <code>Q -f</code> （<code>Q</code> 是git push 还记得么🤪），来个霸王硬推(–force)，这样远端分支和本地分支就同步啦</p>
+<h1 id="看看这个项目谁提交的最多"><a href="#看看这个项目谁提交的最多" class="headerlink" title="看看这个项目谁提交的最多"></a>看看这个项目谁提交的最多</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git shortlog -sn</span><br></pre></td></tr></table></figure>
+
+<p>提交最多的不一定是最勤劳的，也可能只是个强迫症哟~</p>
+<h1 id="获取当前分支名称"><a href="#获取当前分支名称" class="headerlink" title="获取当前分支名称"></a>获取当前分支名称</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rev-parse --abbrev-ref HEAD</span><br></pre></td></tr></table></figure>
+<p>一般在编写git程序时会需要用到</p>
+<h1 id="撤销提交历史上的某次-commit"><a href="#撤销提交历史上的某次-commit" class="headerlink" title="撤销提交历史上的某次 commit"></a>撤销提交历史上的某次 commit</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i --onto &lt;commit-ish&gt;^ &lt;commit-ish&gt;</span><br></pre></td></tr></table></figure>
+<p>比如你前天不小心把测试分支合到了自己的分支上（实际上是万万不该滴），然而你当时并没有注意到。你又写呀写，提交呀提交，今天功能要上线了，和线上分支一比对，尼玛出现10000+个变更，这才反应过来。此时你需要把合test那次commit剔除，就像医生从中弹伤者体内取出子弹一样。如果你改动的文件在test上也被别人改动啦，那就像子弹在体内又爆炸成了碎片，只能说Good luck啦😄</p>
+<h1 id="查看自己的命令使用排行"><a href="#查看自己的命令使用排行" class="headerlink" title="查看自己的命令使用排行"></a>查看自己的命令使用排行</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zsh_stats</span><br></pre></td></tr></table></figure>
+
+<p>配置完上面这些一键操作后，最近一段时间我的命令行记录</p>
+<img src="/images/2023/20230212_125729.jpg" width="327"/>
+
+<h1 id="最后的最后"><a href="#最后的最后" class="headerlink" title="最后的最后"></a>最后的最后</h1><p>临近春节，票还没抢到，北漂真心不易。最近又赶上租房的地方要拆迁，需要重新找地方。再看一下自己的现状，眼见年将三十，家未成，业未立，浑浑噩噩，庸庸碌碌，每想至此，既焦虑又迷茫。今年的一个目标就是能每周写一篇高质量文章，总结梳理自己的知识体系。虽然不知道转机何时出现，但不能停止努力鸭😊</p>
+<p>希望2020年能有一些惊喜发生吧，加油！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="slot-post-body-end"></div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/05/2019/%E8%B7%8C%E5%AE%95%E8%B5%B7%E4%BC%8F%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B9%8B%E7%99%BB%E5%BD%95%E7%BB%84%E4%BB%B6/" rel="prev" title="跌宕起伏的小程序之登录组件">
+                  <i class="fa fa-chevron-left"></i> 跌宕起伏的小程序之登录组件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/18/2020/3%E5%88%86%E9%92%9F%E6%8E%A5%E5%85%A5socket.io%E4%BD%BF%E7%94%A8/" rel="next" title="3分钟接入socket.io使用">
+                  3分钟接入socket.io使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DOM哥</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><div class="copyright-custom">
+  &copy; 2023 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span>小站已勉强运行2年9个月零18天</span> <span>最近更新于 2025-12-02 17:01:09</span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UsHeb8iHlTHsuBIL23AfdfXX-gzGzoHsz","app_key":"ifsHfDIMKcmpAVjtZkbHyDky","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script>
+if (location.protocol === 'https:' && navigator.serviceWorker) {
+  let v
+  // v = Math.random()
+  navigator.serviceWorker.register('/sw.js?v=' + v)
+}
+</script>
+
+</body>
+</html>
